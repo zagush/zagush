@@ -1,0 +1,204 @@
+/* =========================
+   RESET
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #111;
+    color: white;
+    line-height: 1.6;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+header {
+    position: sticky;
+    top: 0;
+    background: #181818;
+    border-bottom: 1px solid #2a2a2a;
+    z-index: 100;
+}
+
+.navbar {
+    max-width: 1200px;
+    margin: auto;
+    padding: 18px 24px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 28px;
+    letter-spacing: 2px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 28px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.nav-links a:hover {
+    color: #66b3ff;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 70vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    padding: 40px 20px;
+}
+
+.hero h2 {
+    font-size: 64px;
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    color: #bbbbbb;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.description {
+    max-width: 700px;
+    color: #9a9a9a;
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+.section {
+    max-width: 1200px;
+    margin: auto;
+    padding: 90px 20px;
+}
+
+.section h2 {
+    font-size: 40px;
+    margin-bottom: 35px;
+    text-align: center;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+    gap: 20px;
+}
+
+.card {
+    background: #1b1b1b;
+    border: 1px solid #303030;
+    border-radius: 14px;
+
+    min-height: 140px;
+
+    padding: 30px;
+
+    color: white;
+    text-decoration: none;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    transition: .25s;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    border-color: #66b3ff;
+    background: #232323;
+}
+
+.card h3 {
+    margin-top: 12px;
+    font-size: 22px;
+}
+
+.card:not(:has(h3)) {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    margin-top: 60px;
+    padding: 30px;
+
+    text-align: center;
+
+    border-top: 1px solid #2b2b2b;
+
+    color: #888;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .navbar {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .hero h2 {
+        font-size: 46px;
+    }
+
+    .subtitle {
+        font-size: 18px;
+    }
+
+    .section h2 {
+        font-size: 32px;
+    }
+
+}
