@@ -1,4 +1,4 @@
-// ==============================
+F// ==============================
 // Zagush Website
 // script.js
 // ==============================
@@ -72,17 +72,13 @@ window.addEventListener("scroll", () => {
 // Placeholder links
 // ------------------------------
 
-document.querySelectorAll(".card").forEach(card => {
+document.querySelectorAll('.card[href="#"]').forEach(card => {
 
-    card.addEventListener("click", function(event){
+    card.addEventListener("click", function(event) {
 
-        if(this.getAttribute("href") === "#"){
+        event.preventDefault();
 
-            event.preventDefault();
-
-            alert("Coming soon!");
-
-        }
+        alert("Coming soon!");
 
     });
 
