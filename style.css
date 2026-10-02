@@ -1,6 +1,7 @@
-/* =========================
+```css
+/* =========================================
    RESET
-========================= */
+========================================= */
 
 * {
     margin: 0;
@@ -13,192 +14,352 @@ html {
 }
 
 body {
+    min-width: 320px;
     font-family: Arial, Helvetica, sans-serif;
-    background: #111;
-    color: white;
-    line-height: 1.6;
+    background: #d8d0c3;
+    color: #171717;
 }
 
-/* =========================
-   NAVBAR
-========================= */
 
-header {
-    position: sticky;
-    top: 0;
-    background: #181818;
-    border-bottom: 1px solid #2a2a2a;
-    z-index: 100;
+/* =========================================
+   HOME
+========================================= */
+
+.home {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
 }
 
-.navbar {
-    max-width: 1200px;
-    margin: auto;
-    padding: 18px 24px;
+
+/* =========================================
+   BACKGROUND
+========================================= */
+
+.background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    /*
+        В будущем здесь будет твой рисунок.
+
+        Например:
+
+        background-image: url("images/background/main.png");
+        background-size: cover;
+        background-position: center;
+    */
+
+    background:
+        linear-gradient(
+            135deg,
+            #d8d0c3 0%,
+            #cfc5b6 100%
+        );
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.site-header {
+    position: relative;
+    z-index: 10;
+
+    width: 100%;
+
+    padding: 32px 48px;
 
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .logo {
-    font-size: 28px;
-    letter-spacing: 2px;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 28px;
-}
-
-.nav-links a {
-    color: white;
+    color: #171717;
     text-decoration: none;
-    transition: .25s;
+
+    font-size: clamp(28px, 4vw, 64px);
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
 }
 
-.nav-links a:hover {
-    color: #66b3ff;
+.about-link {
+    color: #171717;
+    text-decoration: none;
+
+    font-size: clamp(14px, 1.4vw, 20px);
+    font-weight: 600;
+
+    letter-spacing: 0.08em;
+
+    padding: 10px 0;
 }
 
-/* =========================
-   HERO
-========================= */
-
-.hero {
-    min-height: 70vh;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    text-align: center;
-
-    padding: 40px 20px;
+.about-link:hover {
+    opacity: 0.55;
 }
 
-.hero h2 {
-    font-size: 64px;
-    margin-bottom: 12px;
-}
 
-.subtitle {
-    color: #bbbbbb;
-    font-size: 22px;
-    margin-bottom: 20px;
-}
+/* =========================================
+   DESK / OBJECT AREA
+========================================= */
 
-.description {
-    max-width: 700px;
-    color: #9a9a9a;
-}
+.desk {
+    position: relative;
+    z-index: 5;
 
-/* =========================
-   SECTIONS
-========================= */
+    width: min(1200px, 90vw);
+    min-height: calc(100vh - 130px);
 
-.section {
-    max-width: 1200px;
-    margin: auto;
-    padding: 90px 20px;
-}
+    margin: 0 auto;
 
-.section h2 {
-    font-size: 40px;
-    margin-bottom: 35px;
-    text-align: center;
-}
-
-/* =========================
-   CARDS
-========================= */
-
-.cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
-    gap: 20px;
+
+    /*
+        Пока это просто тестовая сетка.
+
+        Потом мы заменим её на абсолютные
+        позиции твоих нарисованных объектов.
+    */
+
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+
+    align-items: center;
+    justify-items: center;
+
+    gap: 40px;
 }
 
-.card {
-    background: #1b1b1b;
-    border: 1px solid #303030;
-    border-radius: 14px;
 
-    min-height: 140px;
+/* =========================================
+   OBJECTS
+========================================= */
 
-    padding: 30px;
+.object {
+    display: block;
 
-    color: white;
+    color: inherit;
     text-decoration: none;
 
+    width: min(300px, 100%);
+
+    transition:
+        transform 0.25s ease,
+        filter 0.25s ease;
+}
+
+.object:hover {
+    transform: translateY(-8px) rotate(-1deg);
+    filter: brightness(1.04);
+}
+
+.object:active {
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   PLACEHOLDERS
+========================================= */
+
+.placeholder {
+    width: 100%;
+    aspect-ratio: 1 / 0.7;
+
+    border: 2px dashed #777;
+
+    background: rgba(255, 255, 255, 0.35);
+
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
 
-    transition: .25s;
-}
-
-.card:hover {
-    transform: translateY(-6px);
-    border-color: #66b3ff;
-    background: #232323;
-}
-
-.card h3 {
-    margin-top: 12px;
-    font-size: 22px;
-}
-
-.card:not(:has(h3)) {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-/* =========================
-   FOOTER
-========================= */
-
-footer {
-    margin-top: 60px;
-    padding: 30px;
-
     text-align: center;
 
-    border-top: 1px solid #2b2b2b;
+    font-size: clamp(18px, 2vw, 28px);
+    font-weight: 700;
 
-    color: #888;
+    letter-spacing: 0.08em;
+
+    user-select: none;
 }
 
-/* =========================
+.placeholder span {
+    pointer-events: none;
+}
+
+
+/* Different temporary shapes */
+
+.portfolio-placeholder {
+    border-radius: 8px;
+    transform: rotate(-3deg);
+}
+
+.socials-placeholder {
+    border-radius: 14px;
+    transform: rotate(3deg);
+}
+
+.draw-placeholder {
+    background: rgba(255, 255, 255, 0.65);
+    border-radius: 2px;
+    transform: rotate(-2deg);
+}
+
+.contact-placeholder {
+    border-radius: 4px;
+    transform: rotate(4deg);
+}
+
+
+/* =========================================
+   OBJECT POSITIONS
+========================================= */
+
+.portfolio-object {
+    justify-self: start;
+    align-self: center;
+}
+
+.socials-object {
+    justify-self: end;
+    align-self: center;
+}
+
+.draw-object {
+    justify-self: center;
+    align-self: center;
+}
+
+.contact-object {
+    justify-self: center;
+    align-self: center;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+    .site-header {
+        padding: 28px 30px;
+    }
+
+    .desk {
+        width: min(760px, 88vw);
+        gap: 25px;
+    }
+
+    .object {
+        width: min(260px, 100%);
+    }
+}
+
+
+/* =========================================
    MOBILE
-========================= */
+========================================= */
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
 
-    .navbar {
+    .home {
+        min-height: 100svh;
+        overflow: auto;
+    }
+
+    .site-header {
+        padding: 24px 22px;
+
+        align-items: center;
+    }
+
+    .logo {
+        font-size: 30px;
+    }
+
+    .about-link {
+        font-size: 12px;
+    }
+
+    .desk {
+        width: 88vw;
+        min-height: auto;
+
+        padding: 40px 0 70px;
+
+        display: flex;
         flex-direction: column;
-        gap: 18px;
+
+        gap: 34px;
     }
 
-    .nav-links {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 16px;
+    .object {
+        width: min(280px, 82vw);
     }
 
-    .hero h2 {
-        font-size: 46px;
+    .portfolio-object,
+    .socials-object,
+    .draw-object,
+    .contact-object {
+        align-self: center;
+        justify-self: center;
     }
 
-    .subtitle {
-        font-size: 18px;
+    .placeholder {
+        aspect-ratio: 1 / 0.7;
     }
-
-    .section h2 {
-        font-size: 32px;
-    }
-
 }
+
+
+/* =========================================
+   VERY SMALL PHONES
+========================================= */
+
+@media (max-width: 380px) {
+
+    .site-header {
+        padding: 20px 18px;
+    }
+
+    .logo {
+        font-size: 25px;
+    }
+
+    .about-link {
+        font-size: 10px;
+    }
+
+    .desk {
+        gap: 25px;
+    }
+
+    .object {
+        width: 82vw;
+    }
+}
+
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    .object {
+        transition: none;
+    }
+}
+```
