@@ -1,321 +1,77 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>ZAGUSH</title>
 
-    <meta name="description"
-        content="Creating illustrations, games, pixel art and digital illustrations.">
+    <meta
+        name="description"
+        content="ZAGUSH — artist and digital creator."
+    >
 
     <link rel="stylesheet" href="style.css">
-
-    <!-- Pixel Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-
 </head>
 
 <body>
 
-<header>
+    <main class="home">
 
-    <nav class="navbar">
+        <!-- Background -->
+        <div class="background"></div>
 
-        <a href="#" class="logo">
-            ZAGUSH
-        </a>
+        <!-- Header -->
+        <header class="site-header">
+            <a href="index.html" class="logo">ZAGUSH</a>
 
-        <ul>
+            <a href="about.html" class="about-link">
+                ABOUT ME
+            </a>
+        </header>
 
-            <li>
-                <a href="#socials">
-                    Socials
-                </a>
-            </li>
 
-            <li>
-                <a href="#workspace">
-                    Portfolio
-                </a>
-            </li>
+        <!-- Interactive objects -->
+        <section class="desk">
 
-            <li>
-                <a href="#contacts">
-                    Contacts
-                </a>
-            </li>
+            <!-- Portfolio -->
+            <a href="portfolio.html" class="object portfolio-object">
+                <div class="placeholder portfolio-placeholder">
+                    <span>PORTFOLIO</span>
+                </div>
+            </a>
 
-        </ul>
 
-    </nav>
+            <!-- Socials -->
+            <a href="socials.html" class="object socials-object">
+                <div class="placeholder socials-placeholder">
+                    <span>SOCIALS</span>
+                </div>
+            </a>
 
-</header>
 
-<!-- HERO -->
+            <!-- Drawing -->
+            <a href="draw.html" class="object draw-object">
+                <div class="placeholder draw-placeholder">
+                    <span>DRAW</span>
+                </div>
+            </a>
 
-<section class="hero">
 
-    <div class="hero-content">
+            <!-- Contact -->
+            <a href="contact.html" class="object contact-object">
+                <div class="placeholder contact-placeholder">
+                    <span>CONTACT</span>
+                </div>
+            </a>
 
-        <h1>
-            ZAGUSH
-        </h1>
+        </section>
 
-        <p class="subtitle">
+    </main>
 
-            Artist • Pixel Artist • Game Developer
+    <script src="script.js"></script>
 
-        </p>
-
-        <p class="description">
-
-            Creating illustrations,
-            games,
-            pixel art
-            and digital illustrations.
-
-        </p>
-
-    </div>
-
-</section>
-
-<!-- SKY -->
-
-<section class="sky-section" id="socials">
-
-    <img
-        src="images/background/sky.png"
-        class="sky-background"
-        alt="Sky">
-
-    <!-- CLOUD 1 -->
-
-    <a
-        href="https://t.me/zagush_a"
-        target="_blank"
-        class="cloud social telegram">
-
-        <img
-            src="images/socials/telegram.png"
-            alt="Telegram">
-
-        <span>
-
-            Telegram
-
-        </span>
-
-    </a>
-
-    <!-- CLOUD 2 -->
-
-    <a
-        href="https://www.instagram.com/zagush_a/"
-        target="_blank"
-        class="cloud social instagram">
-
-        <img
-            src="images/socials/instagram.png"
-            alt="Instagram">
-
-        <span>
-
-            Instagram
-
-        </span>
-
-    </a>
-
-    <!-- CLOUD 3 -->
-
-    <a
-        href="https://x.com/zagush_"
-        target="_blank"
-        class="cloud social twitter">
-
-        <img
-            src="images/socials/twitter.png"
-            alt="Twitter">
-
-        <span>
-
-            X (Twitter)
-
-        </span>
-
-    </a>
-
-    <!-- CLOUD 4 -->
-
-    <a
-        href="https://ru.pinterest.com/zagush/"
-        target="_blank"
-        class="cloud social pinterest">
-
-        <img
-            src="images/socials/pinterest.png"
-            alt="Pinterest">
-
-        <span>
-
-            Pinterest
-
-        </span>
-
-    </a>
-
-    <!-- CLOUD 5 -->
-
-    <a
-        href="https://www.artstation.com/zagush"
-        target="_blank"
-        class="cloud social artstation">
-
-        <img
-            src="images/socials/artstation.png"
-            alt="ArtStation">
-
-        <span>
-
-            ArtStation
-
-        </span>
-
-    </a>
-
-    <!-- CLOUD 6 -->
-
-    <a
-        href="https://www.youtube.com/@zagush"
-        target="_blank"
-        class="cloud social youtube">
-
-        <img
-            src="images/socials/youtube.png"
-            alt="YouTube">
-
-        <span>
-
-            YouTube
-
-        </span>
-
-    </a>
-
-    <!-- CLOUD 7 -->
-
-    <a
-        href="https://yandex.ru/games/developer/147921"
-        target="_blank"
-        class="cloud social studio">
-
-        <img
-            src="images/socials/studio.png"
-            alt="AUTRISM">
-
-        <span>
-
-            AUTRISM
-            <br>
-            Game Studio
-
-        </span>
-
-    </a>
-
-</section>
-
-<!-- GRASS -->
-
-<section class="grass-transition">
-
-    <img
-
-        src="images/background/grass.png"
-
-        alt="Grass"
-
-        class="grass"
-
-    >
-
-</section>
-
-<!-- WORKSPACE -->
-
-<section
-
-    id="workspace"
-
-    class="workspace"
-
->
-
-    <img
-
-        src="images/background/table.png"
-
-        class="table"
-
-        alt="Table"
-
-    >
-
-    <!-- PIXEL ART -->
-
-    <a
-
-        href="portfolio/pixel-art.html"
-
-        class="desk-item pixelart"
-
-    >
-
-        <img
-
-            src="images/portfolio/pixelart.png"
-
-            alt="Pixel Art"
-
-        >
-
-        <span>
-
-            Pixel Art
-
-        </span>
-
-    </a>
-
-    <!-- CANVAS ART -->
-
-    <a
-
-        href="portfolio/canvas-art.html"
-
-        class="desk-item canvas"
-
-    >
-
-        <img
-
-            src="images/portfolio/canvas.png"
-
-            alt="Canvas Art"
-
-        >
-
-        <span>
-
-            Canvas Art
-
-        </span>
-
-    </a>
-    
+</body>
+</html>
+```
