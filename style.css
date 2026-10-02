@@ -42,16 +42,6 @@ body {
     inset: 0;
     z-index: 0;
 
-    /*
-        В будущем здесь будет твой рисунок.
-
-        Например:
-
-        background-image: url("images/background/main.png");
-        background-size: cover;
-        background-position: center;
-    */
-
     background:
         linear-gradient(
             135deg,
@@ -74,34 +64,54 @@ body {
     padding: 32px 48px;
 
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
 }
 
 .logo {
     color: #171717;
     text-decoration: none;
 
-    font-size: clamp(28px, 4vw, 64px);
+    font-size: clamp(32px, 4vw, 64px);
     font-weight: 800;
 
     letter-spacing: 0.08em;
+
+    text-align: center;
 }
 
-.about-link {
-    color: #171717;
-    text-decoration: none;
 
-    font-size: clamp(14px, 1.4vw, 20px);
-    font-weight: 600;
+/* =========================================
+   ABOUT
+========================================= */
 
-    letter-spacing: 0.08em;
+.about {
+    position: relative;
+    z-index: 5;
 
-    padding: 10px 0;
+    width: min(600px, 85vw);
+
+    margin: 10px auto 0;
+
+    text-align: center;
 }
 
-.about-link:hover {
-    opacity: 0.55;
+.about h1 {
+    font-size: clamp(18px, 2vw, 28px);
+
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+
+    margin-bottom: 12px;
+}
+
+.about p {
+    font-size: clamp(13px, 1.3vw, 18px);
+
+    line-height: 1.6;
+
+    opacity: 0.75;
 }
 
 
@@ -114,20 +124,15 @@ body {
     z-index: 5;
 
     width: min(1200px, 90vw);
-    min-height: calc(100vh - 130px);
+
+    min-height: calc(100vh - 250px);
 
     margin: 0 auto;
 
     display: grid;
 
-    /*
-        Пока это просто тестовая сетка.
-
-        Потом мы заменим её на абсолютные
-        позиции твоих нарисованных объектов.
-    */
-
     grid-template-columns: 1fr 1fr;
+
     grid-template-rows: 1fr 1fr;
 
     align-items: center;
@@ -170,6 +175,7 @@ body {
 
 .placeholder {
     width: 100%;
+
     aspect-ratio: 1 / 0.7;
 
     border: 2px dashed #777;
@@ -177,12 +183,14 @@ body {
     background: rgba(255, 255, 255, 0.35);
 
     display: flex;
+
     justify-content: center;
     align-items: center;
 
     text-align: center;
 
     font-size: clamp(18px, 2vw, 28px);
+
     font-weight: 700;
 
     letter-spacing: 0.08em;
@@ -195,7 +203,9 @@ body {
 }
 
 
-/* Different temporary shapes */
+/* =========================================
+   TEMPORARY OBJECT SHAPES
+========================================= */
 
 .portfolio-placeholder {
     border-radius: 8px;
@@ -209,12 +219,15 @@ body {
 
 .draw-placeholder {
     background: rgba(255, 255, 255, 0.65);
+
     border-radius: 2px;
+
     transform: rotate(-2deg);
 }
 
 .contact-placeholder {
     border-radius: 4px;
+
     transform: rotate(4deg);
 }
 
@@ -254,8 +267,13 @@ body {
         padding: 28px 30px;
     }
 
+    .about {
+        margin-top: 5px;
+    }
+
     .desk {
         width: min(760px, 88vw);
+
         gap: 25px;
     }
 
@@ -273,30 +291,45 @@ body {
 
     .home {
         min-height: 100svh;
+
         overflow: auto;
     }
 
     .site-header {
         padding: 24px 22px;
-
-        align-items: center;
     }
 
     .logo {
         font-size: 30px;
     }
 
-    .about-link {
-        font-size: 12px;
+    .about {
+        width: 82vw;
+
+        margin-top: 0;
+    }
+
+    .about h1 {
+        font-size: 17px;
+
+        margin-bottom: 8px;
+    }
+
+    .about p {
+        font-size: 13px;
+
+        line-height: 1.5;
     }
 
     .desk {
         width: 88vw;
+
         min-height: auto;
 
         padding: 40px 0 70px;
 
         display: flex;
+
         flex-direction: column;
 
         gap: 34px;
@@ -311,11 +344,8 @@ body {
     .draw-object,
     .contact-object {
         align-self: center;
-        justify-self: center;
-    }
 
-    .placeholder {
-        aspect-ratio: 1 / 0.7;
+        justify-self: center;
     }
 }
 
@@ -334,8 +364,8 @@ body {
         font-size: 25px;
     }
 
-    .about-link {
-        font-size: 10px;
+    .about {
+        width: 86vw;
     }
 
     .desk {
