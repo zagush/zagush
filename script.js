@@ -1,85 +1,26 @@
-F// ==============================
-// Zagush Website
-// script.js
-// ==============================
+```javascript
+// =========================================
+// ZAGUSH WEBSITE
+// =========================================
 
-console.log("Zagush website loaded!");
+console.log("ZAGUSH website loaded.");
 
-// ------------------------------
-// Smooth scrolling (backup)
-// ------------------------------
 
-document.querySelectorAll('a[href^="#"]').forEach(link => {
+// =========================================
+// OBJECT HOVER / INTERACTION
+// =========================================
 
-    link.addEventListener("click", function (event) {
+const objects = document.querySelectorAll(".object");
 
-        event.preventDefault();
+objects.forEach((object) => {
 
-        const target = document.querySelector(this.getAttribute("href"));
+    object.addEventListener("mouseenter", () => {
+        object.classList.add("is-hovered");
+    });
 
-        if (target) {
-
-            target.scrollIntoView({
-
-                behavior: "smooth"
-
-            });
-
-        }
-
+    object.addEventListener("mouseleave", () => {
+        object.classList.remove("is-hovered");
     });
 
 });
-
-// ------------------------------
-// Active navigation
-// ------------------------------
-
-const sections = document.querySelectorAll("section");
-const navLinks = document.querySelectorAll(".nav-links a");
-
-window.addEventListener("scroll", () => {
-
-    let current = "";
-
-    sections.forEach(section => {
-
-        const top = section.offsetTop - 120;
-
-        if (window.scrollY >= top) {
-
-            current = section.getAttribute("id");
-
-        }
-
-    });
-
-    navLinks.forEach(link => {
-
-        link.classList.remove("active");
-
-        if (link.getAttribute("href") === "#" + current) {
-
-            link.classList.add("active");
-
-        }
-
-    });
-
-});
-
-// ------------------------------
-// Placeholder links
-// ------------------------------
-
-document.querySelectorAll('.card[href="#"]').forEach(card => {
-
-    card.addEventListener("click", function(event) {
-
-        event.preventDefault();
-
-        alert("Coming soon!");
-
-    });
-
-});
+```
