@@ -7,7 +7,7 @@ console.log("ZAGUSH website loaded.");
 
 
 // =========================================
-// OBJECT HOVER / INTERACTION
+// OBJECT INTERACTION
 // =========================================
 
 const objects = document.querySelectorAll(".object");
