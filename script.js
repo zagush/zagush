@@ -1,7 +1,6 @@
-// =========================================
-// ZAGUSH WEBSITE
-// =========================================
+document.addEventListener("DOMContentLoaded", () => {
 
+```
 console.log("ZAGUSH website loaded.");
 
 
@@ -45,13 +44,20 @@ const translations = {
 
 
 // =========================================
-// LANGUAGE
+// LANGUAGE SWITCH
 // =========================================
 
-const languageSwitch = document.getElementById("languageSwitch");
+const languageSwitch =
+    document.getElementById("languageSwitch");
 
-let currentLanguage =
-    localStorage.getItem("zagush-language") || "ru";
+
+if (!languageSwitch) {
+    console.error("Language button not found.");
+    return;
+}
+
+
+let currentLanguage = "ru";
 
 
 function setLanguage(language) {
@@ -60,38 +66,49 @@ function setLanguage(language) {
 
     document.documentElement.lang = language;
 
+
     const elements =
         document.querySelectorAll("[data-i18n]");
 
+
     elements.forEach((element) => {
 
-        const key = element.dataset.i18n;
+        const key = element.getAttribute("data-i18n");
 
-        if (translations[language][key]) {
-
+        if (
+            translations[language] &&
+            translations[language][key]
+        ) {
             element.textContent =
                 translations[language][key];
-
         }
 
     });
 
 
-    // Button shows the language
-    // that can be switched TO
+    /*
+     * The button shows the language
+     * that you can switch TO.
+     */
 
     if (language === "ru") {
+
         languageSwitch.textContent = "EN";
+
         languageSwitch.setAttribute(
             "aria-label",
             "Switch to English"
         );
+
     } else {
+
         languageSwitch.textContent = "RU";
+
         languageSwitch.setAttribute(
             "aria-label",
             "Переключить на русский"
         );
+
     }
 
 
@@ -103,25 +120,44 @@ function setLanguage(language) {
 
 
 // =========================================
-// LANGUAGE BUTTON
+// BUTTON
 // =========================================
 
 languageSwitch.addEventListener("click", () => {
 
-    const nextLanguage =
-        currentLanguage === "ru"
-            ? "en"
-            : "ru";
+    if (currentLanguage === "ru") {
 
-    setLanguage(nextLanguage);
+        setLanguage("en");
+
+    } else {
+
+        setLanguage("ru");
+
+    }
+
 });
 
 
 // =========================================
-// INITIAL LANGUAGE
+// START
 // =========================================
 
-setLanguage(currentLanguage);
+const savedLanguage =
+    localStorage.getItem("zagush-language");
+
+
+if (
+    savedLanguage === "ru" ||
+    savedLanguage === "en"
+) {
+
+    setLanguage(savedLanguage);
+
+} else {
+
+    setLanguage("ru");
+
+}
 
 
 // =========================================
@@ -131,14 +167,22 @@ setLanguage(currentLanguage);
 const objects =
     document.querySelectorAll(".object");
 
+
 objects.forEach((object) => {
 
     object.addEventListener("mouseenter", () => {
+
         object.classList.add("is-hovered");
+
     });
 
+
     object.addEventListener("mouseleave", () => {
+
         object.classList.remove("is-hovered");
+
     });
+
+});
 
 });
