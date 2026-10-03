@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,7 @@
 
 <meta
     name="description"
-    content="ZAGUSH — художник и цифровой автор."
+    content="ЗАГУШ — художник и цифровой автор."
 >
 
 <link rel="stylesheet" href="style.css">
@@ -26,10 +27,11 @@
     <div class="background"></div>
 
 
-    <!-- Language -->
+    <!-- Language button -->
+
     <button
-        class="language-switch"
         id="languageSwitch"
+        class="language-switch"
         type="button"
     >
         EN
@@ -37,67 +39,106 @@
 
 
     <!-- Header -->
+
     <header class="site-header">
 
-        <a href="index.html" class="logo">
-            ZAGUSH
+        <a
+            href="index.html"
+            class="logo"
+            id="logo"
+        >
+            ЗАГУШ
         </a>
 
     </header>
 
 
-    <!-- About -->
-    <section class="about">
+    <!-- Intro -->
 
-        <h1 data-i18n="about-title">
-            ОБО МНЕ
-        </h1>
+    <section class="intro">
 
-        <p data-i18n="about-text">
-            Создаю иллюстрации, игры, пиксель-арт
-            и цифровые работы.
+        <p
+            class="intro-text"
+            id="introText"
+        >
+            Я создаю цифровое искусство, граффити,
+            традиционные работы и многое другое.
+            <br>
+            Больше моих работ можно посмотреть
+            в социальных сетях.
         </p>
 
     </section>
 
 
     <!-- Interactive objects -->
+
     <section class="desk">
 
-        <a href="portfolio.html" class="object portfolio-object">
+
+        <a
+            href="portfolio.html"
+            class="object portfolio-object"
+        >
+
             <div class="placeholder portfolio-placeholder">
-                <span data-i18n="portfolio">
+
+                <span id="portfolioText">
                     ПОРТФОЛИО
                 </span>
+
             </div>
+
         </a>
 
 
-        <a href="socials.html" class="object socials-object">
+        <a
+            href="socials.html"
+            class="object socials-object"
+        >
+
             <div class="placeholder socials-placeholder">
-                <span data-i18n="socials">
+
+                <span id="socialsText">
                     СОЦСЕТИ
                 </span>
+
             </div>
+
         </a>
 
 
-        <a href="draw.html" class="object draw-object">
+        <a
+            href="draw.html"
+            class="object draw-object"
+        >
+
             <div class="placeholder draw-placeholder">
-                <span data-i18n="draw">
+
+                <span id="drawText">
                     РИСОВАТЬ
                 </span>
+
             </div>
+
         </a>
 
 
-        <a href="contact.html" class="object contact-object">
+        <a
+            href="contact.html"
+            class="object contact-object"
+        >
+
             <div class="placeholder contact-placeholder">
-                <span data-i18n="contact">
+
+                <span id="contactText">
                     КОНТАКТЫ
                 </span>
+
             </div>
+
         </a>
+
 
     </section>
 
@@ -105,7 +146,7 @@
 
 
 <script src="script.js"></script>
-```
 
 </body>
+
 </html>
