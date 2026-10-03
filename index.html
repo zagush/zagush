@@ -10,7 +10,7 @@
     <main class="home">
         <div class="background"></div>
 
-        <button id="languageSwitch" class="language-switch" type="button" aria-label="Сменить язык">EN</button>
+        <button id="languageSwitch" class="language-switch" type="button">EN</button>
 
         <header class="site-header">
             <a href="index.html" class="logo" id="logo">ЗАГУШ</a>
@@ -31,12 +31,11 @@
                 </div>
             </a>
 
-            <!-- Интерактивный телефон -->
-            <div class="object socials-object" id="phoneTrigger" role="button" tabindex="0" aria-label="Открыть соцсети">
+            <!-- Телефон / Соцсети -->
+            <div class="object socials-object" id="phoneTrigger" role="button" tabindex="0">
                 <div class="phone-wrapper">
-                    <img src="phone.png" alt="Телефон" class="phone-img">
-                    <div class="phone-screen-glare"></div>
-                    <span class="object-label" id="socialsLabel">СОЦСЕТИ</span>
+                    <img src="./phone.png" alt="Phone" class="phone-img">
+                    <span class="phone-label" id="socialsLabel">СОЦСЕТИ</span>
                 </div>
             </div>
 
@@ -53,11 +52,11 @@
             </a>
         </section>
 
-        <!-- Модалка смартфона с соцсетями -->
-        <div class="phone-modal" id="phoneModal" aria-hidden="true">
+        <!-- Модалка соцсетей -->
+        <div class="phone-modal" id="phoneModal">
             <div class="modal-backdrop" id="modalBackdrop"></div>
             <div class="phone-device">
-                <button class="modal-close" id="modalClose" aria-label="Закрыть">&times;</button>
+                <button class="modal-close" id="modalClose" type="button">&times;</button>
                 <div class="phone-notch"></div>
                 <div class="phone-inner">
                     <div class="phone-status-bar">
@@ -67,21 +66,21 @@
                     <div class="phone-content">
                         <h2 class="phone-title" id="modalTitle">МОИ СОЦСЕТИ</h2>
                         <div class="social-links">
-                            <a href="https://t.me/твой_ник" target="_blank" rel="noopener noreferrer" class="social-btn tg">
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="social-btn">
                                 <span class="social-icon">✈</span>
-                                <span class="social-name">Telegram</span>
+                                <span>Telegram</span>
                             </a>
-                            <a href="https://vk.com/твой_ник" target="_blank" rel="noopener noreferrer" class="social-btn vk">
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="social-btn">
                                 <span class="social-icon">В</span>
-                                <span class="social-name">VKontakte</span>
+                                <span>VKontakte</span>
                             </a>
-                            <a href="https://instagram.com/твой_ник" target="_blank" rel="noopener noreferrer" class="social-btn inst">
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="social-btn">
                                 <span class="social-icon">📸</span>
-                                <span class="social-name">Instagram</span>
+                                <span>Instagram</span>
                             </a>
-                            <a href="https://youtube.com/@твой_ник" target="_blank" rel="noopener noreferrer" class="social-btn yt">
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="social-btn">
                                 <span class="social-icon">▶</span>
-                                <span class="social-name">YouTube</span>
+                                <span>YouTube</span>
                             </a>
                         </div>
                     </div>
