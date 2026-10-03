@@ -20,14 +20,16 @@ body {
     position: relative;
     width: 100%;
     min-height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .background {
-    position: absolute;
+    position: fixed;
     inset: 0;
     z-index: 0;
     background: linear-gradient(135deg, #d8d0c3 0%, #cfc5b6 100%);
+    pointer-events: none;
 }
 
 .language-switch {
@@ -40,7 +42,7 @@ body {
     padding: 0;
     border: 1.5px solid #171717;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.4);
     color: #171717;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 13px;
@@ -48,10 +50,11 @@ body {
     letter-spacing: 0.06em;
     cursor: pointer;
     transition: background 0.2s ease, transform 0.2s ease;
+    user-select: none;
 }
 
 .language-switch:hover {
-    background: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.7);
     transform: translateY(-2px);
 }
 
@@ -105,14 +108,13 @@ body {
     position: relative;
     z-index: 5;
     width: min(1050px, 90vw);
-    height: calc(100vh - 275px);
     min-height: 390px;
-    margin: 10px auto 0;
+    margin: 25px auto 40px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    column-gap: 100px;
-    row-gap: 10px;
+    grid-template-rows: auto auto;
+    column-gap: 80px;
+    row-gap: 30px;
     align-items: center;
     justify-items: center;
 }
@@ -184,19 +186,11 @@ body {
     justify-self: start;
 }
 
-@media (max-height: 750px) and (min-width: 601px) {
-    .site-header {
-        padding-top: 22px;
-    }
-
-    .about {
-        margin-top: 13px;
-    }
-
+@media (max-width: 900px) and (min-width: 601px) {
     .desk {
-        height: calc(100vh - 245px);
-        min-height: 350px;
-        column-gap: 70px;
+        width: 86vw;
+        column-gap: 40px;
+        row-gap: 20px;
     }
 
     .object {
@@ -204,27 +198,11 @@ body {
     }
 }
 
-@media (max-width: 900px) and (min-width: 601px) {
-    .desk {
-        width: 86vw;
-        column-gap: 50px;
-    }
-
-    .object {
-        width: min(250px, 100%);
-    }
-}
-
 @media (max-width: 600px) {
-    .home {
-        min-height: 100svh;
-        overflow: auto;
-    }
-
     .language-switch {
         top: 15px;
         right: 15px;
-        width: 43px;
+        width: 44px;
         height: 32px;
         font-size: 12px;
     }
@@ -234,12 +212,12 @@ body {
     }
 
     .logo {
-        font-size: 34px;
+        font-size: 36px;
     }
 
     .about {
         width: 84vw;
-        margin-top: 17px;
+        margin-top: 16px;
     }
 
     .about h1 {
@@ -254,55 +232,17 @@ body {
 
     .desk {
         width: 88vw;
-        height: auto;
-        min-height: 0;
-        margin-top: 28px;
-        padding: 10px 0 60px;
+        margin-top: 25px;
+        padding-bottom: 50px;
         display: flex;
         flex-direction: column;
-        gap: 30px;
+        gap: 24px;
     }
 
     .object {
         width: min(280px, 82vw);
-    }
-
-    .portfolio-object,
-    .socials-object,
-    .draw-object,
-    .contact-object {
         justify-self: center;
         align-self: center;
-    }
-}
-
-@media (max-width: 380px) {
-    .language-switch {
-        top: 12px;
-        right: 12px;
-        width: 40px;
-        height: 30px;
-    }
-
-    .site-header {
-        padding-top: 22px;
-    }
-
-    .logo {
-        font-size: 29px;
-    }
-
-    .about {
-        width: 86vw;
-    }
-
-    .desk {
-        gap: 25px;
-        padding-bottom: 45px;
-    }
-
-    .object {
-        width: 82vw;
     }
 }
 
