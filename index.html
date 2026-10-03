@@ -31,11 +31,14 @@
                 </div>
             </a>
 
-            <a href="socials.html" class="object socials-object">
-                <div class="placeholder socials-placeholder">
-                    <span id="socialsText">СОЦСЕТИ</span>
+            <!-- Интерактивный телефон -->
+            <div class="object socials-object" id="phoneTrigger" role="button" tabindex="0" aria-label="Открыть соцсети">
+                <div class="phone-wrapper">
+                    <img src="phone.png" alt="Телефон" class="phone-img">
+                    <div class="phone-screen-glare"></div>
+                    <span class="object-label" id="socialsLabel">СОЦСЕТИ</span>
                 </div>
-            </a>
+            </div>
 
             <a href="draw.html" class="object draw-object">
                 <div class="placeholder draw-placeholder">
@@ -49,6 +52,43 @@
                 </div>
             </a>
         </section>
+
+        <!-- Модалка смартфона с соцсетями -->
+        <div class="phone-modal" id="phoneModal" aria-hidden="true">
+            <div class="modal-backdrop" id="modalBackdrop"></div>
+            <div class="phone-device">
+                <button class="modal-close" id="modalClose" aria-label="Закрыть">&times;</button>
+                <div class="phone-notch"></div>
+                <div class="phone-inner">
+                    <div class="phone-status-bar">
+                        <span>13:37</span>
+                        <span>100%</span>
+                    </div>
+                    <div class="phone-content">
+                        <h2 class="phone-title" id="modalTitle">МОИ СОЦСЕТИ</h2>
+                        <div class="social-links">
+                            <a href="https://t.me/твой_ник" target="_blank" rel="noopener noreferrer" class="social-btn tg">
+                                <span class="social-icon">✈</span>
+                                <span class="social-name">Telegram</span>
+                            </a>
+                            <a href="https://vk.com/твой_ник" target="_blank" rel="noopener noreferrer" class="social-btn vk">
+                                <span class="social-icon">В</span>
+                                <span class="social-name">VKontakte</span>
+                            </a>
+                            <a href="https://instagram.com/твой_ник" target="_blank" rel="noopener noreferrer" class="social-btn inst">
+                                <span class="social-icon">📸</span>
+                                <span class="social-name">Instagram</span>
+                            </a>
+                            <a href="https://youtube.com/@твой_ник" target="_blank" rel="noopener noreferrer" class="social-btn yt">
+                                <span class="social-icon">▶</span>
+                                <span class="social-name">YouTube</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="phone-home-indicator"></div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script src="script.js"></script>
