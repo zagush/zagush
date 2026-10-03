@@ -1,7 +1,3 @@
-/* =========================================
-RESET
-========================================= */
-
 * {
   margin: 0;
   padding: 0;
@@ -14,44 +10,24 @@ scroll-behavior: smooth;
 
 body {
 min-width: 320px;
-
-```
 font-family: Arial, Helvetica, sans-serif;
-
 background: #d8d0c3;
 color: #171717;
-```
-
 }
-
-/* =========================================
-HOME
-========================================= */
 
 .home {
 position: relative;
-
-```
 width: 100%;
 min-height: 100vh;
-
 overflow: hidden;
-```
-
 }
-
-/* =========================================
-BACKGROUND
-========================================= */
 
 .background {
 position: absolute;
-
-```
 inset: 0;
-
 z-index: 0;
 
+```
 background:
     linear-gradient(
         135deg,
@@ -61,55 +37,6 @@ background:
 ```
 
 }
-
-/* =========================================
-HEADER
-========================================= */
-
-.site-header {
-position: relative;
-
-```
-z-index: 10;
-
-width: 100%;
-
-min-height: 90px;
-
-padding: 28px 48px;
-
-display: flex;
-
-justify-content: center;
-align-items: center;
-```
-
-}
-
-.logo {
-display: block;
-
-```
-color: #171717;
-
-text-decoration: none;
-
-font-size: clamp(34px, 4vw, 58px);
-
-font-weight: 800;
-
-letter-spacing: 0.08em;
-
-text-align: center;
-
-line-height: 1;
-```
-
-}
-
-/* =========================================
-LANGUAGE SWITCH
-========================================= */
 
 .language-switch {
 position: fixed;
@@ -129,14 +56,11 @@ border: 1.5px solid #171717;
 border-radius: 4px;
 
 background: rgba(255, 255, 255, 0.25);
-
 color: #171717;
 
-font-family: inherit;
-
+font-family: Arial, Helvetica, sans-serif;
 font-size: 13px;
 font-weight: 700;
-
 letter-spacing: 0.06em;
 
 cursor: pointer;
@@ -150,75 +74,81 @@ transition:
 
 .language-switch:hover {
 background: rgba(255, 255, 255, 0.55);
-
-```
 transform: translateY(-2px);
-```
-
 }
 
 .language-switch:active {
-transform: translateY(0);
+transform: translateY(1px);
 }
 
-/* =========================================
-ABOUT
-========================================= */
-
-.about {
+.site-header {
 position: relative;
+z-index: 10;
 
 ```
-z-index: 5;
+width: 100%;
 
-width: min(560px, 80vw);
+padding-top: 30px;
 
-margin: 22px auto 0;
+display: flex;
+justify-content: center;
+align-items: center;
+```
+
+}
+
+.logo {
+display: block;
+
+```
+color: #171717;
+text-decoration: none;
+
+font-size: clamp(42px, 5vw, 72px);
+font-weight: 800;
+
+letter-spacing: 0.08em;
+line-height: 1;
 
 text-align: center;
 ```
 
 }
 
-.about h1 {
-margin-bottom: 8px;
+.intro {
+position: relative;
+z-index: 5;
 
 ```
-font-size: clamp(16px, 1.6vw, 23px);
+width: min(620px, 82vw);
 
-font-weight: 700;
+margin: 18px auto 0;
 
-letter-spacing: 0.14em;
-```
-
-}
-
-.about p {
-font-size: clamp(12px, 1.1vw, 16px);
-
-```
-line-height: 1.5;
-
-opacity: 0.7;
+text-align: center;
 ```
 
 }
 
-/* =========================================
-DESK
-========================================= */
+.intro-text {
+font-size: clamp(13px, 1.2vw, 17px);
+line-height: 1.55;
+
+```
+opacity: 0.72;
+```
+
+}
 
 .desk {
 position: relative;
-
-```
 z-index: 5;
 
+```
 width: min(1050px, 90vw);
 
-height: calc(100vh - 205px);
+height: calc(100vh - 215px);
 
-min-height: 470px;
+min-height: 460px;
 
 margin: 0 auto;
 
@@ -228,17 +158,13 @@ grid-template-columns: 1fr 1fr;
 grid-template-rows: 1fr 1fr;
 
 column-gap: 100px;
-row-gap: 15px;
+row-gap: 10px;
 
 align-items: center;
 justify-items: center;
 ```
 
 }
-
-/* =========================================
-OBJECTS
-========================================= */
 
 .object {
 display: block;
@@ -247,7 +173,6 @@ display: block;
 width: min(280px, 100%);
 
 color: inherit;
-
 text-decoration: none;
 
 transition:
@@ -259,20 +184,12 @@ transition:
 
 .object:hover {
 transform: translateY(-7px) rotate(-1deg);
-
-```
 filter: brightness(1.04);
-```
-
 }
 
 .object:active {
 transform: translateY(-2px);
 }
-
-/* =========================================
-PLACEHOLDERS
-========================================= */
 
 .placeholder {
 width: 100%;
@@ -281,7 +198,6 @@ width: 100%;
 aspect-ratio: 1 / 0.68;
 
 display: flex;
-
 justify-content: center;
 align-items: center;
 
@@ -292,7 +208,6 @@ background: rgba(255, 255, 255, 0.35);
 text-align: center;
 
 font-size: clamp(16px, 1.7vw, 23px);
-
 font-weight: 700;
 
 letter-spacing: 0.08em;
@@ -306,51 +221,26 @@ user-select: none;
 pointer-events: none;
 }
 
-/* =========================================
-TEMPORARY SHAPES
-========================================= */
-
 .portfolio-placeholder {
 border-radius: 8px;
-
-```
 transform: rotate(-3deg);
-```
-
 }
 
 .socials-placeholder {
 border-radius: 14px;
-
-```
 transform: rotate(3deg);
-```
-
 }
 
 .draw-placeholder {
 background: rgba(255, 255, 255, 0.65);
-
-```
 border-radius: 2px;
-
 transform: rotate(-2deg);
-```
-
 }
 
 .contact-placeholder {
 border-radius: 4px;
-
-```
 transform: rotate(4deg);
-```
-
 }
-
-/* =========================================
-OBJECT POSITIONS
-========================================= */
 
 .portfolio-object {
 justify-self: end;
@@ -368,33 +258,21 @@ justify-self: end;
 justify-self: start;
 }
 
-/* =========================================
-SHORT DESKTOP SCREENS
-========================================= */
-
 @media (max-height: 750px) and (min-width: 601px) {
 
 ```
 .site-header {
-    padding-top: 20px;
+    padding-top: 22px;
 }
 
-.about {
-    margin-top: 14px;
-}
-
-.about h1 {
-    margin-bottom: 5px;
+.intro {
+    margin-top: 13px;
 }
 
 .desk {
-    height: calc(100vh - 165px);
-
+    height: calc(100vh - 180px);
     min-height: 400px;
-
     column-gap: 70px;
-
-    row-gap: 5px;
 }
 
 .object {
@@ -403,10 +281,6 @@ SHORT DESKTOP SCREENS
 ```
 
 }
-
-/* =========================================
-TABLET
-========================================= */
 
 @media (max-width: 900px) and (min-width: 601px) {
 
@@ -417,7 +291,6 @@ TABLET
 
 .desk {
     width: 86vw;
-
     column-gap: 50px;
 }
 
@@ -428,27 +301,12 @@ TABLET
 
 }
 
-/* =========================================
-MOBILE
-========================================= */
-
 @media (max-width: 600px) {
 
 ```
 .home {
     min-height: 100svh;
-
     overflow: auto;
-}
-
-.site-header {
-    min-height: 75px;
-
-    padding-top: 24px;
-}
-
-.logo {
-    font-size: 30px;
 }
 
 .language-switch {
@@ -461,21 +319,21 @@ MOBILE
     font-size: 12px;
 }
 
-.about {
+.site-header {
+    padding-top: 25px;
+}
+
+.logo {
+    font-size: 34px;
+}
+
+.intro {
     width: 82vw;
-
-    margin-top: 18px;
+    margin-top: 17px;
 }
 
-.about h1 {
-    font-size: 17px;
-
-    margin-bottom: 7px;
-}
-
-.about p {
+.intro-text {
     font-size: 13px;
-
     line-height: 1.5;
 }
 
@@ -483,15 +341,13 @@ MOBILE
     width: 88vw;
 
     height: auto;
-
     min-height: 0;
 
-    margin-top: 25px;
+    margin-top: 28px;
 
-    padding: 15px 0 60px;
+    padding: 10px 0 60px;
 
     display: flex;
-
     flex-direction: column;
 
     gap: 30px;
@@ -506,28 +362,15 @@ MOBILE
 .draw-object,
 .contact-object {
     justify-self: center;
-
     align-self: center;
 }
 ```
 
 }
 
-/* =========================================
-VERY SMALL PHONES
-========================================= */
-
 @media (max-width: 380px) {
 
 ```
-.site-header {
-    padding-top: 20px;
-}
-
-.logo {
-    font-size: 26px;
-}
-
 .language-switch {
     top: 12px;
     right: 12px;
@@ -536,15 +379,20 @@ VERY SMALL PHONES
     height: 30px;
 }
 
-.about {
-    width: 86vw;
+.site-header {
+    padding-top: 22px;
+}
 
-    margin-top: 15px;
+.logo {
+    font-size: 29px;
+}
+
+.intro {
+    width: 86vw;
 }
 
 .desk {
     gap: 25px;
-
     padding-bottom: 45px;
 }
 
@@ -555,10 +403,6 @@ VERY SMALL PHONES
 
 }
 
-/* =========================================
-REDUCED MOTION
-========================================= */
-
 @media (prefers-reduced-motion: reduce) {
 
 ```
@@ -566,9 +410,9 @@ html {
     scroll-behavior: auto;
 }
 
-.object,
-.language-switch {
+.object {
     transition: none;
 }
+```
 
 }
