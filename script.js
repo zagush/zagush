@@ -5,7 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
             aboutTitle: "ОБО МНЕ",
             introText: "Я создаю цифровое искусство, граффити, традиционные работы и многое другое.<br>Больше моих работ можно посмотреть в социальных сетях.",
             portfolioText: "ПОРТФОЛИО",
-            socialsText: "СОЦСЕТИ",
+            socialsLabel: "СОЦСЕТИ",
+            modalTitle: "МОИ СОЦСЕТИ",
             drawText: "РИСОВАТЬ",
             contactText: "КОНТАКТЫ",
             btnText: "EN",
@@ -16,7 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
             aboutTitle: "ABOUT ME",
             introText: "I create digital art, graffiti, traditional works and more.<br>Explore more of my work on social media.",
             portfolioText: "PORTFOLIO",
-            socialsText: "SOCIALS",
+            socialsLabel: "SOCIALS",
+            modalTitle: "MY SOCIALS",
             drawText: "DRAW",
             contactText: "CONTACT",
             btnText: "RU",
@@ -30,7 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
         aboutTitle: document.getElementById("aboutTitle"),
         introText: document.getElementById("introText"),
         portfolioText: document.getElementById("portfolioText"),
-        socialsText: document.getElementById("socialsText"),
+        socialsLabel: document.getElementById("socialsLabel"),
+        modalTitle: document.getElementById("modalTitle"),
         drawText: document.getElementById("drawText"),
         contactText: document.getElementById("contactText")
     };
@@ -44,7 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
         elements.aboutTitle.textContent = data.aboutTitle;
         elements.introText.innerHTML = data.introText;
         elements.portfolioText.textContent = data.portfolioText;
-        elements.socialsText.textContent = data.socialsText;
+        elements.socialsLabel.textContent = data.socialsLabel;
+        elements.modalTitle.textContent = data.modalTitle;
         elements.drawText.textContent = data.drawText;
         elements.contactText.textContent = data.contactText;
         elements.btn.textContent = data.btnText;
@@ -59,12 +63,43 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
         savedLang = localStorage.getItem("user_lang") || "ru";
     } catch (e) {}
-
     applyLanguage(savedLang);
 
     elements.btn.addEventListener("click", () => {
         const currentLang = document.documentElement.lang === "en" ? "en" : "ru";
-        const newLang = currentLang === "ru" ? "en" : "ru";
-        applyLanguage(newLang);
+        applyLanguage(currentLang === "ru" ? "en" : "ru");
+    });
+
+    // Интерактив телефона
+    const phoneTrigger = document.getElementById("phoneTrigger");
+    const phoneModal = document.getElementById("phoneModal");
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    const modalClose = document.getElementById("modalClose");
+
+    function openPhone() {
+        phoneModal.classList.add("active");
+        phoneModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closePhone() {
+        phoneModal.classList.remove("active");
+        phoneModal.setAttribute("aria-hidden", "true");
+    }
+
+    phoneTrigger.addEventListener("click", openPhone);
+    phoneTrigger.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openPhone();
+        }
+    });
+
+    modalClose.addEventListener("click", closePhone);
+    modalBackdrop.addEventListener("click", closePhone);
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && phoneModal.classList.contains("active")) {
+            closePhone();
+        }
     });
 });
