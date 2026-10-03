@@ -106,109 +106,141 @@ body {
 .desk {
     position: relative;
     z-index: 5;
-    width: min(1050px, 90vw);
-    min-height: 390px;
-    margin: 25px auto 40px;
+    /* На широком экране стол растягивается почти до краев */
+    width: min(1300px, 92vw);
+    min-height: 450px;
+    margin: 40px auto 60px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    column-gap: 80px;
-    row-gap: 30px;
+    /* Большое расстояние между предметами: на широком мониторе они лежат по краям */
+    column-gap: clamp(60px, 12vw, 180px);
+    row-gap: 50px;
     align-items: center;
     justify-items: center;
 }
 
+/* Общий блок для каждого предмета на столе */
 .object {
-    display: block;
-    width: min(280px, 100%);
-    color: inherit;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
     cursor: pointer;
-    transition: transform 0.22s ease, filter 0.22s ease;
+    
+    /* ДЕЛАЕМ ПРЕДМЕТЫ БОЛЬШИМИ: от 260px на планшетах до 400px на мониторах */
+    width: clamp(260px, 28vw, 420px);
+    
+    transition: transform 0.25s ease, filter 0.25s ease;
 }
 
-.object:hover {
-    transform: translateY(-6px);
-    filter: brightness(1.05);
-}
-
-.placeholder {
-    width: 100%;
-    aspect-ratio: 1 / 0.68;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px dashed #777;
-    background: rgba(255, 255, 255, 0.35);
-    text-align: center;
-    font-size: clamp(16px, 1.7vw, 23px);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    user-select: none;
-}
-
-.portfolio-placeholder {
-    border-radius: 8px;
-    transform: rotate(-3deg);
-}
-
-.draw-placeholder {
-    background: rgba(255, 255, 255, 0.65);
-    border-radius: 2px;
-    transform: rotate(-2deg);
-}
-
-.contact-placeholder {
-    border-radius: 4px;
-    transform: rotate(4deg);
-}
-
-.portfolio-object,
+/* Скетчбук и листик прижаты левее, телефон и конверт — правее */
+.sketchbook-object,
 .draw-object {
     justify-self: end;
 }
 
-.socials-object,
+.phone-object,
 .contact-object {
     justify-self: start;
 }
 
-/* Телефон на столе */
-.phone-wrapper {
-    position: relative;
+/* Картинка предмета (скетчбук, конверт, бумага, телефон) */
+.item-img {
     width: 100%;
-    max-width: 200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.phone-img {
-    width: 100%;
-    max-height: 220px;
+    height: auto;
     object-fit: contain;
     display: block;
-    image-rendering: pixelated;
-    filter: drop-shadow(0 12px 14px rgba(0, 0, 0, 0.25));
-    transition: transform 0.22s ease;
+    /* Реалистичная тень на стол */
+    filter: drop-shadow(0 15px 18px rgba(0, 0, 0, 0.4));
+    user-select: none;
+    pointer-events: none;
 }
 
-.phone-wrapper:hover .phone-img {
-    transform: scale(1.06) rotate(-2deg);
+/* Текст на самом предмете (например, на обложке или на конверте) */
+.item-title {
+    position: absolute;
+    font-size: clamp(16px, 1.8vw, 24px);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #171717;
+    pointer-events: none;
+    user-select: none;
+    text-align: center;
 }
 
+/* Плашка с надписью под телефоном */
 .phone-label {
-    margin-top: 8px;
+    margin-top: 10px;
     font-size: 14px;
     font-weight: 800;
     letter-spacing: 0.12em;
-    background: rgba(255, 255, 255, 0.7);
-    padding: 3px 10px;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 4px 12px;
     border-radius: 4px;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.2);
     user-select: none;
 }
+
+/* НАКЛОНЫ ПРЕДМЕТОВ (эффект небрежно разбросанных вещей на столе) */
+.sketchbook-object {
+    transform: rotate(-3deg);
+}
+.sketchbook-object:hover {
+    transform: rotate(-1deg) translateY(-8px) scale(1.03);
+}
+
+.phone-object {
+    width: clamp(160px, 16vw, 220px); /* Телефон чуть компактнее остальных предметов */
+    transform: rotate(4deg);
+}
+.phone-object:hover {
+    transform: rotate(0deg) translateY(-8px) scale(1.05);
+}
+
+.draw-object {
+    transform: rotate(-2deg);
+}
+.draw-object:hover {
+    transform: rotate(-4deg) translateY(-8px) scale(1.03);
+}
+
+.contact-object {
+    transform: rotate(3deg);
+}
+.contact-object:hover {
+    transform: rotate(1deg) translateY(-8px) scale(1.03);
+}
+
+
+/* ========================================================
+   АДАПТИВ ПОД СМАРТФОНЫ (ВСТАЮТ В ЦЕНТР В СТОЛБИК)
+   ======================================================== */
+@media (max-width: 700px) {
+    .desk {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+        margin-top: 20px;
+    }
+
+    .sketchbook-object,
+    .draw-object,
+    .phone-object,
+    .contact-object {
+        justify-self: center;
+        align-self: center;
+        /* На телефонах предметы занимают оптимальную ширину по центру стола */
+        width: min(320px, 80vw);
+    }
+
+    .phone-object {
+        width: 170px;
+    }
+}
+
 
 /* Модалка телефона */
 .phone-modal {
