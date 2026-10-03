@@ -1,188 +1,89 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
 
 ```
-console.log("ZAGUSH website loaded.");
+const languageButton = document.getElementById("languageSwitch");
+
+const logo = document.getElementById("logo");
+
+const introText = document.getElementById("introText");
+
+const portfolioText = document.getElementById("portfolioText");
+
+const socialsText = document.getElementById("socialsText");
+
+const drawText = document.getElementById("drawText");
+
+const contactText = document.getElementById("contactText");
 
 
-// =========================================
-// TRANSLATIONS
-// =========================================
-
-const translations = {
-
-    ru: {
-        "about-title": "ОБО МНЕ",
-
-        "about-text":
-            "Создаю иллюстрации, игры, пиксель-арт и цифровые работы.",
-
-        "portfolio": "ПОРТФОЛИО",
-
-        "socials": "СОЦСЕТИ",
-
-        "draw": "РИСОВАТЬ",
-
-        "contact": "КОНТАКТЫ"
-    },
-
-    en: {
-        "about-title": "ABOUT",
-
-        "about-text":
-            "Creating illustrations, games, pixel art and digital works.",
-
-        "portfolio": "PORTFOLIO",
-
-        "socials": "SOCIALS",
-
-        "draw": "DRAW",
-
-        "contact": "CONTACT"
-    }
-
-};
+let english = false;
 
 
-// =========================================
-// LANGUAGE SWITCH
-// =========================================
+languageButton.addEventListener("click", function () {
 
-const languageSwitch =
-    document.getElementById("languageSwitch");
+    english = !english;
 
 
-if (!languageSwitch) {
-    console.error("Language button not found.");
-    return;
-}
+    if (english) {
 
+        document.documentElement.lang = "en";
 
-let currentLanguage = "ru";
+        logo.textContent = "ZAGUSH";
 
+        introText.innerHTML =
+            "I create digital art, graffiti, traditional works and more." +
+            "<br>" +
+            "Explore more of my work on social media.";
 
-function setLanguage(language) {
+        portfolioText.textContent = "PORTFOLIO";
 
-    currentLanguage = language;
+        socialsText.textContent = "SOCIALS";
 
-    document.documentElement.lang = language;
+        drawText.textContent = "DRAW";
 
+        contactText.textContent = "CONTACT";
 
-    const elements =
-        document.querySelectorAll("[data-i18n]");
-
-
-    elements.forEach((element) => {
-
-        const key = element.getAttribute("data-i18n");
-
-        if (
-            translations[language] &&
-            translations[language][key]
-        ) {
-            element.textContent =
-                translations[language][key];
-        }
-
-    });
-
-
-    /*
-     * The button shows the language
-     * that you can switch TO.
-     */
-
-    if (language === "ru") {
-
-        languageSwitch.textContent = "EN";
-
-        languageSwitch.setAttribute(
-            "aria-label",
-            "Switch to English"
-        );
+        languageButton.textContent = "RU";
 
     } else {
 
-        languageSwitch.textContent = "RU";
+        document.documentElement.lang = "ru";
 
-        languageSwitch.setAttribute(
-            "aria-label",
-            "Переключить на русский"
-        );
+        logo.textContent = "ЗАГУШ";
 
-    }
+        introText.innerHTML =
+            "Я создаю цифровое искусство, граффити, традиционные работы и многое другое." +
+            "<br>" +
+            "Больше моих работ можно посмотреть в социальных сетях.";
 
+        portfolioText.textContent = "ПОРТФОЛИО";
 
-    localStorage.setItem(
-        "zagush-language",
-        language
-    );
-}
+        socialsText.textContent = "СОЦСЕТИ";
 
+        drawText.textContent = "РИСОВАТЬ";
 
-// =========================================
-// BUTTON
-// =========================================
+        contactText.textContent = "КОНТАКТЫ";
 
-languageSwitch.addEventListener("click", () => {
-
-    if (currentLanguage === "ru") {
-
-        setLanguage("en");
-
-    } else {
-
-        setLanguage("ru");
-
+        languageButton.textContent = "EN";
     }
 
 });
 
 
-// =========================================
-// START
-// =========================================
-
-const savedLanguage =
-    localStorage.getItem("zagush-language");
+const objects = document.querySelectorAll(".object");
 
 
-if (
-    savedLanguage === "ru" ||
-    savedLanguage === "en"
-) {
+objects.forEach(function (object) {
 
-    setLanguage(savedLanguage);
-
-} else {
-
-    setLanguage("ru");
-
-}
-
-
-// =========================================
-// OBJECT INTERACTION
-// =========================================
-
-const objects =
-    document.querySelectorAll(".object");
-
-
-objects.forEach((object) => {
-
-    object.addEventListener("mouseenter", () => {
-
+    object.addEventListener("mouseenter", function () {
         object.classList.add("is-hovered");
-
     });
 
-
-    object.addEventListener("mouseleave", () => {
-
+    object.addEventListener("mouseleave", function () {
         object.classList.remove("is-hovered");
-
     });
 
 });
+```
 
 });
