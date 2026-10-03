@@ -9,8 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
             modalTitle: "МОИ СОЦСЕТИ",
             drawText: "РИСОВАТЬ",
             contactText: "КОНТАКТЫ",
-            btnText: "EN",
-            btnAria: "Сменить язык на английский"
+            btnText: "EN"
         },
         en: {
             logo: "ZAGUSH",
@@ -21,85 +20,82 @@ document.addEventListener("DOMContentLoaded", () => {
             modalTitle: "MY SOCIALS",
             drawText: "DRAW",
             contactText: "CONTACT",
-            btnText: "RU",
-            btnAria: "Switch language to Russian"
+            btnText: "RU"
         }
     };
 
-    const elements = {
-        btn: document.getElementById("languageSwitch"),
-        logo: document.getElementById("logo"),
-        aboutTitle: document.getElementById("aboutTitle"),
-        introText: document.getElementById("introText"),
-        portfolioText: document.getElementById("portfolioText"),
-        socialsLabel: document.getElementById("socialsLabel"),
-        modalTitle: document.getElementById("modalTitle"),
-        drawText: document.getElementById("drawText"),
-        contactText: document.getElementById("contactText")
-    };
+    const langBtn = document.getElementById("languageSwitch");
 
-    function applyLanguage(lang) {
-        const data = translations[lang];
-        if (!data) return;
-
+    function setLanguage(lang) {
+        const t = translations[lang] || translations.ru;
         document.documentElement.lang = lang;
-        elements.logo.textContent = data.logo;
-        elements.aboutTitle.textContent = data.aboutTitle;
-        elements.introText.innerHTML = data.introText;
-        elements.portfolioText.textContent = data.portfolioText;
-        elements.socialsLabel.textContent = data.socialsLabel;
-        elements.modalTitle.textContent = data.modalTitle;
-        elements.drawText.textContent = data.drawText;
-        elements.contactText.textContent = data.contactText;
-        elements.btn.textContent = data.btnText;
-        elements.btn.setAttribute("aria-label", data.btnAria);
+
+        const setTxt = (id, val) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = val;
+        };
+
+        setTxt("logo", t.logo);
+        setTxt("aboutTitle", t.aboutTitle);
+        setTxt("portfolioText", t.portfolioText);
+        setTxt("socialsLabel", t.socialsLabel);
+        setTxt("modalTitle", t.modalTitle);
+        setTxt("drawText", t.drawText);
+        setTxt("contactText", t.contactText);
+
+        const intro = document.getElementById("introText");
+        if (intro) intro.innerHTML = t.introText;
+
+        if (langBtn) langBtn.textContent = t.btnText;
 
         try {
             localStorage.setItem("user_lang", lang);
         } catch (e) {}
     }
 
-    let savedLang = "ru";
+    let saved = "ru";
     try {
-        savedLang = localStorage.getItem("user_lang") || "ru";
+        saved = localStorage.getItem("user_lang") || "ru";
     } catch (e) {}
-    applyLanguage(savedLang);
+    setLanguage(saved);
 
-    elements.btn.addEventListener("click", () => {
-        const currentLang = document.documentElement.lang === "en" ? "en" : "ru";
-        applyLanguage(currentLang === "ru" ? "en" : "ru");
-    });
+    if (langBtn) {
+        langBtn.addEventListener("click", () => {
+            const current = document.documentElement.lang === "en" ? "en" : "ru";
+            setLanguage(current === "ru" ? "en" : "ru");
+        });
+    }
 
-    // Интерактив телефона
+    // Модальное окно телефона
     const phoneTrigger = document.getElementById("phoneTrigger");
     const phoneModal = document.getElementById("phoneModal");
     const modalBackdrop = document.getElementById("modalBackdrop");
     const modalClose = document.getElementById("modalClose");
 
-    function openPhone() {
-        phoneModal.classList.add("active");
-        phoneModal.setAttribute("aria-hidden", "false");
+    function openModal() {
+        if (phoneModal) phoneModal.classList.add("active");
     }
 
-    function closePhone() {
-        phoneModal.classList.remove("active");
-        phoneModal.setAttribute("aria-hidden", "true");
+    function closeModal() {
+        if (phoneModal) phoneModal.classList.remove("active");
     }
 
-    phoneTrigger.addEventListener("click", openPhone);
-    phoneTrigger.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            openPhone();
-        }
-    });
+    if (phoneTrigger) {
+        phoneTrigger.addEventListener("click", openModal);
+        phoneTrigger.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                openModal();
+            }
+        });
+    }
 
-    modalClose.addEventListener("click", closePhone);
-    modalBackdrop.addEventListener("click", closePhone);
+    if (modalClose) modalClose.addEventListener("click", closeModal);
+    if (modalBackdrop) modalBackdrop.addEventListener("click", closeModal);
 
     document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && phoneModal.classList.contains("active")) {
-            closePhone();
+        if (e.key === "Escape" && phoneModal && phoneModal.classList.contains("active")) {
+            closeModal();
         }
     });
 });
