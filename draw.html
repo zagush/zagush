@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ZAGUSH — РИСОВАТЬ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #2b2118;
+            background-image: url('stol.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            overflow: hidden;
+            touch-action: none; /* Защита от прокрутки при рисовании на телефоне */
+        }
+
+        /* Верхняя панель управления */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #ffffff;
+            border: 2.5px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            padding: 8px 14px;
+            margin-bottom: 12px;
+            z-index: 10;
+            max-width: 95vw;
+        }
+
+        .tool-btn {
+            background: #fff;
+            border: 2px solid #000;
+            font-weight: 800;
+            font-size: 13px;
+            padding: 6px 12px;
+            cursor: pointer;
+            box-shadow: 2px 2px 0 #000;
+            user-select: none;
+            text-decoration: none;
+            color: #000;
+            transition: transform 0.1s ease;
+        }
+
+        .tool-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0 #000;
+        }
+
+        .tool-btn.active {
+            background: #000;
+            color: #fff;
+        }
+
+        .back-btn {
+            background: #ff5252;
+            color: #fff;
+        }
+
+        .clear-btn {
+            background: #ffecb3;
+        }
+
+        /* Выбор цвета */
+        .color-picker {
+            width: 32px;
+            height: 32px;
+            border: 2px solid #000;
+            cursor: pointer;
+            padding: 0;
+            background: none;
+        }
+
+        /* Ползунок толщины */
+        .size-picker {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .size-picker input {
+            cursor: pointer;
+        }
+
+        /* Лист бумаги (Холст) на столе */
+        .canvas-container {
+            position: relative;
+            background: #faf8f5;
+            border: 3px solid #000;
+            box-shadow: 8px 10px 0 rgba(0, 0, 0, 0.4);
+            transform: rotate(-0.5deg);
+            max-width: 95vw;
+            max-height: 80vh;
+        }
+
+        canvas {
+            display: block;
+            cursor: crosshair;
+            background: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Панель инструментов в нео-бруталистском стиле -->
+    <div class="toolbar">
+        <a href="index.html" class="tool-btn back-btn">← НА СТОЛ</a>
+        
+        <button id="brushBtn" class="tool-btn active" type="button">КИСТЬ</button>
+        <button id="eraserBtn" class="tool-btn" type="button">ЛАСТИК</button>
+
+        <input type="color" id="colorPicker" class="color-picker" value="#000000" title="Выбрать цвет">
+
+        <div class="size-picker">
+            <span>РАЗМЕР:</span>
+            <input type="range" id="sizeSlider" min="2" max="50" value="8">
+        </div>
+
+        <button id="clearBtn" class="tool-btn clear-btn" type="button">ОЧИСТИТЬ</button>
+        <button id="saveBtn" class="tool-btn" type="button">СКАЧАТЬ</button>
+    </div>
+
+    <!-- Лист-холст -->
+    <div class="canvas-container">
+        <canvas id="paintCanvas"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('paintCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const brushBtn = document.getElementById('brushBtn');
+        const eraserBtn = document.getElementById('eraserBtn');
+        const colorPicker = document.getElementById('colorPicker');
+        const sizeSlider = document.getElementById('sizeSlider');
+        const clearBtn = document.getElementById('clearBtn');
+        const saveBtn = document.getElementById('saveBtn');
+
+        // Размер холста под экран
+        function resizeCanvas() {
+            const width = Math.min(window.innerWidth * 0.92, 900);
+            const height = Math.min(window.innerHeight * 0.76, 620);
+            
+            // Сохраняем рисунок при ресайзе
+            const temp = ctx.getImageData(0, 0, canvas.width || width, canvas.height || height);
+            canvas.width = width;
+            canvas.height = height;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            try {
+                ctx.putImageData(temp, 0, 0);
+            } catch (e) {}
+        }
+        resizeCanvas();
+
+        let isDrawing = false;
+        let isEraser = false;
+        let currentColor = '#000000';
+        let currentSize = 8;
+
+        // Настройки инструментов
+        brushBtn.addEventListener('click', () => {
+            isEraser = false;
+            brushBtn.classList.add('active');
+            eraserBtn.classList.remove('active');
+        });
+
+        eraserBtn.addEventListener('click', () => {
+            isEraser = true;
+            eraserBtn.classList.add('active');
+            brushBtn.classList.remove('active');
+        });
+
+        colorPicker.addEventListener('input', (e) => {
+            currentColor = e.target.value;
+            if (isEraser) {
+                isEraser = false;
+                brushBtn.classList.add('active');
+                eraserBtn.classList.remove('active');
+            }
+        });
+
+        sizeSlider.addEventListener('input', (e) => {
+            currentSize = e.target.value;
+        });
+
+        clearBtn.addEventListener('click', () => {
+            if (confirm("Очистить весь лист?")) {
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+        });
+
+        saveBtn.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = 'zagush-art.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+
+        // Функция получения точных координат
+        function getCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+        }
+
+        // Рисование (поддерживает мышь, тачпад и экраны телефонов/планшетов)
+        canvas.addEventListener('pointerdown', (e) => {
+            isDrawing = true;
+            canvas.setPointerCapture(e.pointerId);
+            const { x, y } = getCoords(e);
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = isEraser ? '#ffffff' : currentColor;
+            ctx.lineWidth = currentSize;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        });
+
+        canvas.addEventListener('pointermove', (e) => {
+            if (!isDrawing) return;
+            const { x, y } = getCoords(e);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        });
+
+        function stopDrawing(e) {
+            if (!isDrawing) return;
+            isDrawing = false;
+            ctx.closePath();
+            try {
+                canvas.releasePointerCapture(e.pointerId);
+            } catch (err) {}
+        }
+
+        canvas.addEventListener('pointerup', stopDrawing);
+        canvas.addEventListener('pointercancel', stopDrawing);
+    </script>
+</body>
+</html>
