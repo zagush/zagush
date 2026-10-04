@@ -73,41 +73,41 @@ body {
     align-items: center;
 }
 
+/* ЛОГОТИП (БЕЛЫЙ С ЧЕРНОЙ ОБВОДКОЙ И ГУСТОЙ ТЕНЬЮ) */
 .logo {
     display: block;
-    color: #171717;
+    color: #ffffff;
     text-decoration: none;
-    font-size: clamp(42px, 5vw, 72px);
-    font-weight: 800;
-    letter-spacing: 0.08em;
+    font-size: clamp(42px, 5.5vw, 76px);
+    font-weight: 900;
+    letter-spacing: 0.1em;
     line-height: 1;
     text-align: center;
-    /* Четкая обводка и тень у логотипа */
-    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    -webkit-text-stroke: 2.5px #000000;
+    text-shadow: 
+        0 4px 0 #000000,
+        0 8px 25px rgba(0, 0, 0, 0.95),
+        0 0 20px rgba(0, 0, 0, 0.85);
 }
 
 .about {
     position: relative;
     z-index: 5;
-    width: min(700px, 86vw);
-    margin: 18px auto 0;
+    width: min(650px, 88vw);
+    margin: 15px auto 0;
     text-align: center;
 }
 
-.about h1 {
-    margin-bottom: 9px;
-    font-size: clamp(13px, 1.2vw, 17px);
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
-}
-
+/* ТЕКСТ ОБО МНЕ (ЧЕТКИЙ И ЧИТАЕМЫЙ) */
 .intro-text {
-    font-size: clamp(13px, 1.1vw, 16px);
-    line-height: 1.55;
-    font-weight: 600;
-    color: #222;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+    font-size: clamp(14px, 1.2vw, 17px);
+    line-height: 1.6;
+    font-weight: 800;
+    color: #ffffff;
+    -webkit-text-stroke: 1px #000000;
+    text-shadow: 
+        0 2px 4px #000000,
+        0 4px 15px rgba(0, 0, 0, 0.9);
 }
 
 /* ========================================================
@@ -121,7 +121,6 @@ body {
     margin: 35px auto 60px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    /* На широком экране разъезжаются по краям стола */
     column-gap: clamp(50px, 10vw, 160px);
     row-gap: 40px;
     align-items: center;
@@ -137,8 +136,7 @@ body {
     justify-content: center;
     text-decoration: none;
     cursor: pointer;
-    /* Крупный размер предметов */
-    width: clamp(250px, 26vw, 380px);
+    width: clamp(230px, 24vw, 340px);
     transition: transform 0.25s ease;
 }
 
@@ -152,7 +150,7 @@ body {
     justify-self: start;
 }
 
-/* КАРТИНКА ПРЕДМЕТА С ЖИРНОЙ ТЕНЬЮ НА СТОЛ */
+/* КАРТИНКА ПРЕДМЕТА С СОЧНОЙ, ГЛУБОКОЙ ТЕНЬЮ НА СТОЛ */
 .item-img {
     width: 100%;
     height: auto;
@@ -160,9 +158,10 @@ body {
     display: block;
     user-select: none;
     pointer-events: none;
-    /* Двойная тень: плотная под предметом + мягкая рассеянная по столу */
-    filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.65)) 
-            drop-shadow(0 5px 5px rgba(0, 0, 0, 0.4));
+    /* Тройная реалистичная тень */
+    filter: drop-shadow(0 8px 6px rgba(0, 0, 0, 0.85)) 
+            drop-shadow(0 18px 20px rgba(0, 0, 0, 0.75))
+            drop-shadow(0 30px 35px rgba(0, 0, 0, 0.5));
     transition: filter 0.25s ease;
 }
 
@@ -172,57 +171,61 @@ body {
 }
 
 .object:hover .item-img {
-    filter: drop-shadow(0 25px 22px rgba(0, 0, 0, 0.8)) 
-            drop-shadow(0 8px 8px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 12px 10px rgba(0, 0, 0, 0.9)) 
+            drop-shadow(0 25px 25px rgba(0, 0, 0, 0.85))
+            drop-shadow(0 40px 45px rgba(0, 0, 0, 0.6));
 }
 
-/* ТЕКСТ С ЖИРНОЙ ОБВОДКОЙ И ТЕНЬЮ (100% ЧИТАЕМЫЙ) */
+/* ТЕКСТ НА СКЕТЧБУКЕ / ПРЕДМЕТАХ */
 .item-title {
     position: absolute;
-    font-size: clamp(18px, 2.2vw, 28px);
+    font-size: clamp(16px, 1.8vw, 22px);
     font-weight: 900;
-    letter-spacing: 0.1em;
-    color: #ffffff; /* Белые буквы */
-    -webkit-text-stroke: 2px #000000; /* Черная обводка как у стикера */
-    text-shadow: 0 4px 0 #000000, 0 8px 12px rgba(0, 0, 0, 0.8);
+    letter-spacing: 0.12em;
+    color: #ffffff;
+    -webkit-text-stroke: 2px #000000;
+    text-shadow: 
+        0 3px 0 #000000, 
+        0 6px 12px rgba(0, 0, 0, 0.9);
     pointer-events: none;
     user-select: none;
     text-align: center;
     z-index: 2;
 }
 
-/* Повороты предметов на столе */
+/* СКЕТЧБУК: АККУРАТНЫЙ РАЗМЕР И НАКЛОН */
 .sketchbook-object {
+    width: clamp(190px, 19vw, 280px) !important;
     transform: rotate(-3deg);
 }
 .sketchbook-object:hover {
-    transform: rotate(-1deg) translateY(-8px) scale(1.03);
+    transform: rotate(-1deg) translateY(-6px) scale(1.03);
 }
 
+/* ТЕЛЕФОН */
 .phone-object {
-    width: clamp(160px, 15vw, 210px);
+    width: clamp(150px, 14vw, 200px);
     transform: rotate(4deg);
 }
 .phone-object:hover {
-    transform: rotate(1deg) translateY(-8px) scale(1.05);
+    transform: rotate(1deg) translateY(-6px) scale(1.05);
 }
 
-/* Плашка надписи для телефона */
 .phone-label {
     margin-top: 8px;
     font-size: 14px;
     font-weight: 900;
     letter-spacing: 0.12em;
     color: #171717;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     padding: 4px 12px;
     border-radius: 4px;
     border: 1.5px solid #000;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     user-select: none;
 }
 
-/* Временные карточки для тех, что еще без картинок */
+/* Временные карточки */
 .placeholder {
     width: 100%;
     aspect-ratio: 1 / 0.68;
@@ -235,7 +238,7 @@ body {
     font-size: clamp(16px, 1.7vw, 23px);
     font-weight: 800;
     letter-spacing: 0.08em;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.5);
 }
 
 .draw-placeholder {
@@ -388,7 +391,7 @@ body {
 }
 
 /* ========================================================
-   АДАПТИВ ДЛЯ ЭКРАНОВ МЕНЬШЕ 700px (СМАРТФОНЫ)
+   АДАПТИВ ПОД СМАРТФОНЫ (ВСТАЮТ В СТОЛБИК В ЦЕНТР СТОЛА)
    ======================================================== */
 @media (max-width: 700px) {
     .desk {
@@ -404,10 +407,10 @@ body {
     .contact-object {
         justify-self: center;
         align-self: center;
-        width: min(320px, 80vw);
+        width: min(300px, 78vw) !important;
     }
 
     .phone-object {
-        width: 180px;
+        width: 170px !important;
     }
 }
