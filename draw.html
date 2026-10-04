@@ -33,19 +33,21 @@
         }
 
         /* 
-           Минималистичная пиксельная рамка (Pixel Border)
-           - Срезанные 1px уголки
-           - Тёмный контур без мыла
+           ОСНОВНОЙ ПАНЕЛЬНЫЙ СТИЛЬ (ASEPRITE / WIN95 RETRO UI)
+           - Светлый еле-еле голубовато-серый фон (#e3e7ec)
+           - Тёмный внешний пиксельный контур (#111827)
+           - Внутренняя светлая фаска (#ffffff) для объема
         */
-        .pixel-card {
-            background: #f8fafc;
+        .ase-panel {
+            background: #e3e7ec;
             position: relative;
             box-shadow: 
-                -2px 0 0 0 #0f172a,
-                2px 0 0 0 #0f172a,
-                0 -2px 0 0 #0f172a,
-                0 2px 0 0 #0f172a;
-            margin: 4px;
+                /* Внешняя пиксельная рамка 1px */
+                0 0 0 1px #111827,
+                /* Внутренняя светлая фаска (верх и лево) */
+                inset 1px 1px 0 0 #ffffff,
+                inset -1px -1px 0 0 #9ea7b3;
+            padding: 6px;
         }
 
         /* Панель инструментов */
@@ -54,77 +56,92 @@
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            padding: 8px 10px;
+            gap: 5px;
             z-index: 10;
             max-width: 98vw;
         }
 
-        /* Минималистичные пиксельные кнопки без подписей клавиш */
+        /* 
+           ОБЪЁМНЫЕ КНОПКИ ASEPRITE 
+           - Выпуклые пиксельные грани (Белая сверху-слева, тёмная снизу-справа)
+        */
         .tool-btn {
-            background: #ffffff;
+            background: #d4dbe4;
             border: none;
             outline: none;
             font-family: inherit;
             font-weight: bold;
             font-size: 11px;
-            letter-spacing: 0.5px;
-            padding: 6px 10px;
+            padding: 5px 9px;
             cursor: pointer;
             color: #0f172a;
             display: flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            position: relative;
             margin: 2px;
             box-shadow: 
-                -2px 0 0 0 #0f172a,
-                2px 0 0 0 #0f172a,
-                0 -2px 0 0 #0f172a,
-                0 2px 0 0 #0f172a;
-            transition: background 0.1s, color 0.1s;
+                /* Черный внешний контур */
+                0 0 0 1px #111827,
+                /* Верхний и левый яркий блик */
+                inset 1px 1px 0 0 #ffffff,
+                /* Нижняя и правая пиксельная тень */
+                inset -1px -1px 0 0 #717d8d;
+            transition: background 0.05s;
         }
 
         .tool-btn:hover:not(:disabled) {
-            background: #e2e8f0;
+            background: #e1e7f0;
         }
 
-        .tool-btn:active:not(:disabled) {
-            background: #cbd5e1;
-        }
-
-        /* Активное состояние кнопки */
+        /* ЭФФЕКТ НАЖАТИЯ (Фаски меняются местами — кнопка уходит вглубь) */
+        .tool-btn:active:not(:disabled),
         .tool-btn.active {
-            background: #0f172a;
-            color: #ffffff;
+            background: #b0ba8;
+            background: #b0b9c6;
+            box-shadow: 
+                0 0 0 1px #111827,
+                /* Тень падает сверху и слева */
+                inset 1px 1px 0 0 #475569,
+                inset -1px -1px 0 0 #ffffff;
+            color: #000000;
         }
 
         .tool-btn:disabled {
-            opacity: 0.4;
+            opacity: 0.45;
             cursor: not-allowed;
+            background: #cbd5e1;
+            box-shadow: 0 0 0 1px #64748b;
         }
 
-        /* Акцентные кнопки */
+        /* Акцентные кнопки в стиле Aseprite */
         .back-btn {
-            background: #ef4444;
+            background: #e15555;
             color: #ffffff;
+            box-shadow: 
+                0 0 0 1px #111827,
+                inset 1px 1px 0 0 #ffa0a0,
+                inset -1px -1px 0 0 #991b1b;
         }
 
         .back-btn:hover {
-            background: #dc2626;
+            background: #f87171;
         }
 
         .clear-btn {
-            background: #facc15;
-            color: #0f172a;
+            background: #eab308;
+            color: #1e293b;
+            box-shadow: 
+                0 0 0 1px #111827,
+                inset 1px 1px 0 0 #fef08a,
+                inset -1px -1px 0 0 #854d0e;
         }
 
         .clear-btn:hover {
-            background: #eab308;
+            background: #facc15;
         }
 
-        /* Выбор размера кисти */
+        /* Вдавленное поле выбора размера и ввода */
         .size-picker {
             display: flex;
             align-items: center;
@@ -132,21 +149,20 @@
             font-size: 11px;
             font-weight: bold;
             background: #ffffff;
-            padding: 4px 8px;
+            padding: 3px 6px;
             margin: 2px;
             box-shadow: 
-                -2px 0 0 0 #0f172a,
-                2px 0 0 0 #0f172a,
-                0 -2px 0 0 #0f172a,
-                0 2px 0 0 #0f172a;
+                0 0 0 1px #111827,
+                inset 1px 1px 0 0 #64748b,
+                inset -1px -1px 0 0 #ffffff;
         }
 
         .size-picker input {
             cursor: pointer;
-            width: 55px;
+            width: 50px;
         }
 
-        /* Блок зума */
+        /* Зум */
         .zoom-controls {
             display: flex;
             align-items: center;
@@ -156,7 +172,7 @@
         .zoom-display {
             font-size: 11px;
             font-weight: bold;
-            min-width: 40px;
+            min-width: 38px;
             text-align: center;
         }
 
@@ -170,6 +186,9 @@
             display: flex;
             align-items: flex-start;
             justify-content: flex-start;
+            box-shadow: 
+                0 0 0 2px #111827,
+                inset 2px 2px 0 0 #64748b;
         }
 
         canvas {
@@ -187,8 +206,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            padding: 8px 10px;
+            gap: 5px;
+            padding: 6px 10px;
             max-width: 98vw;
             flex-wrap: wrap;
             z-index: 10;
@@ -200,47 +219,42 @@
             height: 22px;
             margin: 2px;
             box-shadow: 
-                -2px 0 0 0 #0f172a,
-                2px 0 0 0 #0f172a,
-                0 -2px 0 0 #0f172a,
-                0 2px 0 0 #0f172a;
+                0 0 0 1px #111827,
+                inset 1px 1px 0 0 #ffffff,
+                inset -1px -1px 0 0 #000000;
         }
 
         .palette-swatches {
             display: flex;
-            gap: 3px;
+            gap: 2px;
             flex-wrap: wrap;
         }
 
         .swatch {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             cursor: pointer;
             margin: 2px;
             box-shadow: 
-                -2px 0 0 0 #0f172a,
-                2px 0 0 0 #0f172a,
-                0 -2px 0 0 #0f172a,
-                0 2px 0 0 #0f172a;
+                0 0 0 1px #111827,
+                inset 1px 1px 0 0 rgba(255,255,255,0.6),
+                inset -1px -1px 0 0 rgba(0,0,0,0.4);
         }
 
         .swatch:hover {
-            transform: scale(1.1);
+            transform: scale(1.15);
+            z-index: 2;
         }
 
         .color-input-btn {
-            width: 26px;
-            height: 26px;
+            width: 24px;
+            height: 24px;
             padding: 0;
             border: none;
             cursor: pointer;
             background: transparent;
             margin: 2px;
-            box-shadow: 
-                -2px 0 0 0 #0f172a,
-                2px 0 0 0 #0f172a,
-                0 -2px 0 0 #0f172a,
-                0 2px 0 0 #0f172a;
+            box-shadow: 0 0 0 1px #111827;
         }
 
         .color-input-btn::-webkit-color-swatch-wrapper {
@@ -255,13 +269,12 @@
 <body>
 
     <!-- Панель инструментов -->
-    <div class="toolbar pixel-card">
+    <div class="toolbar ase-panel">
         <a href="index.html" class="tool-btn back-btn">← НА СТОЛ</a>
 
         <button id="undoBtn" class="tool-btn" title="Отмена (Ctrl+Z)" disabled>↶ НАЗАД</button>
         <button id="redoBtn" class="tool-btn" title="Повтор (Ctrl+Y)" disabled>↷ ВПЕРЁД</button>
 
-        <!-- Чистые названия без подписи горячих клавиш -->
         <button id="pencilBtn" class="tool-btn active">КАРАНДАШ</button>
         <button id="contourBtn" class="tool-btn">КОНТУР</button>
         <button id="fillBtn" class="tool-btn">ЗАЛИВКА</button>
@@ -284,12 +297,12 @@
     </div>
 
     <!-- Холст -->
-    <div class="canvas-container pixel-card" id="canvasContainer">
+    <div class="canvas-container" id="canvasContainer">
         <canvas id="paintCanvas"></canvas>
     </div>
 
     <!-- Палитра -->
-    <div class="bottom-palette pixel-card">
+    <div class="bottom-palette ase-panel">
         <input type="color" id="customColorPicker" class="color-input-btn" value="#000000" title="Выбрать свой цвет">
         <div id="currentColorPreview" class="current-color-preview" style="background: #000000;"></div>
         <div class="palette-swatches" id="swatchesContainer"></div>
@@ -300,7 +313,6 @@
         const container = document.getElementById('canvasContainer');
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
-        // Кнопки управления
         const undoBtn = document.getElementById('undoBtn');
         const redoBtn = document.getElementById('redoBtn');
         const pencilBtn = document.getElementById('pencilBtn');
@@ -321,7 +333,6 @@
         const customColorPicker = document.getElementById('customColorPicker');
         const currentColorPreview = document.getElementById('currentColorPreview');
 
-        // Палитра цветов
         const PALETTE = [
             '#000000', '#ffffff', '#99f553', '#ff8ff6',
             '#ff000d', '#ffabaf', '#f50018', '#630005',
@@ -329,7 +340,6 @@
             '#ff8126', '#ffa361', '#d561ff', '#8150cc'
         ];
 
-        // Состояние приложения
         let currentTool = 'pencil';
         let currentColor = '#000000';
         let brushSize = 3;
@@ -337,13 +347,11 @@
         let lastX = 0;
         let lastY = 0;
 
-        // Масштабирование
         let currentScale = 1;
         const MIN_SCALE = 0.5;
         const MAX_SCALE = 4.0;
         const SCALE_STEP = 0.25;
 
-        // История отмены/повтора
         const MAX_HISTORY = 30;
         let undoStack = [];
         let redoStack = [];
@@ -379,7 +387,6 @@
         undoBtn.addEventListener('click', undo);
         redoBtn.addEventListener('click', redo);
 
-        // Инициализация размеров холста
         function initCanvas() {
             const w = Math.min(Math.floor(window.innerWidth * 0.92), 850);
             const h = Math.min(Math.floor(window.innerHeight * 0.65), 580);
@@ -392,7 +399,6 @@
         }
         initCanvas();
 
-        // Создание палитры
         PALETTE.forEach(col => {
             const swatch = document.createElement('div');
             swatch.className = 'swatch';
@@ -410,7 +416,6 @@
 
         customColorPicker.addEventListener('input', (e) => setColor(e.target.value));
 
-        // Смена инструментов
         function setTool(tool) {
             currentTool = tool;
             [pencilBtn, contourBtn, fillBtn, eraserBtn].forEach(b => b.classList.remove('active'));
@@ -425,7 +430,6 @@
         fillBtn.addEventListener('click', () => setTool('fill'));
         eraserBtn.addEventListener('click', () => setTool('eraser'));
 
-        // Зум
         function setZoom(scale) {
             currentScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale));
             canvas.style.transform = `scale(${currentScale})`;
@@ -437,7 +441,6 @@
         zoomInBtn.addEventListener('click', () => setZoom(currentScale + SCALE_STEP));
         zoomOutBtn.addEventListener('click', () => setZoom(currentScale - SCALE_STEP));
 
-        // Горячие клавиши (сохранены в фоне для удобства)
         window.addEventListener('keydown', (e) => {
             const isCtrl = e.ctrlKey || e.metaKey;
             if (isCtrl && (e.key === 'z' || e.key === 'Z' || e.key === 'я' || e.key === 'Я')) {
@@ -479,7 +482,6 @@
             link.click();
         });
 
-        // Вспомогательные функции рисования
         function getCoords(e) {
             const rect = canvas.getBoundingClientRect();
             return {
@@ -509,12 +511,10 @@
             }
         }
 
-        // РАБОТАЮЩАЯ ЗАЛИВКА (FLOOD FILL)
         function floodFill(startX, startY, fillHex) {
             const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const data = imgData.data;
 
-            // Преобразование hex в RGB
             const temp = document.createElement('div');
             temp.style.color = fillHex;
             document.body.appendChild(temp);
@@ -585,7 +585,6 @@
             ctx.putImageData(imgData, 0, 0);
         }
 
-        // ОБРАБОТКА НАЖАТИЙ НА ХОЛСТ
         canvas.addEventListener('pointerdown', (e) => {
             const { x, y } = getCoords(e);
             canvas.setPointerCapture(e.pointerId);
@@ -610,8 +609,6 @@
             const { x, y } = getCoords(e);
 
             const activeColor = (currentTool === 'eraser') ? '#ffffff' : currentColor;
-            
-            // Для Карандаша, Ластика и временной заглушки Контура
             drawPixelLine(lastX, lastY, x, y, activeColor, brushSize);
 
             lastX = x;
