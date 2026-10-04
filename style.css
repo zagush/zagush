@@ -24,6 +24,7 @@ body {
     overflow-y: auto;
 }
 
+/* Фон стола */
 .background {
     position: fixed;
     inset: 0;
@@ -35,6 +36,7 @@ body {
     pointer-events: none;
 }
 
+/* Кнопка переключения языка */
 .language-switch {
     position: fixed;
     top: 20px;
@@ -80,6 +82,8 @@ body {
     letter-spacing: 0.08em;
     line-height: 1;
     text-align: center;
+    /* Четкая обводка и тень у логотипа */
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .about {
@@ -95,31 +99,36 @@ body {
     font-size: clamp(13px, 1.2vw, 17px);
     font-weight: 700;
     letter-spacing: 0.14em;
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
 }
 
 .intro-text {
     font-size: clamp(13px, 1.1vw, 16px);
     line-height: 1.55;
-    opacity: 0.72;
+    font-weight: 600;
+    color: #222;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
 }
+
+/* ========================================================
+   СТОЛ И ПРЕДМЕТЫ НА НЁМ
+   ======================================================== */
 
 .desk {
     position: relative;
     z-index: 5;
-    /* На широком экране стол растягивается почти до краев */
     width: min(1300px, 92vw);
-    min-height: 450px;
-    margin: 40px auto 60px;
+    margin: 35px auto 60px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    /* Большое расстояние между предметами: на широком мониторе они лежат по краям */
-    column-gap: clamp(60px, 12vw, 180px);
-    row-gap: 50px;
+    /* На широком экране разъезжаются по краям стола */
+    column-gap: clamp(50px, 10vw, 160px);
+    row-gap: 40px;
     align-items: center;
     justify-items: center;
 }
 
-/* Общий блок для каждого предмета на столе */
+/* Общий блок для каждого предмета */
 .object {
     position: relative;
     display: flex;
@@ -128,14 +137,11 @@ body {
     justify-content: center;
     text-decoration: none;
     cursor: pointer;
-    
-    /* ДЕЛАЕМ ПРЕДМЕТЫ БОЛЬШИМИ: от 260px на планшетах до 400px на мониторах */
-    width: clamp(260px, 28vw, 420px);
-    
-    transition: transform 0.25s ease, filter 0.25s ease;
+    /* Крупный размер предметов */
+    width: clamp(250px, 26vw, 380px);
+    transition: transform 0.25s ease;
 }
 
-/* Скетчбук и листик прижаты левее, телефон и конверт — правее */
 .sketchbook-object,
 .draw-object {
     justify-self: end;
@@ -146,44 +152,46 @@ body {
     justify-self: start;
 }
 
-/* Картинка предмета (скетчбук, конверт, бумага, телефон) */
+/* КАРТИНКА ПРЕДМЕТА С ЖИРНОЙ ТЕНЬЮ НА СТОЛ */
 .item-img {
     width: 100%;
     height: auto;
     object-fit: contain;
     display: block;
-    /* Реалистичная тень на стол */
-    filter: drop-shadow(0 15px 18px rgba(0, 0, 0, 0.4));
     user-select: none;
     pointer-events: none;
+    /* Двойная тень: плотная под предметом + мягкая рассеянная по столу */
+    filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.65)) 
+            drop-shadow(0 5px 5px rgba(0, 0, 0, 0.4));
+    transition: filter 0.25s ease;
 }
 
-/* Текст на самом предмете (например, на обложке или на конверте) */
+/* Наведение на предмет */
+.object:hover {
+    transform: translateY(-8px) scale(1.03);
+}
+
+.object:hover .item-img {
+    filter: drop-shadow(0 25px 22px rgba(0, 0, 0, 0.8)) 
+            drop-shadow(0 8px 8px rgba(0, 0, 0, 0.5));
+}
+
+/* ТЕКСТ С ЖИРНОЙ ОБВОДКОЙ И ТЕНЬЮ (100% ЧИТАЕМЫЙ) */
 .item-title {
     position: absolute;
-    font-size: clamp(16px, 1.8vw, 24px);
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    color: #171717;
+    font-size: clamp(18px, 2.2vw, 28px);
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    color: #ffffff; /* Белые буквы */
+    -webkit-text-stroke: 2px #000000; /* Черная обводка как у стикера */
+    text-shadow: 0 4px 0 #000000, 0 8px 12px rgba(0, 0, 0, 0.8);
     pointer-events: none;
     user-select: none;
     text-align: center;
+    z-index: 2;
 }
 
-/* Плашка с надписью под телефоном */
-.phone-label {
-    margin-top: 10px;
-    font-size: 14px;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    background: rgba(255, 255, 255, 0.85);
-    padding: 4px 12px;
-    border-radius: 4px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    user-select: none;
-}
-
-/* НАКЛОНЫ ПРЕДМЕТОВ (эффект небрежно разбросанных вещей на столе) */
+/* Повороты предметов на столе */
 .sketchbook-object {
     transform: rotate(-3deg);
 }
@@ -192,57 +200,54 @@ body {
 }
 
 .phone-object {
-    width: clamp(160px, 16vw, 220px); /* Телефон чуть компактнее остальных предметов */
+    width: clamp(160px, 15vw, 210px);
     transform: rotate(4deg);
 }
 .phone-object:hover {
-    transform: rotate(0deg) translateY(-8px) scale(1.05);
+    transform: rotate(1deg) translateY(-8px) scale(1.05);
 }
 
-.draw-object {
+/* Плашка надписи для телефона */
+.phone-label {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    color: #171717;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 4px 12px;
+    border-radius: 4px;
+    border: 1.5px solid #000;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    user-select: none;
+}
+
+/* Временные карточки для тех, что еще без картинок */
+.placeholder {
+    width: 100%;
+    aspect-ratio: 1 / 0.68;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed #333;
+    background: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    font-size: clamp(16px, 1.7vw, 23px);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.4);
+}
+
+.draw-placeholder {
     transform: rotate(-2deg);
 }
-.draw-object:hover {
-    transform: rotate(-4deg) translateY(-8px) scale(1.03);
+.contact-placeholder {
+    transform: rotate(4deg);
 }
-
-.contact-object {
-    transform: rotate(3deg);
-}
-.contact-object:hover {
-    transform: rotate(1deg) translateY(-8px) scale(1.03);
-}
-
 
 /* ========================================================
-   АДАПТИВ ПОД СМАРТФОНЫ (ВСТАЮТ В ЦЕНТР В СТОЛБИК)
+   МОДАЛКА ТЕЛЕФОНА
    ======================================================== */
-@media (max-width: 700px) {
-    .desk {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 40px;
-        margin-top: 20px;
-    }
-
-    .sketchbook-object,
-    .draw-object,
-    .phone-object,
-    .contact-object {
-        justify-self: center;
-        align-self: center;
-        /* На телефонах предметы занимают оптимальную ширину по центру стола */
-        width: min(320px, 80vw);
-    }
-
-    .phone-object {
-        width: 170px;
-    }
-}
-
-
-/* Модалка телефона */
 .phone-modal {
     position: fixed;
     inset: 0;
@@ -382,15 +387,27 @@ body {
     margin: 14px auto 0;
 }
 
-@media (max-width: 600px) {
+/* ========================================================
+   АДАПТИВ ДЛЯ ЭКРАНОВ МЕНЬШЕ 700px (СМАРТФОНЫ)
+   ======================================================== */
+@media (max-width: 700px) {
     .desk {
         display: flex;
         flex-direction: column;
-        gap: 30px;
+        align-items: center;
+        gap: 35px;
     }
 
-    .socials-object {
+    .sketchbook-object,
+    .draw-object,
+    .phone-object,
+    .contact-object {
         justify-self: center;
         align-self: center;
+        width: min(320px, 80vw);
+    }
+
+    .phone-object {
+        width: 180px;
     }
 }
