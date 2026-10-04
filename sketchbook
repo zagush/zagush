@@ -27,7 +27,7 @@
         <section class="desk">
             <!-- Скетчбук (Портфолио) -->
             <a href="portfolio.html" class="object sketchbook-object">
-                <img src="sketchbook.png" alt="Портфолио" class="item-img">
+                <img src="sketchbook1.png" alt="Портфолио" class="item-img">
                 <span class="item-label sticker-title" id="portfolioText">ПОРТФОЛИО</span>
             </a>
 
