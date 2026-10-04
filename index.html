@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZAGUSH</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- Добавлен ?v=2 против кэширования браузером -->
+    <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
     <main class="home">
@@ -16,7 +17,7 @@
             <a href="index.html" class="logo" id="logo">ЗАГУШ</a>
         </header>
 
-       <section class="about">
+        <section class="about">
             <p class="intro-text" id="introText">
                 Я создаю цифровое искусство, граффити, традиционные работы и многое другое.<br>
                 Больше моих работ можно посмотреть в социальных сетях.
@@ -27,31 +28,29 @@
             <!-- Скетчбук (Портфолио) -->
             <a href="portfolio.html" class="object sketchbook-object">
                 <img src="sketchbook.png" alt="Портфолио" class="item-img">
-                <span class="item-title" id="portfolioText">ПОРТФОЛИО</span>
+                <span class="item-label sticker-title" id="portfolioText">ПОРТФОЛИО</span>
             </a>
 
             <!-- Телефон (Соцсети) -->
             <div class="object phone-object" id="phoneTrigger" role="button" tabindex="0">
-                <img src="./phone.png" alt="Phone" class="item-img">
-                <span class="phone-label" id="socialsLabel">СОЦСЕТИ</span>
+                <img src="phone.png" alt="Phone" class="item-img">
+                <span class="item-label phone-label" id="socialsLabel">СОЦСЕТИ</span>
             </div>
 
-            <!-- Рисовать (пока старая плашка, потом тоже заменишь на картинку) -->
+            <!-- Рисовать -->
             <a href="draw.html" class="object draw-object">
-                <div class="placeholder draw-placeholder">
-                    <span id="drawText">РИСОВАТЬ</span>
-                </div>
+                <div class="placeholder draw-placeholder"></div>
+                <span class="item-label sticker-title" id="drawText">РИСОВАТЬ</span>
             </a>
 
-            <!-- Контакты (пока старая плашка, потом заменишь на конверт) -->
+            <!-- Контакты -->
             <a href="contact.html" class="object contact-object">
-                <div class="placeholder contact-placeholder">
-                    <span id="contactText">КОНТАКТЫ</span>
-                </div>
+                <div class="placeholder contact-placeholder"></div>
+                <span class="item-label sticker-title" id="contactText">КОНТАКТЫ</span>
             </a>
         </section>
 
-        <!-- Модалка соцсетей -->
+        <!-- Модалка соцсетей (телефон) -->
         <div class="phone-modal" id="phoneModal">
             <div class="modal-backdrop" id="modalBackdrop"></div>
             <div class="phone-device">
