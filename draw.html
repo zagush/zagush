@@ -287,16 +287,17 @@
         </div>
 
         <div class="size-picker">
-            <span>РАЗМЕР:</span>
-            <input type="range" id="sizeSlider" min="1" max="24" value="3">
-            <span id="sizeValue">3px</span>
-        </div>
+    <span>РАЗМЕР:</span>
+    <input type="range" id="sizeSlider" min="1" max="24" value="3">
+    <span id="sizeValue">3px</span>
+</div>
 
-        <button id="clearBtn" class="tool-btn clear-btn">ОЧИСТИТЬ</button>
-        <button id="saveBtn" class="tool-btn">СКАЧАТЬ</button>
-    </div>
+<button id="clearBtn" class="tool-btn clear-btn">ОЧИСТИТЬ</button>
+<button id="saveOriginalBtn" class="tool-btn">СКАЧАТЬ (ОРИГИНАЛ)</button>
+<button id="saveHighResBtn" class="tool-btn">СКАЧАТЬ (x4)</button>
+</div>
 
-    <!-- Холст -->
+<!-- Холст -->
     <div class="canvas-container" id="canvasContainer">
         <canvas id="paintCanvas"></canvas>
     </div>
@@ -496,10 +497,35 @@
         }
     });
 
-    saveBtn.addEventListener('click', () => {
+    // 1. Сохранение в оригинальном размере
+    saveOriginalBtn.addEventListener('click', () => {
         const link = document.createElement('a');
-        link.download = 'art.png';
+        link.download = 'art_original.png';
         link.href = canvas.toDataURL();
+        link.click();
+    });
+
+    // 2. Сохранение в x4 качестве (Pixel Perfect)
+    saveHighResBtn.addEventListener('click', () => {
+        // Создаем временный холст в памяти
+        const tempCanvas = document.createElement('canvas');
+        const scaleFactor = 4; // Увеличиваем на 400%
+        
+        tempCanvas.width = canvas.width * scaleFactor;
+        tempCanvas.height = canvas.height * scaleFactor;
+        
+        const tempCtx = tempCanvas.getContext('2d');
+        
+        // САМОЕ ВАЖНОЕ: Отключаем сглаживание, чтобы пиксели остались четкими квадратами
+        tempCtx.imageSmoothingEnabled = false;
+        
+        // Отрисовываем наш маленький холст на большом с растягиванием
+        tempCtx.drawImage(canvas, 0, 0, tempCanvas.width, tempCanvas.height);
+        
+        // Генерируем ссылку и скачиваем большую картинку
+        const link = document.createElement('a');
+        link.download = 'art_x4_HD.png';
+        link.href = tempCanvas.toDataURL('image/png');
         link.click();
     });
 
