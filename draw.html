@@ -2,33 +2,47 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZAGUSH — РИСОВАТЬ</title>
-    <!-- Пиксельный шрифт Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            image-rendering: pixelated; /* Пиксельное рендеринг графики */
+            image-rendering: pixelated;
         }
 
         body {
-            font-family: 'Press Start 2P', monospace, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             background: #2b2118;
             background-image: url('stol.jpg');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-start;
+            gap: 12px;
             padding: 10px;
-            overflow: hidden;
-            touch-action: none;
+            overflow-y: auto; /* Позволяет прокручивать страницу на мобильных до палитры */
+            touch-action: pan-y;
             user-select: none;
+        }
+
+        /* Общий стиль пиксельного рамки и углов (Pixel-art UI) */
+        .pixel-box {
+            background: #ffffff;
+            border: 3px solid #000;
+            /* Ступенчатые пиксельные скругления углов */
+            clip-path: polygon(
+                0 4px, 2px 4px, 2px 2px, 4px 2px, 4px 0,
+                calc(100% - 4px) 0, calc(100% - 4px) 2px, calc(100% - 2px) 2px, calc(100% - 2px) 4px, 100% 4px,
+                100% calc(100% - 4px), calc(100% - 2px) calc(100% - 4px), calc(100% - 2px) calc(100% - 2px), calc(100% - 4px) calc(100% - 2px), calc(100% - 4px) 100%,
+                4px 100%, 4px calc(100% - 2px), 2px calc(100% - 2px), 2px calc(100% - 4px), 0 calc(100% - 4px)
+            );
+            box-shadow: 4px 4px 0 #000;
         }
 
         /* Верхняя панель */
@@ -38,30 +52,35 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            background: #ffffff;
-            border: 4px solid #000;
-            box-shadow: 4px 4px 0 #000;
             padding: 8px 12px;
             z-index: 10;
-            max-width: 95vw;
+            max-width: 98vw;
         }
 
-        /* Пиксельные кнопки */
+        /* Пиксельные кнопки с визуальным объемом и угловой резьбой */
         .tool-btn {
             background: #fff;
-            border: 3px solid #000;
-            font-family: 'Press Start 2P', monospace;
-            font-size: 9px;
-            line-height: 1.2;
-            padding: 8px 10px;
+            border: 2px solid #000;
+            font-weight: 900;
+            font-size: 11px;
+            letter-spacing: 0.03em;
+            padding: 6px 10px;
             cursor: pointer;
             box-shadow: 3px 3px 0 #000;
             text-decoration: none;
             color: #000;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             position: relative;
+            /* Пиксельный угол на кнопке */
+            clip-path: polygon(
+                0 2px, 2px 2px, 2px 0,
+                calc(100% - 2px) 0, calc(100% - 2px) 2px, 100% 2px,
+                100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%,
+                2px 100%, 2px calc(100% - 2px), 0 calc(100% - 2px)
+            );
+            transition: background 0.1s;
         }
 
         .tool-btn:hover:not(:disabled) {
@@ -82,65 +101,68 @@
         .tool-btn.active {
             background: #000;
             color: #fff;
-            box-shadow: inset 2px 2px 0 #333;
+            box-shadow: inset 2px 2px 0 #555;
         }
 
         .back-btn {
             background: #ff5252;
             color: #fff;
         }
-        .back-btn:hover:not(:disabled) {
-            background: #ff3333;
-        }
 
         .history-btn {
-            background: #e0e0e0;
+            background: #f0f0f0;
+            font-size: 11px;
         }
 
         .clear-btn {
             background: #ffecb3;
         }
 
+        .zoom-reset-btn {
+            background: #b3e5fc;
+        }
+
         /* Выбор размера пикселя */
         .size-picker {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 8px;
-            font-family: 'Press Start 2P', monospace;
-            background: #eee;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 900;
+            background: #f5f5f5;
             padding: 4px 8px;
             border: 2px solid #000;
+            clip-path: polygon(
+                0 2px, 2px 2px, 2px 0,
+                calc(100% - 2px) 0, calc(100% - 2px) 2px, 100% 2px,
+                100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%,
+                2px 100%, 2px calc(100% - 2px), 0 calc(100% - 2px)
+            );
         }
 
-        .size-picker input[type=range] {
-            -webkit-appearance: none;
-            width: 70px;
-            background: #ccc;
-            height: 8px;
-            border: 2px solid #000;
-            outline: none;
-        }
-
-        .size-picker input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 12px;
-            height: 16px;
-            background: #000;
+        .size-picker input {
             cursor: pointer;
+            width: 70px;
         }
 
-        /* Холст на столе */
+        /* Контейнер холста с внутренним скроллом при приближении */
         .canvas-container {
             position: relative;
             background: #ffffff;
             border: 4px solid #000;
-            box-shadow: 8px 10px 0 rgba(0, 0, 0, 0.5);
+            box-shadow: 6px 8px 0 rgba(0, 0, 0, 0.45);
             max-width: 95vw;
-            max-height: 72vh;
+            max-height: 65vh;
+            overflow: auto; /* Включает скроллбар при приближении холста */
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: flex-start;
+            justify-content: flex-start;
+            clip-path: polygon(
+                0 6px, 3px 6px, 3px 3px, 6px 3px, 6px 0,
+                calc(100% - 6px) 0, calc(100% - 6px) 3px, calc(100% - 3px) 3px, calc(100% - 3px) 6px, 100% 6px,
+                100% calc(100% - 6px), calc(100% - 3px) calc(100% - 6px), calc(100% - 3px) calc(100% - 3px), calc(100% - 6px) calc(100% - 3px), calc(100% - 6px) 100%,
+                6px 100%, 6px calc(100% - 3px), 3px calc(100% - 3px), 3px calc(100% - 6px), 0 calc(100% - 6px)
+            );
         }
 
         canvas {
@@ -149,6 +171,9 @@
             background: #ffffff;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
+            transform-origin: 0 0;
+            transition: transform 0.15s ease-out;
+            touch-action: none;
         }
 
         /* Нижняя панель цветов */
@@ -156,22 +181,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            background: #ffffff;
-            border: 4px solid #000;
-            box-shadow: 4px 4px 0 #000;
+            gap: 6px;
             padding: 8px 12px;
-            max-width: 95vw;
+            max-width: 98vw;
             flex-wrap: wrap;
             z-index: 10;
+            margin-bottom: 20px; /* Отступ снизу для удобного скролла на мобилках */
         }
 
         .current-color-preview {
             width: 28px;
             height: 28px;
-            border: 3px solid #000;
+            border: 2px solid #000;
             box-shadow: 2px 2px 0 #000;
-            margin-right: 4px;
+            margin-right: 6px;
         }
 
         .palette-swatches {
@@ -185,6 +208,12 @@
             height: 22px;
             border: 2px solid #000;
             cursor: pointer;
+            clip-path: polygon(
+                0 2px, 2px 2px, 2px 0,
+                calc(100% - 2px) 0, calc(100% - 2px) 2px, 100% 2px,
+                100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%,
+                2px 100%, 2px calc(100% - 2px), 0 calc(100% - 2px)
+            );
         }
 
         .swatch:hover {
@@ -193,10 +222,10 @@
         }
 
         .color-input-btn {
-            width: 34px;
-            height: 34px;
-            padding: 0;
-            border: 3px solid #000;
+            width: 36px;
+            height: 36px;
+            padding: 2px;
+            border: 2px solid #000;
             box-shadow: 2px 2px 0 #000;
             cursor: pointer;
             background: #ffffff;
@@ -207,16 +236,17 @@
         }
 
         .color-input-btn::-webkit-color-swatch {
-            border: none;
+            border: 1px solid #000;
         }
     </style>
 </head>
 <body>
 
     <!-- Меню инструментов -->
-    <div class="toolbar">
-        <a href="index.html" class="tool-btn back-btn">← СТОЛ</a>
+    <div class="toolbar pixel-box">
+        <a href="index.html" class="tool-btn back-btn">← НА СТОЛ</a>
 
+        <!-- Кнопки истории действий -->
         <button id="undoBtn" class="tool-btn history-btn" title="Отмена (Ctrl+Z)" disabled>↶ НАЗАД</button>
         <button id="redoBtn" class="tool-btn history-btn" title="Повтор (Ctrl+Y)" disabled>↷ ВПЕРЁД</button>
 
@@ -224,6 +254,8 @@
         <button id="contourBtn" class="tool-btn" title="Контур Aseprite (D)">КОНТУР [D]</button>
         <button id="fillBtn" class="tool-btn" title="Заливка (G)">ЗАЛИВКА [G]</button>
         <button id="eraserBtn" class="tool-btn" title="Ластик (E)">ЛАСТИК [E]</button>
+        <button id="zoomBtn" class="tool-btn" title="Лупа / Приближение (Z)">ЛУПА [Z]</button>
+        <button id="resetZoomBtn" class="tool-btn zoom-reset-btn" style="display: none;">100%</button>
 
         <div class="size-picker">
             <span>РАЗМЕР:</span>
@@ -235,13 +267,13 @@
         <button id="saveBtn" class="tool-btn">СКАЧАТЬ</button>
     </div>
 
-    <!-- Холст -->
-    <div class="canvas-container">
+    <!-- Холст со скроллбаром -->
+    <div class="canvas-container" id="canvasContainer">
         <canvas id="paintCanvas"></canvas>
     </div>
 
     <!-- Палитра цветов -->
-    <div class="bottom-palette">
+    <div class="bottom-palette pixel-box">
         <input type="color" id="customColorPicker" class="color-input-btn" value="#000000" title="Выбрать свой цвет">
         <div id="currentColorPreview" class="current-color-preview" style="background: #000000;"></div>
         <div class="palette-swatches" id="swatchesContainer"></div>
@@ -249,14 +281,18 @@
 
     <script>
         const canvas = document.getElementById('paintCanvas');
+        const container = document.getElementById('canvasContainer');
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
+        // Кнопки
         const undoBtn = document.getElementById('undoBtn');
         const redoBtn = document.getElementById('redoBtn');
         const pencilBtn = document.getElementById('pencilBtn');
         const contourBtn = document.getElementById('contourBtn');
         const fillBtn = document.getElementById('fillBtn');
         const eraserBtn = document.getElementById('eraserBtn');
+        const zoomBtn = document.getElementById('zoomBtn');
+        const resetZoomBtn = document.getElementById('resetZoomBtn');
         const clearBtn = document.getElementById('clearBtn');
         const saveBtn = document.getElementById('saveBtn');
 
@@ -281,6 +317,11 @@
         let lastY = 0;
         let contourPoints = [];
 
+        // Масштабирование
+        let currentScale = 1;
+        const scaleSteps = [1, 1.5, 2, 3, 4];
+
+        // ИСТОРИЯ ДЕЙСТВИЙ (UNDO / REDO)
         const MAX_HISTORY = 30;
         let undoStack = [];
         let redoStack = [];
@@ -320,7 +361,7 @@
 
         function initCanvas() {
             const w = Math.min(Math.floor(window.innerWidth * 0.92), 850);
-            const h = Math.min(Math.floor(window.innerHeight * 0.68), 580);
+            const h = Math.min(Math.floor(window.innerHeight * 0.65), 580);
             canvas.width = w;
             canvas.height = h;
 
@@ -349,17 +390,45 @@
 
         function setTool(tool) {
             currentTool = tool;
-            [pencilBtn, contourBtn, fillBtn, eraserBtn].forEach(b => b.classList.remove('active'));
+            [pencilBtn, contourBtn, fillBtn, eraserBtn, zoomBtn].forEach(b => b.classList.remove('active'));
             if (tool === 'pencil') pencilBtn.classList.add('active');
             if (tool === 'contour') contourBtn.classList.add('active');
             if (tool === 'fill') fillBtn.classList.add('active');
             if (tool === 'eraser') eraserBtn.classList.add('active');
+            if (tool === 'zoom') zoomBtn.classList.add('active');
         }
 
         pencilBtn.addEventListener('click', () => setTool('pencil'));
         contourBtn.addEventListener('click', () => setTool('contour'));
         fillBtn.addEventListener('click', () => setTool('fill'));
         eraserBtn.addEventListener('click', () => setTool('eraser'));
+        zoomBtn.addEventListener('click', () => setTool('zoom'));
+
+        // Функция масштабирования
+        function applyZoom(newScale, clickX, clickY) {
+            currentScale = newScale;
+            canvas.style.transform = `scale(${currentScale})`;
+            
+            // Динамически подстраиваем минимальные виртуальные размеры, чтобы срабатывал скролл
+            canvas.style.marginRight = `${(currentScale - 1) * canvas.width}px`;
+            canvas.style.marginBottom = `${(currentScale - 1) * canvas.height}px`;
+
+            if (currentScale > 1) {
+                resetZoomBtn.style.display = 'inline-block';
+                resetZoomBtn.textContent = Math.round(currentScale * 100) + '%';
+            } else {
+                resetZoomBtn.style.display = 'none';
+            }
+
+            if (clickX !== undefined && clickY !== undefined) {
+                container.scrollLeft = clickX * currentScale - container.clientWidth / 2;
+                container.scrollTop = clickY * currentScale - container.clientHeight / 2;
+            }
+        }
+
+        resetZoomBtn.addEventListener('click', () => {
+            applyZoom(1);
+        });
 
         window.addEventListener('keydown', (e) => {
             const isCtrl = e.ctrlKey || e.metaKey;
@@ -386,6 +455,7 @@
                 if (key === 'd' || key === 'в') setTool('contour');
                 if (key === 'g' || key === 'п') setTool('fill');
                 if (key === 'e' || key === 'у') setTool('eraser');
+                if (key === 'z' || key === 'я') setTool('zoom');
             }
         });
 
@@ -411,9 +481,10 @@
 
         function getCoords(e) {
             const rect = canvas.getBoundingClientRect();
+            // Расчет с учетом текущего зума
             return {
-                x: Math.floor(e.clientX - rect.left),
-                y: Math.floor(e.clientY - rect.top)
+                x: Math.floor((e.clientX - rect.left) / currentScale),
+                y: Math.floor((e.clientY - rect.top) / currentScale)
             };
         }
 
@@ -438,7 +509,7 @@
             }
         }
 
-        // Алгоритм точной заливки многоугольника (Scanline Fill) без полупрозрачности
+        // Сканирующий алгоритм заливки контура без незакрашенных белых пикселей
         function fillPixelPolygon(points, color) {
             if (points.length < 3) return;
 
@@ -575,9 +646,18 @@
             ctx.putImageData(imgData, 0, 0);
         }
 
-        // События рисования
+        // Мышь / Тач события
         canvas.addEventListener('pointerdown', (e) => {
             const { x, y } = getCoords(e);
+
+            // Режим Лупа
+            if (currentTool === 'zoom') {
+                let currentIndex = scaleSteps.indexOf(currentScale);
+                let nextIndex = (currentIndex + 1) % scaleSteps.length;
+                applyZoom(scaleSteps[nextIndex], x, y);
+                return;
+            }
+
             canvas.setPointerCapture(e.pointerId);
 
             if (currentTool === 'fill') {
@@ -622,10 +702,8 @@
             try { canvas.releasePointerCapture(e.pointerId); } catch (err) {}
 
             if (currentTool === 'contour' && contourPoints.length > 2) {
-                // 1. Заполняем область точно по пиксельным координатам
                 fillPixelPolygon(contourPoints, currentColor);
 
-                // 2. Обводим четким пиксельным контуром поверх
                 for (let i = 0; i < contourPoints.length; i++) {
                     const p1 = contourPoints[i];
                     const p2 = contourPoints[(i + 1) % contourPoints.length];
