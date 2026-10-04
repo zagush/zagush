@@ -47,7 +47,7 @@ body {
     padding: 0;
     border: 2px solid #000;
     border-radius: 6px;
-    background: rgba(255, 255, 255, 0.85);
+    background: #ffffff;
     color: #000;
     font-size: 13px;
     font-weight: 800;
@@ -59,8 +59,9 @@ body {
 }
 
 .language-switch:hover {
-    background: #fff;
-    transform: translateY(-2px);
+    background: #f0f0f0;
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 #000;
 }
 
 .site-header {
@@ -84,9 +85,7 @@ body {
     line-height: 1;
     text-align: center;
     -webkit-text-stroke: 2.5px #000000;
-    text-shadow: 
-        0 4px 0 #000000,
-        5px 8px 18px rgba(0, 0, 0, 0.7);
+    text-shadow: 4px 4px 0 #000000;
 }
 
 .about {
@@ -104,9 +103,7 @@ body {
     font-weight: 800;
     color: #ffffff;
     -webkit-text-stroke: 1px #000000;
-    text-shadow: 
-        0 2px 0 #000000,
-        3px 4px 12px rgba(0, 0, 0, 0.75);
+    text-shadow: 2px 2px 0 #000000;
 }
 
 /* ========================================================
@@ -116,11 +113,11 @@ body {
 .desk {
     position: relative;
     z-index: 5;
-    width: min(1200px, 92vw);
+    width: min(1100px, 92vw);
     margin: 40px auto 70px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: clamp(40px, 8vw, 140px);
+    column-gap: clamp(40px, 8vw, 120px);
     row-gap: 50px;
     align-items: end;
     justify-items: center;
@@ -135,7 +132,7 @@ body {
     justify-content: flex-end;
     text-decoration: none;
     cursor: pointer;
-    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .sketchbook-object,
@@ -148,10 +145,7 @@ body {
     justify-self: start;
 }
 
-/* 
-   ТЕСТУРА / ПРЕДМЕТЫ: 
-   Тень снизу-справа, мягкая, без грязного ореола вокруг 
-*/
+/* Тень предметов на стол (аккуратная, только справа-снизу) */
 .item-img {
     width: 100%;
     height: auto;
@@ -159,94 +153,86 @@ body {
     display: block;
     user-select: none;
     pointer-events: none;
-    filter: drop-shadow(7px 9px 8px rgba(0, 0, 0, 0.28))
-            drop-shadow(14px 18px 18px rgba(0, 0, 0, 0.14));
-    transition: filter 0.25s ease;
+    filter: drop-shadow(6px 8px 8px rgba(0, 0, 0, 0.32));
+    transition: filter 0.2s ease;
 }
 
 .object:hover {
-    transform: translateY(-8px) scale(1.03);
+    transform: translateY(-6px) scale(1.02);
 }
 
 .object:hover .item-img {
-    filter: drop-shadow(10px 13px 12px rgba(0, 0, 0, 0.34))
-            drop-shadow(20px 24px 24px rgba(0, 0, 0, 0.18));
+    filter: drop-shadow(8px 12px 12px rgba(0, 0, 0, 0.4));
 }
 
 /* ========================================================
-   НАДПИСИ ПОД КНОПКАМИ (НАЕЗЖАЮТ НА НИЖНИЙ КРАЙ)
+   ЕДИНЫЙ БРУТАЛИСТСКИЙ СТИЛЬ НАДПИСЕЙ (СТИКЕРЫ / СКОТЧ)
    ======================================================== */
 
 .item-title,
 .item-label,
+.phone-label,
 .sticker-title {
     position: relative !important;
     top: auto !important;
     bottom: auto !important;
     left: auto !important;
-    transform: none !important;
+    transform: none;
+    
     display: inline-block;
     z-index: 10;
-    margin-top: -18px; /* Наезжает на нижний край предмета */
-    user-select: none;
-    pointer-events: none;
-    white-space: nowrap;
-    font-size: clamp(16px, 1.8vw, 22px);
+    margin-top: -14px; /* Наезд на нижний край */
+    padding: 5px 14px;
+    
+    background: #ffffff;
+    color: #000000;
+    font-size: clamp(13px, 1.3vw, 16px);
     font-weight: 900;
     letter-spacing: 0.12em;
-    color: #ffffff;
+    text-transform: uppercase;
     text-align: center;
-    -webkit-text-stroke: 1.8px #000000;
-    text-shadow: 
-        0 2.5px 0 #000000, 
-        3px 4px 10px rgba(0, 0, 0, 0.7);
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+    
+    /* Бруталистская черная рамка + жесткая тень без размытия */
+    border: 2.5px solid #000000;
+    border-radius: 2px;
+    box-shadow: 4px 4px 0 #000000;
+    -webkit-text-stroke: 0;
+    text-shadow: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Скетчбук */
+/* Скетчбук (пропорции и легкий наклон стикера) */
 .sketchbook-object {
-    width: clamp(190px, 19vw, 270px);
+    width: clamp(190px, 18vw, 260px);
     transform: rotate(-3deg);
 }
 .sketchbook-object:hover {
-    transform: rotate(-1deg) translateY(-6px) scale(1.03);
+    transform: rotate(-1deg) translateY(-6px) scale(1.02);
 }
 .sketchbook-object .item-title,
 .sketchbook-object .item-label {
-    transform: rotate(-1deg) !important;
+    transform: rotate(-2deg);
 }
 
-/* Телефон */
+/* Телефон: уменьшен по ширине, чтобы не был гигантским */
 .phone-object {
-    width: clamp(140px, 13vw, 190px);
+    width: clamp(110px, 10vw, 145px); /* Аккуратный масштаб под референс */
     transform: rotate(4deg);
 }
 .phone-object:hover {
-    transform: rotate(2deg) translateY(-6px) scale(1.04);
+    transform: rotate(2deg) translateY(-6px) scale(1.03);
 }
-
 .phone-label {
-    position: relative;
-    z-index: 10;
-    margin-top: -14px;
-    font-size: 13px;
-    font-weight: 900;
-    letter-spacing: 0.1em;
-    color: #000;
-    background: #fff;
-    padding: 4px 14px;
-    border-radius: 4px;
-    border: 2px solid #000;
-    box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.35);
-    transform: rotate(-3deg) !important;
-    user-select: none;
-    -webkit-text-stroke: 0;
-    text-shadow: none;
+    transform: rotate(2deg);
 }
 
-/* Временные плашки (Рисовать и Контакты) */
+/* Карточки Рисовать / Контакты */
 .draw-object,
 .contact-object {
-    width: clamp(180px, 17vw, 240px);
+    width: clamp(170px, 16vw, 230px);
 }
 
 .placeholder {
@@ -258,23 +244,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 
-        6px 8px 10px rgba(0, 0, 0, 0.25),
-        12px 16px 20px rgba(0, 0, 0, 0.15);
-    transition: box-shadow 0.25s ease;
-}
-
-.placeholder span {
-    font-size: clamp(16px, 1.7vw, 22px);
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    color: #171717;
-}
-
-.object:hover .placeholder {
-    box-shadow: 
-        8px 12px 14px rgba(0, 0, 0, 0.3),
-        16px 22px 26px rgba(0, 0, 0, 0.2);
+    box-shadow: 5px 7px 8px rgba(0, 0, 0, 0.22);
 }
 
 .draw-placeholder {
@@ -282,6 +252,16 @@ body {
 }
 .contact-placeholder {
     transform: rotate(3deg);
+}
+
+.draw-object .item-title,
+.draw-object .item-label {
+    transform: rotate(1deg);
+}
+
+.contact-object .item-title,
+.contact-object .item-label {
+    transform: rotate(-2deg);
 }
 
 /* ========================================================
@@ -447,15 +427,15 @@ body {
     }
 
     .sketchbook-object {
-        width: min(250px, 68vw) !important;
+        width: min(240px, 68vw) !important;
     }
 
     .phone-object {
-        width: 160px !important;
+        width: 135px !important;
     }
 
     .draw-object,
     .contact-object {
-        width: min(220px, 60vw) !important;
+        width: min(210px, 60vw) !important;
     }
 }
