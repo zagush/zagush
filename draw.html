@@ -422,10 +422,20 @@
     function setTool(tool) {
         currentTool = tool;
         [pencilBtn, contourBtn, fillBtn, eraserBtn].forEach(b => b.classList.remove('active'));
+        
         if (tool === 'pencil') pencilBtn.classList.add('active');
-        if (tool === 'contour') contourBtn.classList.add('active');
         if (tool === 'fill') fillBtn.classList.add('active');
         if (tool === 'eraser') eraserBtn.classList.add('active');
+        
+        if (tool === 'contour') {
+            contourBtn.classList.add('active');
+            // Принудительно ставим минимум 2px для Контура
+            if (brushSize < 2) {
+                brushSize = 2;
+                sizeSlider.value = 2;
+                sizeValue.textContent = '2px';
+            }
+        }
     }
 
     pencilBtn.addEventListener('click', () => setTool('pencil'));
@@ -466,7 +476,15 @@
     });
 
     sizeSlider.addEventListener('input', (e) => {
-        brushSize = parseInt(e.target.value, 10);
+        let val = parseInt(e.target.value, 10);
+        
+        // Блокируем ползунок на 2px, если выбран Контур
+        if (currentTool === 'contour' && val < 2) {
+            val = 2;
+            sizeSlider.value = 2;
+        }
+        
+        brushSize = val;
         sizeValue.textContent = brushSize + 'px';
     });
 
@@ -498,7 +516,6 @@
         ctx.fillRect(Math.floor(x - size / 2), Math.floor(y - size / 2), size, size);
     }
 
-    // 1. Получение массива пикселей математической линии (Алгоритм Брезенхема)
     function getBresenhamPoints(x0, y0, x1, y1) {
         let pts = [];
         const dx = Math.abs(x1 - x0);
@@ -527,7 +544,6 @@
         }
     }
 
-    // 3. Идеальный алгоритм Scanline Fill (Правило Четности-Нечетности / Even-Odd)
     function fillPolygonScanline(points, colorHex) {
         if (points.length < 3) return;
 
@@ -539,36 +555,29 @@
 
         ctx.fillStyle = colorHex;
         
-        // Сканируем каждую горизонтальную линию
         for (let y = minY; y <= maxY; y++) {
             let intersections = [];
             let j = points.length - 1;
             
-            // Находим все пересечения линии сканирования с рёбрами нашего полигона
             for (let i = 0; i < points.length; i++) {
                 let py_i = points[i].y;
                 let px_i = points[i].x;
                 let py_j = points[j].y;
                 let px_j = points[j].x;
 
-                // Строгое правило включения вершины (исключает дублирование и ошибки на углах)
                 if ((py_i <= y && py_j > y) || (py_j <= y && py_i > y)) {
-                    // Вычисляем точную координату X пересечения
                     let x = px_i + (y - py_i) / (py_j - py_i) * (px_j - px_i);
                     intersections.push(x);
                 }
                 j = i;
             }
 
-            // Сортируем точки пересечения слева направо
             intersections.sort((a, b) => a - b);
 
-            // Правило Even-Odd: заливаем попарно (1-2, 3-4 и т.д.)
             for (let i = 0; i < intersections.length; i += 2) {
                 if (intersections[i + 1] !== undefined) {
                     let xStart = Math.floor(intersections[i]);
                     let xEnd = Math.ceil(intersections[i + 1]);
-                    // Рисуем сплошной пиксельный блок, никаких полупрозрачностей
                     ctx.fillRect(xStart, y, (xEnd - xStart) + 1, 1);
                 }
             }
@@ -665,7 +674,7 @@
         lastY = y;
 
         if (currentTool === 'contour') {
-            contourPoints = [{ x, y }]; // Начинаем массив
+            contourPoints = [{ x, y }];
             drawPixelSquare(x, y, currentColor, brushSize);
             return;
         }
@@ -679,7 +688,6 @@
         const { x, y } = getCoords(e);
 
         if (currentTool === 'contour') {
-            // 2. Накопление через Брезенхем: записываем КАЖДЫЙ пиксель пути
             let newPts = getBresenhamPoints(lastX, lastY, x, y);
             for (let i = 1; i < newPts.length; i++) {
                 contourPoints.push(newPts[i]);
@@ -707,15 +715,12 @@
                 const first = contourPoints[0];
                 const last = contourPoints[contourPoints.length - 1];
                 
-                // Замыкаем последнюю точку с первой Брезенхемом
                 let closePts = getBresenhamPoints(last.x, last.y, first.x, first.y);
                 for (let i = 1; i < closePts.length - 1; i++) {
                     contourPoints.push(closePts[i]);
                 }
                 
                 drawPixelLine(last.x, last.y, first.x, first.y, currentColor, brushSize);
-                
-                // Выполняем чисто математическую заливку без дыр
                 fillPolygonScanline(contourPoints, currentColor);
             }
             contourPoints = [];
