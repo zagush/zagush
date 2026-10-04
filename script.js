@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const translations = {
         ru: {
             logo: "ЗАГУШ",
-            aboutTitle: "ОБО МНЕ",
             introText: "Я создаю цифровое искусство, граффити, традиционные работы и многое другое.<br>Больше моих работ можно посмотреть в социальных сетях.",
             portfolioText: "ПОРТФОЛИО",
             socialsLabel: "СОЦСЕТИ",
@@ -13,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         en: {
             logo: "ZAGUSH",
-            aboutTitle: "ABOUT ME",
             introText: "I create digital art, graffiti, traditional works and more.<br>Explore more of my work on social media.",
             portfolioText: "PORTFOLIO",
             socialsLabel: "SOCIALS",
@@ -36,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         setTxt("logo", t.logo);
-        setTxt("aboutTitle", t.aboutTitle);
         setTxt("portfolioText", t.portfolioText);
         setTxt("socialsLabel", t.socialsLabel);
         setTxt("modalTitle", t.modalTitle);
