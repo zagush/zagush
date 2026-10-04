@@ -346,6 +346,8 @@
     let isDrawing = false;
     let lastX = 0;
     let lastY = 0;
+    
+    // Векторный массив для накопления всех пикселей контура
     let contourPoints = []; 
 
     let currentScale = 1;
@@ -496,61 +498,81 @@
         ctx.fillRect(Math.floor(x - size / 2), Math.floor(y - size / 2), size, size);
     }
 
-    function drawPixelLine(x0, y0, x1, y1, color, size) {
+    // 1. Получение массива пикселей математической линии (Алгоритм Брезенхема)
+    function getBresenhamPoints(x0, y0, x1, y1) {
+        let pts = [];
         const dx = Math.abs(x1 - x0);
         const dy = Math.abs(y1 - y0);
         const sx = (x0 < x1) ? 1 : -1;
         const sy = (y0 < y1) ? 1 : -1;
         let err = dx - dy;
 
+        let cx = x0;
+        let cy = y0;
+
         while (true) {
-            drawPixelSquare(x0, y0, color, size);
-            if (x0 === x1 && y0 === y1) break;
+            pts.push({ x: cx, y: cy });
+            if (cx === x1 && cy === y1) break;
             const e2 = 2 * err;
-            if (e2 > -dy) { err -= dy; x0 += sx; }
-            if (e2 < dx) { err += dx; y0 += sy; }
+            if (e2 > -dy) { err -= dy; cx += sx; }
+            if (e2 < dx) { err += dx; cy += sy; }
+        }
+        return pts;
+    }
+
+    function drawPixelLine(x0, y0, x1, y1, color, size) {
+        const points = getBresenhamPoints(x0, y0, x1, y1);
+        for (let p of points) {
+            drawPixelSquare(p.x, p.y, color, size);
         }
     }
 
-    // НОВЫЙ ИДЕАЛЬНЫЙ АЛГОРИТМ ЗАЛИВКИ КОНТУРА (Без дыр и артефактов)
-    function fillPolygonPerfect(points, colorHex) {
+    // 3. Идеальный алгоритм Scanline Fill (Правило Четности-Нечетности / Even-Odd)
+    function fillPolygonScanline(points, colorHex) {
         if (points.length < 3) return;
 
-        // Создаем невидимый холст-копию для рендера пути без артефактов
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = canvas.width;
-        tempCanvas.height = canvas.height;
-        const tempCtx = tempCanvas.getContext('2d', { willReadFrequently: true });
-
-        // Рисуем путь (тут браузер сам идеально просчитает все пересечения)
-        tempCtx.fillStyle = colorHex;
-        tempCtx.beginPath();
-        tempCtx.moveTo(points[0].x, points[0].y);
-        for (let i = 1; i < points.length; i++) {
-            tempCtx.lineTo(points[i].x, points[i].y);
+        let minY = Infinity, maxY = -Infinity;
+        for (let p of points) {
+            if (p.y < minY) minY = p.y;
+            if (p.y > maxY) maxY = p.y;
         }
-        tempCtx.closePath();
-        tempCtx.fill('nonzero');
 
-        // Переносим результат на главный холст (отключая полупрозрачные пиксели сглаживания)
-        const mainImgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const tempImgData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+        ctx.fillStyle = colorHex;
         
-        let hex = colorHex.replace(/^#/, '');
-        const r = parseInt(hex.substring(0, 2), 16);
-        const g = parseInt(hex.substring(2, 4), 16);
-        const b = parseInt(hex.substring(4, 6), 16);
+        // Сканируем каждую горизонтальную линию
+        for (let y = minY; y <= maxY; y++) {
+            let intersections = [];
+            let j = points.length - 1;
+            
+            // Находим все пересечения линии сканирования с рёбрами нашего полигона
+            for (let i = 0; i < points.length; i++) {
+                let py_i = points[i].y;
+                let px_i = points[i].x;
+                let py_j = points[j].y;
+                let px_j = points[j].x;
 
-        for (let i = 0; i < tempImgData.data.length; i += 4) {
-            // Если пиксель на временном холсте непрозрачный (отсекаем мягкие края)
-            if (tempImgData.data[i + 3] > 100) {
-                mainImgData.data[i] = r;
-                mainImgData.data[i + 1] = g;
-                mainImgData.data[i + 2] = b;
-                mainImgData.data[i + 3] = 255;
+                // Строгое правило включения вершины (исключает дублирование и ошибки на углах)
+                if ((py_i <= y && py_j > y) || (py_j <= y && py_i > y)) {
+                    // Вычисляем точную координату X пересечения
+                    let x = px_i + (y - py_i) / (py_j - py_i) * (px_j - px_i);
+                    intersections.push(x);
+                }
+                j = i;
+            }
+
+            // Сортируем точки пересечения слева направо
+            intersections.sort((a, b) => a - b);
+
+            // Правило Even-Odd: заливаем попарно (1-2, 3-4 и т.д.)
+            for (let i = 0; i < intersections.length; i += 2) {
+                if (intersections[i + 1] !== undefined) {
+                    let xStart = Math.floor(intersections[i]);
+                    let xEnd = Math.ceil(intersections[i + 1]);
+                    // Рисуем сплошной пиксельный блок, никаких полупрозрачностей
+                    ctx.fillRect(xStart, y, (xEnd - xStart) + 1, 1);
+                }
             }
         }
-        ctx.putImageData(mainImgData, 0, 0);
     }
 
     function floodFill(startX, startY, fillHex) {
@@ -643,8 +665,7 @@
         lastY = y;
 
         if (currentTool === 'contour') {
-            contourPoints = [{ x, y }];
-            // ИСПРАВЛЕНО: Рисуем начало контура правильным размером!
+            contourPoints = [{ x, y }]; // Начинаем массив
             drawPixelSquare(x, y, currentColor, brushSize);
             return;
         }
@@ -658,8 +679,12 @@
         const { x, y } = getCoords(e);
 
         if (currentTool === 'contour') {
-            contourPoints.push({ x, y });
-            // ИСПРАВЛЕНО: Рисуем линию контура с учетом brushSize!
+            // 2. Накопление через Брезенхем: записываем КАЖДЫЙ пиксель пути
+            let newPts = getBresenhamPoints(lastX, lastY, x, y);
+            for (let i = 1; i < newPts.length; i++) {
+                contourPoints.push(newPts[i]);
+            }
+            
             drawPixelLine(lastX, lastY, x, y, currentColor, brushSize);
             lastX = x;
             lastY = y;
@@ -682,11 +707,16 @@
                 const first = contourPoints[0];
                 const last = contourPoints[contourPoints.length - 1];
                 
-                // ИСПРАВЛЕНО: Замыкаем линию тоже правильным размером
+                // Замыкаем последнюю точку с первой Брезенхемом
+                let closePts = getBresenhamPoints(last.x, last.y, first.x, first.y);
+                for (let i = 1; i < closePts.length - 1; i++) {
+                    contourPoints.push(closePts[i]);
+                }
+                
                 drawPixelLine(last.x, last.y, first.x, first.y, currentColor, brushSize);
                 
-                // Вызываем новый идеальный алгоритм заливки
-                fillPolygonPerfect(contourPoints, currentColor);
+                // Выполняем чисто математическую заливку без дыр
+                fillPolygonScanline(contourPoints, currentColor);
             }
             contourPoints = [];
         }
