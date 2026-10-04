@@ -167,12 +167,29 @@
         }
 
         .color-input-btn {
-            width: 24px;
-            height: 24px;
-            padding: 0;
-            border: 1.5px solid #000;
+            width: 44px;
+            height: 44px;
+            padding: 2px;
+            border: 2.5px solid #000;
+            box-shadow: 3px 3px 0 #000;
             cursor: pointer;
-            background: none;
+            background: #ffffff;
+            border-radius: 4px;
+            transition: transform 0.1s ease;
+        }
+
+        .color-input-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0 #000;
+        }
+
+        .color-input-btn::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .color-input-btn::-webkit-color-swatch {
+            border: 1px solid #000;
+            border-radius: 2px;
         }
     </style>
 </head>
@@ -208,9 +225,10 @@
 
     <!-- Палитра цветов -->
     <div class="bottom-palette">
-        <div id="currentColorPreview" class="current-color-preview" style="background: #000000;" title="Текущий цвет"></div>
+        <!-- Кнопка выбора любого цвета (первая и большая) -->
+        <input type="color" id="customColorPicker" class="color-input-btn" value="#000000" title="Выбрать свой цвет">
+        <div id="currentColorPreview" class="current-color-preview" style="display: none;"></div>
         <div class="palette-swatches" id="swatchesContainer"></div>
-        <input type="color" id="customColorPicker" class="color-input-btn" value="#000000" title="Свой цвет">
     </div>
 
     <script>
@@ -234,10 +252,10 @@
         const currentColorPreview = document.getElementById('currentColorPreview');
 
         const PALETTE = [
-            '#000000', '#ffffff', '#7e7e7e', '#bebebe',
-            '#8b0000', '#ff0000', '#ff7f00', '#ffec27',
-            '#008000', '#00e436', '#0000ff', '#29adff',
-            '#800080', '#ff77a8', '#8a4836', '#ffccaa'
+            '#000000', '#ffffff', '#99f553', '#ff8ff6',
+            '##ff000d', '#ffabaf', '#630005', '#630005',
+            '#94c4ff', '#3183e8', '#262e85', '#ffff7d',
+            '#ff8126', '#ffa361', '#d561ff', '#8150cc'
         ];
 
         let currentTool = 'pencil';
@@ -555,31 +573,53 @@
             try { canvas.releasePointerCapture(e.pointerId); } catch (err) {}
 
             if (currentTool === 'contour' && contourPoints.length > 2) {
-                ctx.save();
-                ctx.fillStyle = currentColor;
-                ctx.strokeStyle = currentColor;
-                ctx.lineWidth = brushSize;
-                ctx.lineJoin = 'miter';
-                ctx.lineCap = 'square';
+                // Создаем изолированный буфер для 100% пикселизации без мыла
+                const offCanvas = document.createElement('canvas');
+                offCanvas.width = canvas.width;
+                offCanvas.height = canvas.height;
+                const offCtx = offCanvas.getContext('2d');
 
-                ctx.beginPath();
-                ctx.moveTo(contourPoints[0].x, contourPoints[0].y);
+                offCtx.fillStyle = '#ff00ff';
+                offCtx.beginPath();
+                offCtx.moveTo(contourPoints[0].x, contourPoints[0].y);
                 for (let i = 1; i < contourPoints.length; i++) {
-                    ctx.lineTo(contourPoints[i].x, contourPoints[i].y);
+                    offCtx.lineTo(contourPoints[i].x, contourPoints[i].y);
                 }
-                ctx.closePath();
-                ctx.fill();
-                ctx.stroke();
-                ctx.restore();
+                offCtx.closePath();
+                offCtx.fill();
 
-                // Пикселизация заливки
-                const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                const d = imgData.data;
-                for (let i = 3; i < d.length; i += 4) {
-                    if (d[i] > 30) d[i] = 255;
-                    else d[i] = 0;
+                // Получаем цвет в формате RGB
+                const tempDiv = document.createElement('div');
+                tempDiv.style.color = currentColor;
+                document.body.appendChild(tempDiv);
+                const rgb = window.getComputedStyle(tempDiv).color.match(/\d+/g);
+                document.body.removeChild(tempDiv);
+
+                const fr = parseInt(rgb[0], 10);
+                const fg = parseInt(rgb[1], 10);
+                const fb = parseInt(rgb[2], 10);
+
+                const offData = offCtx.getImageData(0, 0, canvas.width, canvas.height).data;
+                const mainImg = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const mainData = mainImg.data;
+
+                // Переносим только 100% жесткие пиксели заливки
+                for (let i = 3; i < offData.length; i += 4) {
+                    if (offData[i] > 120) {
+                        mainData[i - 3] = fr;
+                        mainData[i - 2] = fg;
+                        mainData[i - 1] = fb;
+                        mainData[i] = 255;
+                    }
                 }
-                ctx.putImageData(imgData, 0, 0);
+                ctx.putImageData(mainImg, 0, 0);
+
+                // Обводим контур жестким пиксельным алгоритмом Брезенхэма
+                for (let i = 0; i < contourPoints.length; i++) {
+                    const p1 = contourPoints[i];
+                    const p2 = contourPoints[(i + 1) % contourPoints.length];
+                    drawPixelLine(p1.x, p1.y, p2.x, p2.y, currentColor, brushSize);
+                }
 
                 contourPoints = [];
             }
