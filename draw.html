@@ -39,7 +39,7 @@
            - Внутренняя светлая фаска (#ffffff) для объема
         */
         .ase-panel {
-            background: #e6f0ff;
+            background: #f2f7ff;
             position: relative;
             box-shadow: 
                 /* Внешняя пиксельная рамка 1px */
@@ -346,7 +346,7 @@
     let isDrawing = false;
     let lastX = 0;
     let lastY = 0;
-    let contourPoints = []; // Массив для точек Контура
+    let contourPoints = []; 
 
     let currentScale = 1;
     const MIN_SCALE = 0.5;
@@ -512,41 +512,45 @@
         }
     }
 
-    // Идеальная заливка полигона (Scanline Polygon Fill)
-    function fillPolygon(points, color) {
+    // НОВЫЙ ИДЕАЛЬНЫЙ АЛГОРИТМ ЗАЛИВКИ КОНТУРА (Без дыр и артефактов)
+    function fillPolygonPerfect(points, colorHex) {
         if (points.length < 3) return;
 
-        let minY = points[0].y;
-        let maxY = points[0].y;
+        // Создаем невидимый холст-копию для рендера пути без артефактов
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = canvas.width;
+        tempCanvas.height = canvas.height;
+        const tempCtx = tempCanvas.getContext('2d', { willReadFrequently: true });
+
+        // Рисуем путь (тут браузер сам идеально просчитает все пересечения)
+        tempCtx.fillStyle = colorHex;
+        tempCtx.beginPath();
+        tempCtx.moveTo(points[0].x, points[0].y);
         for (let i = 1; i < points.length; i++) {
-            if (points[i].y < minY) minY = points[i].y;
-            if (points[i].y > maxY) maxY = points[i].y;
+            tempCtx.lineTo(points[i].x, points[i].y);
         }
+        tempCtx.closePath();
+        tempCtx.fill('nonzero');
 
-        ctx.fillStyle = color;
+        // Переносим результат на главный холст (отключая полупрозрачные пиксели сглаживания)
+        const mainImgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const tempImgData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+        
+        let hex = colorHex.replace(/^#/, '');
+        const r = parseInt(hex.substring(0, 2), 16);
+        const g = parseInt(hex.substring(2, 4), 16);
+        const b = parseInt(hex.substring(4, 6), 16);
 
-        for (let y = minY; y <= maxY; y++) {
-            let nodeX = [];
-            let j = points.length - 1;
-
-            for (let i = 0; i < points.length; i++) {
-                if ((points[i].y < y && points[j].y >= y) || (points[j].y < y && points[i].y >= y)) {
-                    let x = points[i].x + (y - points[i].y) / (points[j].y - points[i].y) * (points[j].x - points[i].x);
-                    nodeX.push(Math.round(x));
-                }
-                j = i;
-            }
-
-            nodeX.sort((a, b) => a - b);
-
-            for (let i = 0; i < nodeX.length; i += 2) {
-                if (nodeX[i + 1] !== undefined) {
-                    let xStart = nodeX[i];
-                    let xEnd = nodeX[i + 1];
-                    ctx.fillRect(xStart, y, (xEnd - xStart + 1), 1);
-                }
+        for (let i = 0; i < tempImgData.data.length; i += 4) {
+            // Если пиксель на временном холсте непрозрачный (отсекаем мягкие края)
+            if (tempImgData.data[i + 3] > 100) {
+                mainImgData.data[i] = r;
+                mainImgData.data[i + 1] = g;
+                mainImgData.data[i + 2] = b;
+                mainImgData.data[i + 3] = 255;
             }
         }
+        ctx.putImageData(mainImgData, 0, 0);
     }
 
     function floodFill(startX, startY, fillHex) {
@@ -640,6 +644,8 @@
 
         if (currentTool === 'contour') {
             contourPoints = [{ x, y }];
+            // ИСПРАВЛЕНО: Рисуем начало контура правильным размером!
+            drawPixelSquare(x, y, currentColor, brushSize);
             return;
         }
 
@@ -653,7 +659,8 @@
 
         if (currentTool === 'contour') {
             contourPoints.push({ x, y });
-            drawPixelLine(lastX, lastY, x, y, currentColor, 1);
+            // ИСПРАВЛЕНО: Рисуем линию контура с учетом brushSize!
+            drawPixelLine(lastX, lastY, x, y, currentColor, brushSize);
             lastX = x;
             lastY = y;
             return;
@@ -674,8 +681,12 @@
             if (contourPoints.length > 2) {
                 const first = contourPoints[0];
                 const last = contourPoints[contourPoints.length - 1];
-                drawPixelLine(last.x, last.y, first.x, first.y, currentColor, 1);
-                fillPolygon(contourPoints, currentColor);
+                
+                // ИСПРАВЛЕНО: Замыкаем линию тоже правильным размером
+                drawPixelLine(last.x, last.y, first.x, first.y, currentColor, brushSize);
+                
+                // Вызываем новый идеальный алгоритм заливки
+                fillPolygonPerfect(contourPoints, currentColor);
             }
             contourPoints = [];
         }
