@@ -21,23 +21,24 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px;
+            justify-content: space-between;
+            padding: 10px;
             overflow: hidden;
-            touch-action: none; /* Защита от прокрутки при рисовании на телефоне */
+            touch-action: none;
+            user-select: none;
         }
 
-        /* Верхняя панель управления */
+        /* Верхняя панель */
         .toolbar {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             background: #ffffff;
             border: 2.5px solid #000;
             box-shadow: 4px 4px 0 #000;
-            padding: 8px 14px;
-            margin-bottom: 12px;
+            padding: 6px 12px;
             z-index: 10;
             max-width: 95vw;
         }
@@ -45,20 +46,29 @@
         .tool-btn {
             background: #fff;
             border: 2px solid #000;
-            font-weight: 800;
-            font-size: 13px;
-            padding: 6px 12px;
+            font-weight: 900;
+            font-size: 12px;
+            letter-spacing: 0.05em;
+            padding: 6px 10px;
             cursor: pointer;
             box-shadow: 2px 2px 0 #000;
-            user-select: none;
             text-decoration: none;
             color: #000;
+            display: flex;
+            align-items: center;
+            gap: 4px;
             transition: transform 0.1s ease;
         }
 
-        .tool-btn:hover {
+        .tool-btn:hover:not(:disabled) {
             transform: translate(-1px, -1px);
             box-shadow: 3px 3px 0 #000;
+        }
+
+        .tool-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            box-shadow: none;
         }
 
         .tool-btn.active {
@@ -71,137 +81,294 @@
             color: #fff;
         }
 
+        .history-btn {
+            background: #f0f0f0;
+            font-size: 13px;
+        }
+
         .clear-btn {
             background: #ffecb3;
         }
 
-        /* Выбор цвета */
-        .color-picker {
-            width: 32px;
-            height: 32px;
-            border: 2px solid #000;
-            cursor: pointer;
-            padding: 0;
-            background: none;
-        }
-
-        /* Ползунок толщины */
+        /* Выбор размера пикселя */
         .size-picker {
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 12px;
-            font-weight: 800;
+            font-size: 11px;
+            font-weight: 900;
         }
 
         .size-picker input {
             cursor: pointer;
+            width: 70px;
         }
 
-        /* Лист бумаги (Холст) на столе */
+        /* Холст на столе */
         .canvas-container {
             position: relative;
-            background: #faf8f5;
+            background: #ffffff;
             border: 3px solid #000;
-            box-shadow: 8px 10px 0 rgba(0, 0, 0, 0.4);
-            transform: rotate(-0.5deg);
+            box-shadow: 8px 10px 0 rgba(0, 0, 0, 0.45);
             max-width: 95vw;
-            max-height: 80vh;
+            max-height: 72vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         canvas {
             display: block;
             cursor: crosshair;
             background: #ffffff;
+            image-rendering: pixelated;
+        }
+
+        /* Нижняя панель цветов */
+        .bottom-palette {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: #ffffff;
+            border: 2.5px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            padding: 8px 12px;
+            max-width: 95vw;
+            flex-wrap: wrap;
+            z-index: 10;
+        }
+
+        .current-color-preview {
+            width: 28px;
+            height: 28px;
+            border: 2px solid #000;
+            box-shadow: 2px 2px 0 #000;
+            margin-right: 6px;
+        }
+
+        .palette-swatches {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .swatch {
+            width: 22px;
+            height: 22px;
+            border: 1.5px solid #000;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        .swatch:hover {
+            transform: scale(1.15);
+            z-index: 2;
+        }
+
+        .color-input-btn {
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            border: 1.5px solid #000;
+            cursor: pointer;
+            background: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- Панель инструментов в нео-бруталистском стиле -->
+    <!-- Меню инструментов -->
     <div class="toolbar">
         <a href="index.html" class="tool-btn back-btn">← НА СТОЛ</a>
-        
-        <button id="brushBtn" class="tool-btn active" type="button">КИСТЬ</button>
-        <button id="eraserBtn" class="tool-btn" type="button">ЛАСТИК</button>
 
-        <input type="color" id="colorPicker" class="color-picker" value="#000000" title="Выбрать цвет">
+        <!-- Кнопки истории действий -->
+        <button id="undoBtn" class="tool-btn history-btn" title="Отмена (Ctrl+Z)" disabled>↶ НАЗАД</button>
+        <button id="redoBtn" class="tool-btn history-btn" title="Повтор (Ctrl+Alt+Z / Ctrl+Y)" disabled>↷ ВПЕРЁД</button>
+
+        <button id="pencilBtn" class="tool-btn active" title="Карандаш (B)">КАРАНДАШ [B]</button>
+        <button id="contourBtn" class="tool-btn" title="Контур Aseprite (D)">КОНТУР [D]</button>
+        <button id="fillBtn" class="tool-btn" title="Заливка (G)">ЗАЛИВКА [G]</button>
+        <button id="eraserBtn" class="tool-btn" title="Ластик (E)">ЛАСТИК [E]</button>
 
         <div class="size-picker">
             <span>РАЗМЕР:</span>
-            <input type="range" id="sizeSlider" min="2" max="50" value="8">
+            <input type="range" id="sizeSlider" min="1" max="24" value="3">
+            <span id="sizeValue">3px</span>
         </div>
 
-        <button id="clearBtn" class="tool-btn clear-btn" type="button">ОЧИСТИТЬ</button>
-        <button id="saveBtn" class="tool-btn" type="button">СКАЧАТЬ</button>
+        <button id="clearBtn" class="tool-btn clear-btn">ОЧИСТИТЬ</button>
+        <button id="saveBtn" class="tool-btn">СКАЧАТЬ</button>
     </div>
 
-    <!-- Лист-холст -->
+    <!-- Холст -->
     <div class="canvas-container">
         <canvas id="paintCanvas"></canvas>
     </div>
 
+    <!-- Палитра цветов -->
+    <div class="bottom-palette">
+        <div id="currentColorPreview" class="current-color-preview" style="background: #000000;" title="Текущий цвет"></div>
+        <div class="palette-swatches" id="swatchesContainer"></div>
+        <input type="color" id="customColorPicker" class="color-input-btn" value="#000000" title="Свой цвет">
+    </div>
+
     <script>
         const canvas = document.getElementById('paintCanvas');
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
-        const brushBtn = document.getElementById('brushBtn');
+        // Кнопки
+        const undoBtn = document.getElementById('undoBtn');
+        const redoBtn = document.getElementById('redoBtn');
+        const pencilBtn = document.getElementById('pencilBtn');
+        const contourBtn = document.getElementById('contourBtn');
+        const fillBtn = document.getElementById('fillBtn');
         const eraserBtn = document.getElementById('eraserBtn');
-        const colorPicker = document.getElementById('colorPicker');
-        const sizeSlider = document.getElementById('sizeSlider');
         const clearBtn = document.getElementById('clearBtn');
         const saveBtn = document.getElementById('saveBtn');
 
-        // Размер холста под экран
-        function resizeCanvas() {
-            const width = Math.min(window.innerWidth * 0.92, 900);
-            const height = Math.min(window.innerHeight * 0.76, 620);
-            
-            // Сохраняем рисунок при ресайзе
-            const temp = ctx.getImageData(0, 0, canvas.width || width, canvas.height || height);
-            canvas.width = width;
-            canvas.height = height;
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            try {
-                ctx.putImageData(temp, 0, 0);
-            } catch (e) {}
-        }
-        resizeCanvas();
+        const sizeSlider = document.getElementById('sizeSlider');
+        const sizeValue = document.getElementById('sizeValue');
+        const swatchesContainer = document.getElementById('swatchesContainer');
+        const customColorPicker = document.getElementById('customColorPicker');
+        const currentColorPreview = document.getElementById('currentColorPreview');
 
-        let isDrawing = false;
-        let isEraser = false;
+        const PALETTE = [
+            '#000000', '#ffffff', '#7e7e7e', '#bebebe',
+            '#8b0000', '#ff0000', '#ff7f00', '#ffec27',
+            '#008000', '#00e436', '#0000ff', '#29adff',
+            '#800080', '#ff77a8', '#8a4836', '#ffccaa'
+        ];
+
+        let currentTool = 'pencil';
         let currentColor = '#000000';
-        let currentSize = 8;
+        let brushSize = 3;
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        let contourPoints = [];
 
-        // Настройки инструментов
-        brushBtn.addEventListener('click', () => {
-            isEraser = false;
-            brushBtn.classList.add('active');
-            eraserBtn.classList.remove('active');
+        // ИСТОРИЯ ДЕЙСТВИЙ (UNDO / REDO)
+        const MAX_HISTORY = 30;
+        let undoStack = [];
+        let redoStack = [];
+
+        function saveState() {
+            if (undoStack.length >= MAX_HISTORY) {
+                undoStack.shift();
+            }
+            undoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+            redoStack = []; // сбрасываем redo при новом действии
+            updateHistoryButtons();
+        }
+
+        function undo() {
+            if (undoStack.length === 0) return;
+            redoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+            const prev = undoStack.pop();
+            ctx.putImageData(prev, 0, 0);
+            updateHistoryButtons();
+        }
+
+        function redo() {
+            if (redoStack.length === 0) return;
+            undoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+            const next = redoStack.pop();
+            ctx.putImageData(next, 0, 0);
+            updateHistoryButtons();
+        }
+
+        function updateHistoryButtons() {
+            undoBtn.disabled = (undoStack.length === 0);
+            redoBtn.disabled = (redoStack.length === 0);
+        }
+
+        undoBtn.addEventListener('click', undo);
+        redoBtn.addEventListener('click', redo);
+
+        // Инициализация холста
+        function initCanvas() {
+            const w = Math.min(Math.floor(window.innerWidth * 0.92), 850);
+            const h = Math.min(Math.floor(window.innerHeight * 0.68), 580);
+            canvas.width = w;
+            canvas.height = h;
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, w, h);
+            ctx.imageSmoothingEnabled = false;
+        }
+        initCanvas();
+
+        // Палитра
+        PALETTE.forEach(col => {
+            const swatch = document.createElement('div');
+            swatch.className = 'swatch';
+            swatch.style.background = col;
+            swatch.addEventListener('click', () => setColor(col));
+            swatchesContainer.appendChild(swatch);
         });
 
-        eraserBtn.addEventListener('click', () => {
-            isEraser = true;
-            eraserBtn.classList.add('active');
-            brushBtn.classList.remove('active');
-        });
+        function setColor(hex) {
+            currentColor = hex;
+            currentColorPreview.style.background = hex;
+            customColorPicker.value = hex;
+            if (currentTool === 'eraser') setTool('pencil');
+        }
 
-        colorPicker.addEventListener('input', (e) => {
-            currentColor = e.target.value;
-            if (isEraser) {
-                isEraser = false;
-                brushBtn.classList.add('active');
-                eraserBtn.classList.remove('active');
+        customColorPicker.addEventListener('input', (e) => setColor(e.target.value));
+
+        function setTool(tool) {
+            currentTool = tool;
+            [pencilBtn, contourBtn, fillBtn, eraserBtn].forEach(b => b.classList.remove('active'));
+            if (tool === 'pencil') pencilBtn.classList.add('active');
+            if (tool === 'contour') contourBtn.classList.add('active');
+            if (tool === 'fill') fillBtn.classList.add('active');
+            if (tool === 'eraser') eraserBtn.classList.add('active');
+        }
+
+        pencilBtn.addEventListener('click', () => setTool('pencil'));
+        contourBtn.addEventListener('click', () => setTool('contour'));
+        fillBtn.addEventListener('click', () => setTool('fill'));
+        eraserBtn.addEventListener('click', () => setTool('eraser'));
+
+        // ГОРЯЧИЕ КЛАВИШИ (Ctrl+Z, Ctrl+Alt+Z, Ctrl+Shift+Z, Ctrl+Y, B, D, G, E)
+        window.addEventListener('keydown', (e) => {
+            const isCtrl = e.ctrlKey || e.metaKey;
+
+            if (isCtrl && (e.key === 'z' || e.key === 'Z' || e.key === 'я' || e.key === 'Я')) {
+                e.preventDefault();
+                if (e.altKey || e.shiftKey) {
+                    redo();
+                } else {
+                    undo();
+                }
+                return;
+            }
+
+            if (isCtrl && (e.key === 'y' || e.key === 'Y' || e.key === 'н' || e.key === 'Н')) {
+                e.preventDefault();
+                redo();
+                return;
+            }
+
+            // Инструменты по одиночным клавишам
+            if (!isCtrl) {
+                const key = e.key.toLowerCase();
+                if (key === 'b' || key === 'и') setTool('pencil');
+                if (key === 'd' || key === 'в') setTool('contour');
+                if (key === 'g' || key === 'п') setTool('fill');
+                if (key === 'e' || key === 'у') setTool('eraser');
             }
         });
 
         sizeSlider.addEventListener('input', (e) => {
-            currentSize = e.target.value;
+            brushSize = parseInt(e.target.value, 10);
+            sizeValue.textContent = brushSize + 'px';
         });
 
         clearBtn.addEventListener('click', () => {
             if (confirm("Очистить весь лист?")) {
+                saveState();
                 ctx.fillStyle = '#ffffff';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
@@ -214,44 +381,208 @@
             link.click();
         });
 
-        // Функция получения точных координат
         function getCoords(e) {
             const rect = canvas.getBoundingClientRect();
             return {
-                x: e.clientX - rect.left,
-                y: e.clientY - rect.top
+                x: Math.floor(e.clientX - rect.left),
+                y: Math.floor(e.clientY - rect.top)
             };
         }
 
-        // Рисование (поддерживает мышь, тачпад и экраны телефонов/планшетов)
+        function drawPixelSquare(x, y, color, size) {
+            ctx.fillStyle = color;
+            ctx.fillRect(Math.floor(x - size / 2), Math.floor(y - size / 2), size, size);
+        }
+
+        function drawPixelLine(x0, y0, x1, y1, color, size) {
+            const dx = Math.abs(x1 - x0);
+            const dy = Math.abs(y1 - y0);
+            const sx = (x0 < x1) ? 1 : -1;
+            const sy = (y0 < y1) ? 1 : -1;
+            let err = dx - dy;
+
+            while (true) {
+                drawPixelSquare(x0, y0, color, size);
+                if (x0 === x1 && y0 === y1) break;
+                const e2 = 2 * err;
+                if (e2 > -dy) { err -= dy; x0 += sx; }
+                if (e2 < dx) { err += dx; y0 += sy; }
+            }
+        }
+
+        // Заливка (Flood Fill)
+        function floodFill(startX, startY, fillHex) {
+            saveState();
+
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imgData.data;
+
+            const tempDiv = document.createElement('div');
+            tempDiv.style.color = fillHex;
+            document.body.appendChild(tempDiv);
+            const rgbMatch = window.getComputedStyle(tempDiv).color.match(/\d+/g);
+            document.body.removeChild(tempDiv);
+
+            const fillR = parseInt(rgbMatch[0], 10);
+            const fillG = parseInt(rgbMatch[1], 10);
+            const fillB = parseInt(rgbMatch[2], 10);
+            const fillA = 255;
+
+            const startIndex = (startY * canvas.width + startX) * 4;
+            const targetR = data[startIndex];
+            const targetG = data[startIndex + 1];
+            const targetB = data[startIndex + 2];
+            const targetA = data[startIndex + 3];
+
+            if (targetR === fillR && targetG === fillG && targetB === fillB && targetA === fillA) {
+                return;
+            }
+
+            function matchTarget(idx) {
+                return data[idx] === targetR &&
+                       data[idx + 1] === targetG &&
+                       data[idx + 2] === targetB &&
+                       data[idx + 3] === targetA;
+            }
+
+            function colorPixel(idx) {
+                data[idx] = fillR;
+                data[idx + 1] = fillG;
+                data[idx + 2] = fillB;
+                data[idx + 3] = fillA;
+            }
+
+            const queue = [startX, startY];
+            const w = canvas.width;
+            const h = canvas.height;
+
+            while (queue.length > 0) {
+                const cy = queue.pop();
+                const cx = queue.pop();
+                let idx = (cy * w + cx) * 4;
+
+                if (!matchTarget(idx)) continue;
+
+                let left = cx;
+                while (left >= 0 && matchTarget((cy * w + left) * 4)) left--;
+                left++;
+
+                let right = cx;
+                while (right < w && matchTarget((cy * w + right) * 4)) right++;
+                right--;
+
+                let spanUp = false;
+                let spanDown = false;
+
+                for (let x = left; x <= right; x++) {
+                    const curIdx = (cy * w + x) * 4;
+                    colorPixel(curIdx);
+
+                    if (cy > 0) {
+                        const upIdx = ((cy - 1) * w + x) * 4;
+                        if (matchTarget(upIdx)) {
+                            if (!spanUp) {
+                                queue.push(x, cy - 1);
+                                spanUp = true;
+                            }
+                        } else {
+                            spanUp = false;
+                        }
+                    }
+
+                    if (cy < h - 1) {
+                        const downIdx = ((cy + 1) * w + x) * 4;
+                        if (matchTarget(downIdx)) {
+                            if (!spanDown) {
+                                queue.push(x, cy + 1);
+                                spanDown = true;
+                            }
+                        } else {
+                            spanDown = false;
+                        }
+                    }
+                }
+            }
+
+            ctx.putImageData(imgData, 0, 0);
+        }
+
+        // Мышь и тач
         canvas.addEventListener('pointerdown', (e) => {
-            isDrawing = true;
-            canvas.setPointerCapture(e.pointerId);
             const { x, y } = getCoords(e);
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            ctx.strokeStyle = isEraser ? '#ffffff' : currentColor;
-            ctx.lineWidth = currentSize;
-            ctx.lineTo(x, y);
-            ctx.stroke();
+            canvas.setPointerCapture(e.pointerId);
+
+            if (currentTool === 'fill') {
+                floodFill(x, y, currentColor);
+                return;
+            }
+
+            // Сохраняем снимок перед началом нового штриха
+            saveState();
+
+            isDrawing = true;
+            lastX = x;
+            lastY = y;
+
+            if (currentTool === 'contour') {
+                contourPoints = [{ x, y }];
+                drawPixelSquare(x, y, currentColor, brushSize);
+            } else {
+                const col = (currentTool === 'eraser') ? '#ffffff' : currentColor;
+                drawPixelSquare(x, y, col, brushSize);
+            }
         });
 
         canvas.addEventListener('pointermove', (e) => {
             if (!isDrawing) return;
             const { x, y } = getCoords(e);
-            ctx.lineTo(x, y);
-            ctx.stroke();
+
+            if (currentTool === 'contour') {
+                contourPoints.push({ x, y });
+                drawPixelLine(lastX, lastY, x, y, currentColor, brushSize);
+            } else if (currentTool === 'pencil' || currentTool === 'eraser') {
+                const col = (currentTool === 'eraser') ? '#ffffff' : currentColor;
+                drawPixelLine(lastX, lastY, x, y, col, brushSize);
+            }
+
+            lastX = x;
+            lastY = y;
         });
 
         function stopDrawing(e) {
             if (!isDrawing) return;
             isDrawing = false;
-            ctx.closePath();
-            try {
-                canvas.releasePointerCapture(e.pointerId);
-            } catch (err) {}
+            try { canvas.releasePointerCapture(e.pointerId); } catch (err) {}
+
+            if (currentTool === 'contour' && contourPoints.length > 2) {
+                ctx.save();
+                ctx.fillStyle = currentColor;
+                ctx.strokeStyle = currentColor;
+                ctx.lineWidth = brushSize;
+                ctx.lineJoin = 'miter';
+                ctx.lineCap = 'square';
+
+                ctx.beginPath();
+                ctx.moveTo(contourPoints[0].x, contourPoints[0].y);
+                for (let i = 1; i < contourPoints.length; i++) {
+                    ctx.lineTo(contourPoints[i].x, contourPoints[i].y);
+                }
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+                ctx.restore();
+
+                // Пикселизация заливки
+                const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const d = imgData.data;
+                for (let i = 3; i < d.length; i += 4) {
+                    if (d[i] > 30) d[i] = 255;
+                    else d[i] = 0;
+                }
+                ctx.putImageData(imgData, 0, 0);
+
+                contourPoints = [];
+            }
         }
 
         canvas.addEventListener('pointerup', stopDrawing);
