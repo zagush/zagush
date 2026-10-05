@@ -468,16 +468,15 @@ body {
     transform: scale(1.25) rotate(-8deg);
 }
 /* ========================================================
-   СКВИШИ ДЛЯ ЖМЯКАНЬЯ (SKVISH 1 & SKVISH 2)
+   СКВИШИ НА СТОЛЕ (БЕЗ СВЕЧЕНИЯ, СЛОЙ ПОД ТЕКСТОМ)
    ======================================================== */
 .skvish {
-    position: fixed;
-    z-index: 999;
+    position: absolute;
+    z-index: 2; /* Под текстом описания и шапкой */
     cursor: pointer;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
     transform-origin: center bottom;
-    transition: filter 0.15s ease;
 }
 
 .skvish img {
@@ -486,79 +485,68 @@ body {
     object-fit: contain;
     display: block;
     pointer-events: none;
-    filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.65));
+    /* Только естественная объемная тень на дерево стола */
+    filter: drop-shadow(6px 8px 10px rgba(0, 0, 0, 0.45));
+    transition: filter 0.15s ease;
 }
 
-/* Skvish 1: Обитает в левом нижнем углу */
+/* Skvish 1: Слева от текста «Обо мне» */
 .skvish1 {
-    bottom: 20px;
-    left: 25px;
-    width: clamp(55px, 6vw, 75px);
+    top: 135px;
+    left: clamp(15px, 6vw, 90px);
+    width: clamp(55px, 5.5vw, 75px);
     aspect-ratio: 1 / 1.2;
 }
 
-/* Skvish 2: Обитает справа под шапкой / сбоку от стола */
+/* Skvish 2: Справа от текста «Обо мне» */
 .skvish2 {
-    top: 32%;
-    right: 30px;
-    width: clamp(55px, 6vw, 72px);
+    top: 140px;
+    right: clamp(15px, 6vw, 90px);
+    width: clamp(55px, 5.5vw, 75px);
     aspect-ratio: 1 / 1.2;
 }
 
-/* Покачивание при наведении мыши */
-.skvish:hover {
-    filter: drop-shadow(0 0 14px #00ffcc);
-}
-
+/* При наведении — только легкая игривая тряска без свечения */
 .skvish:hover img {
-    animation: skvishWiggle 0.4s ease-in-out infinite alternate;
+    animation: skvishWiggle 0.35s ease-in-out infinite alternate;
+    filter: drop-shadow(8px 12px 14px rgba(0, 0, 0, 0.55));
 }
 
 @keyframes skvishWiggle {
-    0% { transform: scale(1.08) rotate(-6deg); }
-    100% { transform: scale(1.12) rotate(6deg); }
+    0% { transform: scale(1.05) rotate(-5deg); }
+    100% { transform: scale(1.1) rotate(5deg); }
 }
 
-/* Вылетающая надпись при жмяке */
+/* Вылетающий стикер с каомодзи и фразами */
 .skvish-bubble {
     position: absolute;
-    top: -24px;
+    top: -26px;
     left: 50%;
     transform: translateX(-50%) scale(0);
-    background: #ffff00;
+    background: #ffffff;
     color: #000000;
     border: 2px solid #000000;
-    box-shadow: 2px 2px 0 #000000;
+    box-shadow: 2.5px 2.5px 0 #000000;
     font-size: 11px;
     font-weight: 900;
-    padding: 2px 6px;
+    padding: 3px 8px;
     white-space: nowrap;
     pointer-events: none;
     opacity: 0;
+    z-index: 3;
     transition: transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 0.2s ease;
 }
 
 .skvish-bubble.show {
-    transform: translateX(-50%) scale(1.2) translateY(-6px);
+    transform: translateX(-50%) scale(1.2) translateY(-8px);
     opacity: 1;
 }
 
-/* Разные классы анимаций жмяканья */
-.squash-pancake {
-    animation: animPancake 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards !important;
-}
-
-.squash-sausage {
-    animation: animSausage 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards !important;
-}
-
-.squash-diagonal {
-    animation: animDiagonal 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards !important;
-}
-
-.squash-pop {
-    animation: animPop 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards !important;
-}
+/* Анимации жмяканья (сочное желе) */
+.squash-pancake { animation: animPancake 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards !important; }
+.squash-sausage { animation: animSausage 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards !important; }
+.squash-diagonal { animation: animDiagonal 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards !important; }
+.squash-pop { animation: animPop 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards !important; }
 
 @keyframes animPancake {
     0% { transform: scale(1, 1); }
@@ -591,16 +579,16 @@ body {
     100% { transform: scale(1, 1); }
 }
 
-/* На мобилках они аккуратно прячутся по краям экрана */
+/* На мобильных (до 700px) они аккуратно смещаются */
 @media (max-width: 700px) {
     .skvish1 {
-        bottom: 12px;
-        left: 12px;
-        width: 50px;
+        top: 90px;
+        left: 8px;
+        width: 46px;
     }
     .skvish2 {
-        top: 22%;
-        right: 12px;
-        width: 48px;
+        top: 90px;
+        right: 8px;
+        width: 46px;
     }
 }
