@@ -25,7 +25,7 @@
             padding: 20px;
         }
 
-        /* Фоновый холст визуализатора */
+        /* Фоновый холст 14 визуализаторов */
         #bgCanvas {
             position: fixed;
             inset: 0;
@@ -35,7 +35,7 @@
             pointer-events: none;
         }
 
-        /* Верхняя консоль управления (стиль панели инструментов) */
+        /* Верхняя консоль управления */
         .top-nav {
             position: fixed;
             top: 15px;
@@ -60,7 +60,6 @@
             pointer-events: auto;
         }
 
-        /* Кнопки верхней панели */
         .nav-btn {
             color: #000000;
             text-decoration: none;
@@ -91,7 +90,7 @@
             opacity: 0.88;
         }
 
-        /* Переключатель визуалов */
+        /* Селектор визуализаторов */
         .vis-switcher {
             display: flex;
             align-items: center;
@@ -106,8 +105,8 @@
             border: 2px solid #000000;
             font-weight: 900;
             cursor: pointer;
-            padding: 2px 7px;
-            font-size: 12px;
+            padding: 2px 8px;
+            font-size: 13px;
             font-family: inherit;
         }
         .vis-btn:hover {
@@ -117,7 +116,7 @@
         .vis-label {
             font-size: 11px;
             font-weight: 900;
-            min-width: 170px;
+            min-width: 200px;
             text-align: center;
             letter-spacing: 0.04em;
         }
@@ -357,13 +356,12 @@
 </head>
 <body>
 
-    <!-- Канвас 8 визуалов -->
     <canvas id="bgCanvas"></canvas>
 
     <!-- Верхний тулбар -->
     <div class="top-nav">
         <div class="top-left-group">
-            <button class="nav-btn btn-exit" type="button" onclick="alert('🔒 сайт сейчас в разработке! :)')">🔒 В РАЗРАБОТКЕ</button>
+            <a href="index.html" class="nav-btn btn-exit">← НА СТОЛ</a>
             <button id="uploadBtn" class="nav-btn btn-upload" type="button">+ СВОЙ ТРЕК</button>
             <input type="file" id="fileInput" accept="audio/*" multiple style="display: none;">
         </div>
@@ -387,7 +385,7 @@
         <!-- Плеер -->
         <div class="player-panel">
             <div class="player-header">
-                <span>DUBSTEP // MULTI_SYSTEM</span>
+                <span>DUBSTEP // WMP_ULTRA</span>
                 <span class="player-status-tag" id="statusTag">ГОТОВ</span>
             </div>
 
@@ -407,11 +405,9 @@
         </button>
     </div>
 
-    <!-- Аудио элемент -->
     <audio id="audio" preload="metadata"></audio>
 
     <script>
-        // ИСХОДНЫЕ ТРЕКИ
         const playlist = [
             { title: "ANGRY BIRDS", file: "dubstep/angry-birds.mp3" },
             { title: "TRACK 1", file: "dubstep/track1.mp3" },
@@ -426,16 +422,22 @@
         let currentIndex = 0;
         let isPlaying = false;
 
-        // 8 ВИЗУАЛЬНЫХ СТИЛЕЙ
+        // 14 ПОЛНОЦЕННЫХ СТИЛЕЙ ВИЗУАЛИЗАЦИИ
         const visualModes = [
             { id: 0, name: "01. WMP CLASSIC" },
-            { id: 1, name: "02. WINAMP TOWERS" },
-            { id: 2, name: "03. CYBER MATRIX" },
-            { id: 3, name: "04. RADAR SONAR" },
-            { id: 4, name: "05. DUBSTEP BOMB" },
-            { id: 5, name: "06. SYNTHWAVE GRID" },
-            { id: 6, name: "07. LASER LISSAJOUS" },
-            { id: 7, name: "08. RGB GLITCH SEISMIC" }
+            { id: 1, name: "02. AMBIENCE PLASMA" },      // Пламенный взрыв
+            { id: 2, name: "03. HYPNO VORTEX" },        // Воронка из скрина
+            { id: 3, name: "04. BATTERY BLOSSOM" },     // Цветок/клубок Battery
+            { id: 4, name: "05. WHITECAP TUNNEL" },     // Тоннель Вайткэп
+            { id: 5, name: "06. SILK STRING MOIRÉ" },   // Шелковые нити/муар
+            { id: 6, name: "07. CHROMATIC BLAST" },     // Кислотный взрыв краски
+            { id: 7, name: "08. WINAMP TOWERS" },       // Башни эквалайзера
+            { id: 8, name: "09. CYBER MATRIX" },        // Дождь матрицы
+            { id: 9, name: "10. RADAR SONAR" },         // Радар
+            { id: 10, name: "11. DUBSTEP BOMB" },       // Частицы
+            { id: 11, name: "12. SYNTHWAVE GRID" },     // 3D Сетка
+            { id: 12, name: "13. LASER LISSAJOUS" },    // Лазер
+            { id: 13, name: "14. RGB GLITCH SEISMIC" }  // Глитч сейсмограф
         ];
         let currentVisIndex = 0;
 
@@ -484,9 +486,7 @@
             });
         }
 
-        // ========================================================
-        // ЗАГРУЗКА СВОИХ ТРЕКОВ
-        // ========================================================
+        // Загрузка треков пользователя
         uploadBtn.addEventListener('click', () => fileInput.click());
 
         fileInput.addEventListener('change', (e) => {
@@ -502,16 +502,13 @@
                 });
             });
 
-            // Переключаемся сразу на первый добавленный трек
             currentIndex = playlist.length - files.length;
             renderPlaylist();
             playTrack(currentIndex);
-            fileInput.value = ''; // Сброс
+            fileInput.value = '';
         });
 
-        // ========================================================
-        // ПЕРЕКЛЮЧАТЕЛЬ 8 ВИЗУАЛОВ
-        // ========================================================
+        // Переключение визуалов
         function updateVisLabel() {
             visNameLabel.textContent = visualModes[currentVisIndex].name;
         }
@@ -548,7 +545,7 @@
                     freqData = new Uint8Array(analyser.frequencyBinCount);
                     timeData = new Uint8Array(analyser.frequencyBinCount);
                 } catch (e) {
-                    console.warn("Visualizer init warning:", e);
+                    console.warn("Visualizer audio context:", e);
                 }
             }
 
@@ -581,7 +578,6 @@
         }
 
         audio.addEventListener('error', () => {
-            console.error("Audio error on source:", audio.src);
             statusTag.textContent = 'ОШИБКА 404';
             statusTag.style.color = '#ff5252';
             isPlaying = false;
@@ -652,10 +648,7 @@
             audio.currentTime = (clickX / rect.width) * audio.duration;
         });
 
-        // ========================================================
-        // ДАННЫЕ ДЛЯ СПЕЦИАЛЬНЫХ ВИЗУАЛОВ
-        // ========================================================
-        // 1. Частицы для DUBSTEP BOMB
+        // Частицы и служебные массивы
         const particles = [];
         for (let i = 0; i < 90; i++) {
             particles.push({
@@ -667,16 +660,11 @@
                 color: i % 2 === 0 ? '#00ffcc' : '#ff007f'
             });
         }
-
-        // 2. Пиковые шапки для WINAMP TOWERS
         const peakBars = new Array(48).fill(0);
-
-        // 3. Капли для CYBER MATRIX
         const matrixDrops = [];
-        const matrixColumns = 60;
-        for (let i = 0; i < matrixColumns; i++) {
+        for (let i = 0; i < 60; i++) {
             matrixDrops.push({
-                x: (window.innerWidth / matrixColumns) * i,
+                x: (window.innerWidth / 60) * i,
                 y: Math.random() * window.innerHeight,
                 speed: 2 + Math.random() * 5
             });
@@ -686,18 +674,18 @@
         let globalTick = 0;
 
         // ========================================================
-        // ГЛАВНЫЙ ЦИКЛ РЕНДЕРА ВИЗУАЛИЗАЦИИ
+        // ЦИКЛ ОТРИСОВКИ ВСЕХ 14 ВИЗУАЛОВ
         // ========================================================
         function renderVisualizer() {
             requestAnimationFrame(renderVisualizer);
             globalTick += 0.03;
 
-            // Заливка шлейфа
+            // Сброс композитинга и шлейф
+            ctx.globalCompositeOperation = 'source-over';
             ctx.fillStyle = 'rgba(9, 8, 14, 0.28)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             if (!analyser || !isPlaying) {
-                // Дефолтная линия ожидания
                 ctx.beginPath();
                 ctx.strokeStyle = 'rgba(0, 255, 204, 0.25)';
                 ctx.lineWidth = 2;
@@ -712,7 +700,7 @@
             analyser.getByteFrequencyData(freqData);
             analyser.getByteTimeDomainData(timeData);
 
-            // Бас для голов и эффектов
+            // Бас
             const bass = (freqData[1] + freqData[2] + freqData[3] + freqData[4]) / 4;
             const normBass = bass / 255;
 
@@ -726,9 +714,9 @@
                 nextBtn.style.transform = 'scale(1) rotate(0deg)';
             }
 
-            // ========================================================
-            // ОТРИСОВКА ВЫБРАННОГО РЕЖИМА
-            // ========================================================
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+
             switch (currentVisIndex) {
                 // ----------------------------------------------------
                 // 01. WMP CLASSIC
@@ -737,7 +725,7 @@
                     if (normBass > 0.58) {
                         pulseRadius = Math.min(pulseRadius + 22, canvas.width / 2);
                         ctx.beginPath();
-                        ctx.arc(canvas.width / 2, canvas.height / 2, pulseRadius, 0, Math.PI * 2);
+                        ctx.arc(cx, cy, pulseRadius, 0, Math.PI * 2);
                         ctx.strokeStyle = `rgba(0, 255, 204, ${normBass * 0.5})`;
                         ctx.lineWidth = 4;
                         ctx.stroke();
@@ -745,17 +733,16 @@
                         pulseRadius = Math.max(0, pulseRadius - 14);
                     }
 
-                    // Зеленая синусоида
                     ctx.lineWidth = 3;
                     ctx.beginPath();
-                    const sliceWidth = canvas.width / timeData.length;
+                    const slice = canvas.width / timeData.length;
                     let x = 0;
                     for (let i = 0; i < timeData.length; i++) {
                         const v = timeData[i] / 128.0;
                         const y = (v * canvas.height) / 2;
                         if (i === 0) ctx.moveTo(x, y);
                         else ctx.lineTo(x, y);
-                        x += sliceWidth;
+                        x += slice;
                     }
                     ctx.strokeStyle = '#00ffcc';
                     ctx.shadowBlur = 14;
@@ -763,35 +750,232 @@
                     ctx.stroke();
                     ctx.shadowBlur = 0;
 
-                    // Столбики эквалайзера WMP
-                    const barCount = 42;
-                    const barWidth = canvas.width / barCount;
-                    for (let i = 0; i < barCount; i++) {
+                    const count = 42;
+                    const bw = canvas.width / count;
+                    for (let i = 0; i < count; i++) {
                         const val = freqData[i * 2] || 0;
-                        const barHeight = (val / 255) * (canvas.height * 0.33);
+                        const bh = (val / 255) * (canvas.height * 0.33);
                         ctx.fillStyle = `rgba(255, 0, 128, 0.4)`;
-                        ctx.fillRect(i * barWidth, 0, barWidth - 3, barHeight);
+                        ctx.fillRect(i * bw, 0, bw - 3, bh);
                         ctx.fillStyle = `rgba(0, 255, 204, 0.45)`;
-                        ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 3, barHeight);
+                        ctx.fillRect(i * bw, canvas.height - bh, bw - 3, bh);
                     }
                     break;
                 }
 
                 // ----------------------------------------------------
-                // 02. WINAMP TOWERS (Классический спектроанализатор с пиками)
+                // 02. AMBIENCE PLASMA (Огненная плазма из WMP)
                 // ----------------------------------------------------
                 case 1: {
+                    ctx.globalCompositeOperation = 'lighter';
+                    const rays = 75;
+                    const rBase = 80 + normBass * 90;
+
+                    // Огненные щупальца
+                    for (let i = 0; i < rays; i++) {
+                        const angle = (i / rays) * Math.PI * 2 + globalTick * 0.5;
+                        const f = freqData[i % freqData.length] || 10;
+                        const r = rBase + (f / 255) * (Math.min(cx, cy) * 0.85);
+
+                        const x1 = cx + Math.cos(angle) * rBase;
+                        const y1 = cy + Math.sin(angle) * rBase;
+                        const x2 = cx + Math.cos(angle) * r;
+                        const y2 = cy + Math.sin(angle) * r;
+
+                        const hue = (i * 4 + globalTick * 50) % 60; // Желто-красный огонь
+                        ctx.strokeStyle = `hsla(${hue}, 100%, 55%, 0.6)`;
+                        ctx.lineWidth = 4 + normBass * 5;
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.quadraticCurveTo(
+                            cx + Math.cos(angle + 0.3) * (r * 0.7),
+                            cy + Math.sin(angle + 0.3) * (r * 0.7),
+                            x2, y2
+                        );
+                        ctx.stroke();
+                    }
+
+                    // Центральное ядро
+                    const grad = ctx.createRadialGradient(cx, cy, 10, cx, cy, rBase);
+                    grad.addColorStop(0, '#ffffff');
+                    grad.addColorStop(0.3, '#ff0055');
+                    grad.addColorStop(0.8, '#ff5500');
+                    grad.addColorStop(1, 'transparent');
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, rBase, 0, Math.PI * 2);
+                    ctx.fill();
+                    break;
+                }
+
+                // ----------------------------------------------------
+                // 03. HYPNO VORTEX (Гипнотическая воронка со скрина WMP)
+                // ----------------------------------------------------
+                case 2: {
+                    ctx.globalCompositeOperation = 'lighter';
+                    const arms = 6;
+                    const steps = 120;
+                    const twist = 4 + normBass * 6;
+
+                    for (let a = 0; a < arms; a++) {
+                        const baseAngle = (a / arms) * Math.PI * 2 + globalTick;
+                        ctx.beginPath();
+                        for (let s = 0; s < steps; s++) {
+                            const p = s / steps;
+                            const r = p * Math.max(cx, cy) * 1.3;
+                            const angle = baseAngle + p * twist;
+                            const val = freqData[s % freqData.length] / 255;
+                            const wobble = Math.sin(p * 15 + globalTick * 3) * (val * 40);
+
+                            const x = cx + Math.cos(angle) * (r + wobble);
+                            const y = cy + Math.sin(angle) * (r + wobble);
+
+                            if (s === 0) ctx.moveTo(x, y);
+                            else ctx.lineTo(x, y);
+                        }
+                        ctx.strokeStyle = a % 2 === 0 ? '#ff1100' : '#ff7700';
+                        ctx.lineWidth = 3 + normBass * 6;
+                        ctx.shadowBlur = 15;
+                        ctx.shadowColor = '#ff2200';
+                        ctx.stroke();
+                        ctx.shadowBlur = 0;
+                    }
+                    break;
+                }
+
+                // ----------------------------------------------------
+                // 04. BATTERY BLOSSOM (3D Параметрический цветок-сетка)
+                // ----------------------------------------------------
+                case 3: {
+                    ctx.globalCompositeOperation = 'lighter';
+                    const petals = 7;
+                    const points = 240;
+                    const rad = Math.min(cx, cy) * 0.7;
+
+                    ctx.beginPath();
+                    for (let i = 0; i <= points; i++) {
+                        const theta = (i / points) * Math.PI * 2;
+                        const f = freqData[i % freqData.length] / 255;
+                        // Формула розы с фазовым искажением под бас
+                        const r = rad * Math.sin(petals * theta + globalTick) * (0.8 + normBass * 0.4) + f * 45;
+                        const x = cx + Math.cos(theta * 2 + globalTick * 0.5) * r;
+                        const y = cy + Math.sin(theta * 3 + globalTick * 0.7) * r;
+
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.strokeStyle = `hsl(${(globalTick * 40) % 360}, 100%, 65%)`;
+                    ctx.lineWidth = 2.5;
+                    ctx.shadowBlur = 12;
+                    ctx.shadowColor = '#00ffcc';
+                    ctx.stroke();
+                    ctx.shadowBlur = 0;
+                    break;
+                }
+
+                // ----------------------------------------------------
+                // 05. WHITECAP TUNNEL (Психоделический органический тоннель)
+                // ----------------------------------------------------
+                case 4: {
+                    ctx.globalCompositeOperation = 'lighter';
+                    const rings = 14;
+                    for (let r = 0; r < rings; r++) {
+                        const p = (r + (globalTick * 1.5) % 1) / rings;
+                        const rad = Math.pow(p, 2) * Math.max(cx, cy) * 1.4;
+                        const nodes = 40;
+
+                        ctx.beginPath();
+                        for (let n = 0; n <= nodes; n++) {
+                            const angle = (n / nodes) * Math.PI * 2;
+                            const f = freqData[(n * 2) % freqData.length] / 255;
+                            const wave = Math.sin(angle * 6 + globalTick * 4) * (20 + f * 40 * p);
+                            const currentR = rad + wave;
+
+                            const x = cx + Math.cos(angle) * currentR;
+                            const y = cy + Math.sin(angle) * currentR;
+
+                            if (n === 0) ctx.moveTo(x, y);
+                            else ctx.lineTo(x, y);
+                        }
+                        const hue = (110 + r * 15 + globalTick * 60) % 360; // Неоновый зеленый в циан
+                        ctx.strokeStyle = `hsla(${hue}, 100%, 60%, ${p * 0.85})`;
+                        ctx.lineWidth = 2.5 + p * 3;
+                        ctx.stroke();
+                    }
+                    break;
+                }
+
+                // ----------------------------------------------------
+                // 06. SILK STRING MOIRÉ (Шелковые нити и оптический муар)
+                // ----------------------------------------------------
+                case 5: {
+                    ctx.globalCompositeOperation = 'lighter';
+                    const lines = 9;
+                    const segments = 100;
+                    const step = canvas.width / segments;
+
+                    for (let l = 0; l < lines; l++) {
+                        ctx.beginPath();
+                        const phase = globalTick * 2 + l * 0.35;
+                        const freqIdx = (l * 6) % freqData.length;
+                        const amp = 40 + (freqData[freqIdx] / 255) * 160;
+
+                        for (let s = 0; s <= segments; s++) {
+                            const x = s * step;
+                            const y = cy + Math.sin(s * 0.08 + phase) * amp * Math.cos(s * 0.03 + phase * 0.5);
+                            if (s === 0) ctx.moveTo(x, y);
+                            else ctx.lineTo(x, y);
+                        }
+
+                        const hue = (160 + l * 20 + globalTick * 30) % 360;
+                        ctx.strokeStyle = `hsla(${hue}, 100%, 60%, 0.45)`;
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+                    }
+                    break;
+                }
+
+                // ----------------------------------------------------
+                // 07. CHROMATIC BLAST (Кислотный взрыв красок под саб-бас)
+                // ----------------------------------------------------
+                case 6: {
+                    ctx.globalCompositeOperation = 'lighter';
+                    const blastCount = 50;
+                    const maxR = Math.min(cx, cy) * (0.4 + normBass * 0.9);
+
+                    for (let i = 0; i < blastCount; i++) {
+                        const angle = (i / blastCount) * Math.PI * 2;
+                        const f = freqData[i % freqData.length] / 255;
+                        const len = maxR * (0.5 + f * 0.7);
+
+                        // Треугольные цветные брызги
+                        ctx.beginPath();
+                        ctx.moveTo(cx, cy);
+                        ctx.lineTo(cx + Math.cos(angle - 0.04) * (len * 0.8), cy + Math.sin(angle - 0.04) * (len * 0.8));
+                        ctx.lineTo(cx + Math.cos(angle) * len, cy + Math.sin(angle) * len);
+                        ctx.lineTo(cx + Math.cos(angle + 0.04) * (len * 0.8), cy + Math.sin(angle + 0.04) * (len * 0.8));
+                        ctx.closePath();
+
+                        const colors = ['#ffff00', '#00ffcc', '#ff007f', '#39ff14'];
+                        ctx.fillStyle = colors[i % colors.length];
+                        ctx.fill();
+                    }
+                    break;
+                }
+
+                // ----------------------------------------------------
+                // 08. WINAMP TOWERS
+                // ----------------------------------------------------
+                case 7: {
                     const count = 46;
                     const barW = canvas.width / count;
                     for (let i = 0; i < count; i++) {
                         const val = freqData[i * 2] || 0;
                         const h = (val / 255) * (canvas.height * 0.7);
 
-                        // Пиковые точки
                         if (h > peakBars[i]) peakBars[i] = h;
                         else peakBars[i] = Math.max(0, peakBars[i] - 3.5);
 
-                        // Градиент столбика
                         const grad = ctx.createLinearGradient(0, canvas.height, 0, canvas.height - h);
                         grad.addColorStop(0, '#00ffcc');
                         grad.addColorStop(0.7, '#f1c40f');
@@ -800,7 +984,6 @@
                         ctx.fillStyle = grad;
                         ctx.fillRect(i * barW + 2, canvas.height - h, barW - 4, h);
 
-                        // Пиковая крышечка
                         ctx.fillStyle = '#ffffff';
                         ctx.fillRect(i * barW + 2, canvas.height - peakBars[i] - 4, barW - 4, 3);
                     }
@@ -808,9 +991,9 @@
                 }
 
                 // ----------------------------------------------------
-                // 03. CYBER MATRIX (Цифровой ливень под частоты)
+                // 09. CYBER MATRIX
                 // ----------------------------------------------------
-                case 2: {
+                case 8: {
                     ctx.font = '14px monospace';
                     for (let i = 0; i < matrixDrops.length; i++) {
                         const drop = matrixDrops[i];
@@ -822,7 +1005,6 @@
                         ctx.fillStyle = i % 3 === 0 ? '#00ffcc' : '#39ff14';
                         ctx.fillText(String.fromCharCode(0x30A0 + (i % 60)), drop.x, drop.y);
 
-                        // Столбик снизу
                         ctx.fillStyle = 'rgba(0, 255, 204, 0.2)';
                         ctx.fillRect(drop.x, canvas.height - val * 1.2, 10, val * 1.2);
                     }
@@ -830,14 +1012,10 @@
                 }
 
                 // ----------------------------------------------------
-                // 04. RADAR SONAR (Круговой 360° спектр)
+                // 10. RADAR SONAR
                 // ----------------------------------------------------
-                case 3: {
-                    const cx = canvas.width / 2;
-                    const cy = canvas.height / 2;
+                case 9: {
                     const radius = Math.min(cx, cy) * 0.4 + normBass * 30;
-
-                    // Сканирующий луч
                     ctx.beginPath();
                     ctx.moveTo(cx, cy);
                     ctx.arc(cx, cy, radius * 1.8, globalTick * 2, globalTick * 2 + 0.35);
@@ -845,7 +1023,6 @@
                     ctx.fillStyle = 'rgba(0, 255, 204, 0.08)';
                     ctx.fill();
 
-                    // Радиальные лучи спектра
                     const points = 72;
                     ctx.beginPath();
                     for (let i = 0; i < points; i++) {
@@ -865,7 +1042,6 @@
                     }
                     ctx.stroke();
 
-                    // Внутреннее светящееся кольцо
                     ctx.beginPath();
                     ctx.arc(cx, cy, radius, 0, Math.PI * 2);
                     ctx.strokeStyle = '#ffffff';
@@ -875,18 +1051,14 @@
                 }
 
                 // ----------------------------------------------------
-                // 05. DUBSTEP BOMB (Взрыв частиц)
+                // 11. DUBSTEP BOMB
                 // ----------------------------------------------------
-                case 4: {
-                    const cx = canvas.width / 2;
-                    const cy = canvas.height / 2;
-
+                case 10: {
                     particles.forEach((p, idx) => {
                         const boost = (freqData[idx % freqData.length] / 255) * 14;
                         p.x += Math.cos(p.angle) * (p.speed + boost);
                         p.y += Math.sin(p.angle) * (p.speed + boost);
 
-                        // Возврат в центр
                         if (p.x < 0 || p.x > canvas.width || p.y < 0 || p.y > canvas.height) {
                             p.x = cx;
                             p.y = cy;
@@ -905,13 +1077,12 @@
                 }
 
                 // ----------------------------------------------------
-                // 06. SYNTHWAVE GRID (3D Кибер-сетка)
+                // 12. SYNTHWAVE GRID
                 // ----------------------------------------------------
-                case 5: {
+                case 11: {
                     const horizon = canvas.height * 0.45;
                     const lines = 18;
 
-                    // Перспективные лучи сетки
                     ctx.strokeStyle = 'rgba(0, 255, 204, 0.35)';
                     ctx.lineWidth = 2;
                     for (let i = -canvas.width; i <= canvas.width * 2; i += 75) {
@@ -921,7 +1092,6 @@
                         ctx.stroke();
                     }
 
-                    // Бегущие горизонтальные волны рельефа
                     for (let j = 0; j < lines; j++) {
                         const p = (j + (globalTick * 2) % 1) / lines;
                         const y = horizon + Math.pow(p, 2) * (canvas.height - horizon);
@@ -941,13 +1111,10 @@
                 }
 
                 // ----------------------------------------------------
-                // 07. LASER LISSAJOUS (Лазерные фигуры)
+                // 13. LASER LISSAJOUS
                 // ----------------------------------------------------
-                case 6: {
-                    const cx = canvas.width / 2;
-                    const cy = canvas.height / 2;
+                case 12: {
                     const r = Math.min(cx, cy) * 0.7;
-
                     ctx.lineWidth = 3;
                     ctx.strokeStyle = '#00ffcc';
                     ctx.shadowBlur = 18;
@@ -970,13 +1137,12 @@
                 }
 
                 // ----------------------------------------------------
-                // 08. RGB GLITCH SEISMIC (Сейсмограф с глитч-сдвигом)
+                // 14. RGB GLITCH SEISMIC
                 // ----------------------------------------------------
-                case 7: {
+                case 13: {
                     const colors = ['#ff0055', '#00ffcc', '#ffffff'];
                     const offsets = [-4, 0, 4];
 
-                    // Глитч-тряска при мощном саб-басе
                     const shakeX = normBass > 0.6 ? (Math.random() - 0.5) * 16 : 0;
                     const shakeY = normBass > 0.6 ? (Math.random() - 0.5) * 16 : 0;
 
