@@ -135,65 +135,65 @@ body {
     transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Расположение по колонкам стола (левая колонка тянется вправо, правая влево) */
-.sketchbook-object,
-.draw-object {
+/* Расположение по колонкам стола */
+/* Левая колонка (Телефон и Контакты) прижимается вправо к центру */
+.phone-object,
+.contact-object {
     justify-self: end;
 }
 
-.phone-object,
-.contact-object {
+/* Правая колонка (Скетчбук и Листок) прижимается влево к центру */
+.sketchbook-object,
+.draw-object {
     justify-self: start;
 }
 
-/* 1. Скетчбук (Портфолио) */
-.sketchbook-object {
-    width: clamp(190px, 18vw, 260px);
-    transform: rotate(-3deg);
-}
-.sketchbook-object:hover {
-    transform: rotate(-1deg) translateY(-6px) scale(1.02);
-}
-.sketchbook-object .item-label {
-    transform: rotate(-2deg);
-}
-
-/* 2. Листок для рисования */
-.draw-object {
-    width: clamp(180px, 17vw, 245px); /* Гармоничный размер под скетчбук */
-    transform: rotate(-2deg);
-}
-.draw-object:hover {
-    transform: rotate(0deg) translateY(-6px) scale(1.02);
-}
-.draw-object .item-label {
-    transform: rotate(1deg);
-}
-
-/* 3. Телефон */
+/* 1. Телефон (Сверху слева) */
 .phone-object {
     width: clamp(110px, 10vw, 145px);
-    transform: rotate(4deg);
+    transform: rotate(-3deg);
 }
 .phone-object:hover {
-    transform: rotate(2deg) translateY(-6px) scale(1.03);
+    transform: rotate(-1deg) translateY(-6px) scale(1.03);
 }
 .phone-label {
+    transform: rotate(-2deg);
+}
+
+/* 2. Скетчбук (Сверху справа) */
+.sketchbook-object {
+    width: clamp(190px, 18vw, 260px);
+    transform: rotate(3deg);
+}
+.sketchbook-object:hover {
+    transform: rotate(1deg) translateY(-6px) scale(1.02);
+}
+.sketchbook-object .item-label {
     transform: rotate(2deg);
 }
 
-/* 4. Контакты (нарисованная картинка) */
+/* 3. Контакты (Снизу слева) */
 .contact-object {
     width: clamp(170px, 16vw, 235px);
+    transform: rotate(-3deg);
+}
+.contact-object:hover {
+    transform: rotate(-1deg) translateY(-6px) scale(1.02);
+}
+.contact-object .item-label {
+    transform: rotate(2deg);
+}
+
+/* 4. Листок для рисования (Снизу справа) */
+.draw-object {
+    width: clamp(180px, 17vw, 245px);
     transform: rotate(3deg);
 }
-
-.contact-object:hover {
+.draw-object:hover {
     transform: rotate(1deg) translateY(-6px) scale(1.02);
 }
-
-.contact-object .item-label {
-    transform: rotate(-2deg);
+.draw-object .item-label {
+    transform: rotate(-1deg);
 }
 
 /* Тень предметов на стол (аккуратная, только справа-снизу) */
