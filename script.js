@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ========================================================
-    // 3. ИНТЕРАКТИВНЫЕ СКВИШИ (БИЛИНГВАЛЬНЫЕ + КАОМОДЗИ)
+    // ИНТЕРАКТИВНЫЕ ТАЩИБЕЛЬНЫЕ СКВИШИ (DRAG & DROP + SQUISH)
     // ========================================================
     const squishPhrases = {
         ru: [
@@ -119,6 +119,13 @@ document.addEventListener("DOMContentLoaded", () => {
         ]
     };
 
+    const dropPhrases = {
+        ru: ["ШМЯК!", "БУХ!", "ПЛЮХ!", "КУДЫ?!", "ОПА!"],
+        en: ["SPLAT!", "BONK!", "PLOP!", "WHEEE!", "BOOM!"]
+    };
+
+    const panicPhrases = ["(°Д°)!?", "(((;ﾟДﾟ)))", "ААА!", "NOOO!", "Σ(°ロ°)"];
+
     const animTypes = ["squash-pancake", "squash-sausage", "squash-diagonal", "squash-pop"];
 
     function playSqueak(pitchModifier = 1) {
@@ -130,7 +137,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             osc.type = "sine";
             const now = ctx.currentTime;
-
             osc.frequency.setValueAtTime(260 * pitchModifier, now);
             osc.frequency.exponentialRampToValueAtTime(700 * pitchModifier, now + 0.08);
 
@@ -139,39 +145,130 @@ document.addEventListener("DOMContentLoaded", () => {
 
             osc.connect(gain);
             gain.connect(ctx.destination);
-
             osc.start(now);
             osc.stop(now + 0.1);
         } catch (e) {}
     }
 
-    function setupSquish(elementId, bubbleId, soundPitch) {
+    // Звук глухого плюха при падении на стол
+    function playThud() {
+        try {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            const ctx = new AudioCtx();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = "triangle";
+            const now = ctx.currentTime;
+            osc.frequency.setValueAtTime(140, now);
+            osc.frequency.exponentialRampToValueAtTime(40, now + 0.12);
+
+            gain.gain.setValueAtTime(0.35, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now);
+            osc.stop(now + 0.12);
+        } catch (e) {}
+    }
+
+    function makeDraggableSquish(elementId, bubbleId, soundPitch) {
         const el = document.getElementById(elementId);
         const bubble = document.getElementById(bubbleId);
         if (!el) return;
 
-        el.addEventListener("pointerdown", () => {
+        let isDragging = false;
+        let hasMoved = false;
+        let startX = 0, startY = 0;
+        let initialLeft = 0, initialTop = 0;
+
+        el.addEventListener("pointerdown", (e) => {
+            isDragging = true;
+            hasMoved = false;
+            startX = e.clientX;
+            startY = e.clientY;
+
+            // Считываем точные экранные координаты, отвязывая от right/bottom
+            const rect = el.getBoundingClientRect();
+            initialLeft = rect.left + window.scrollX;
+            initialTop = rect.top + window.scrollY;
+
+            el.style.left = initialLeft + "px";
+            el.style.top = initialTop + "px";
+            el.style.right = "auto";
+            el.style.bottom = "auto";
+
+            el.setPointerCapture(e.pointerId);
             playSqueak(soundPitch);
+        });
 
-            animTypes.forEach(a => el.classList.remove(a));
-            void el.offsetWidth;
-            const randomAnim = animTypes[Math.floor(Math.random() * animTypes.length)];
-            el.classList.add(randomAnim);
+        el.addEventListener("pointermove", (e) => {
+            if (!isDragging) return;
 
-            if (bubble) {
-                // Выбираем фразы в зависимости от языка страницы
-                const curLang = document.documentElement.lang === "en" ? "en" : "ru";
-                const list = squishPhrases[curLang] || squishPhrases.ru;
-                bubble.textContent = list[Math.floor(Math.random() * list.length)];
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+
+            // Если сдвинули больше 6 пикселей — переходим в режим таскания
+            if (!hasMoved && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+                hasMoved = true;
+                el.classList.add("is-dragging");
                 
-                bubble.classList.add("show");
-                setTimeout(() => bubble.classList.remove("show"), 550);
+                // Включаем паническое облачко при переносе
+                if (bubble) {
+                    bubble.textContent = panicPhrases[Math.floor(Math.random() * panicPhrases.length)];
+                    bubble.classList.add("show");
+                }
+            }
+
+            if (hasMoved) {
+                el.style.left = (initialLeft + dx) + "px";
+                el.style.top = (initialTop + dy) + "px";
             }
         });
+
+        function endDrag(e) {
+            if (!isDragging) return;
+            isDragging = false;
+
+            try { el.releasePointerCapture(e.pointerId); } catch(err) {}
+            el.classList.remove("is-dragging");
+
+            if (hasMoved) {
+                // ПРИЗЕМЛЕНИЕ: смачно плюхается на стол
+                playThud();
+                el.classList.remove(...animTypes);
+                void el.offsetWidth;
+                el.classList.add("squash-pancake");
+
+                if (bubble) {
+                    const curLang = document.documentElement.lang === "en" ? "en" : "ru";
+                    const list = dropPhrases[curLang] || dropPhrases.ru;
+                    bubble.textContent = list[Math.floor(Math.random() * list.length)];
+                    bubble.classList.add("show");
+                    setTimeout(() => bubble.classList.remove("show"), 600);
+                }
+            } else {
+                // ОБЫЧНЫЙ КЛИК (Жмяканье на месте)
+                el.classList.remove(...animTypes);
+                void el.offsetWidth;
+                const randomAnim = animTypes[Math.floor(Math.random() * animTypes.length)];
+                el.classList.add(randomAnim);
+
+                if (bubble) {
+                    const curLang = document.documentElement.lang === "en" ? "en" : "ru";
+                    const list = squishPhrases[curLang] || squishPhrases.ru;
+                    bubble.textContent = list[Math.floor(Math.random() * list.length)];
+                    bubble.classList.add("show");
+                    setTimeout(() => bubble.classList.remove("show"), 550);
+                }
+            }
+        }
+
+        el.addEventListener("pointerup", endDrag);
+        el.addEventListener("pointercancel", endDrag);
     }
 
-    setupSquish("skvish1", "bubble1", 1.0);  // Басовый чпок слева
-    setupSquish("skvish2", "bubble2", 1.45); // Писклявый чпок справа
-    setupSquish("skvish1", "bubble1", 1.0);  // Басовитый жмяк слева
-    setupSquish("skvish2", "bubble2", 1.45); // Писклявый чпок справа
+    makeDraggableSquish("skvish1", "bubble1", 1.0);
+    makeDraggableSquish("skvish2", "bubble2", 1.45);
 });
