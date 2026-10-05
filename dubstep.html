@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZAGUSH — DUBSTEP ZONE 🔊</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #09090b;
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #ffffff;
+            color: #000000;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 14px;
+            padding: 8px 16px;
+            border: 2.5px solid #000;
+            box-shadow: 4px 4px 0 #ff0055;
+            transition: transform 0.15s ease;
+        }
+
+        .back-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 #ff0055;
+        }
+
+        h1 {
+            font-size: clamp(32px, 5vw, 64px);
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            color: #00ffff;
+            text-shadow: 4px 4px 0 #ff0055;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        p {
+            font-size: 15px;
+            color: #aaa;
+            margin-bottom: 30px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        /* Плеер */
+        .player-box {
+            background: #141419;
+            border: 3px solid #00ffff;
+            box-shadow: 8px 8px 0 #ff0055;
+            padding: 25px;
+            width: min(440px, 90vw);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .bass-icon {
+            font-size: 55px;
+            animation: pulse 0.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.18); }
+        }
+
+        audio {
+            width: 100%;
+            outline: none;
+        }
+
+        .track-info {
+            font-size: 13px;
+            font-weight: 800;
+            color: #00ffff;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn">← НА СТОЛ</a>
+
+    <div class="bass-icon">🔊💀🔊</div>
+    <h1>DUBSTEP ZONE</h1>
+    <p>ТЫ НАШЁЛ СЕКРЕТНУЮ КОМНАТУ</p>
+
+    <div class="player-box">
+        <div class="track-info">ТРЕК: Spag Heddy — The Master (NCS Free)</div>
+        
+        <!-- Замени ссылку на свой .mp3 файл, когда скачаешь -->
+        <audio id="audioPlayer" controls autoplay loop>
+            <source src="https://ia800701.us.archive.org/26/items/spag-heddy-the-master/Spag%20Heddy%20-%20The%20Master.mp3" type="audio/mpeg">
+            Ваш браузер не поддерживает аудио.
+        </audio>
+    </div>
+
+</body>
+</html>
