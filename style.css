@@ -135,6 +135,7 @@ body {
     transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+/* Расположение по колонкам стола (левая колонка тянется вправо, правая влево) */
 .sketchbook-object,
 .draw-object {
     justify-self: end;
@@ -143,6 +144,53 @@ body {
 .phone-object,
 .contact-object {
     justify-self: start;
+}
+
+/* 1. Скетчбук (Портфолио) */
+.sketchbook-object {
+    width: clamp(190px, 18vw, 260px);
+    transform: rotate(-3deg);
+}
+.sketchbook-object:hover {
+    transform: rotate(-1deg) translateY(-6px) scale(1.02);
+}
+.sketchbook-object .item-label {
+    transform: rotate(-2deg);
+}
+
+/* 2. Листок для рисования */
+.draw-object {
+    width: clamp(180px, 17vw, 245px); /* Гармоничный размер под скетчбук */
+    transform: rotate(-2deg);
+}
+.draw-object:hover {
+    transform: rotate(0deg) translateY(-6px) scale(1.02);
+}
+.draw-object .item-label {
+    transform: rotate(1deg);
+}
+
+/* 3. Телефон */
+.phone-object {
+    width: clamp(110px, 10vw, 145px);
+    transform: rotate(4deg);
+}
+.phone-object:hover {
+    transform: rotate(2deg) translateY(-6px) scale(1.03);
+}
+.phone-label {
+    transform: rotate(2deg);
+}
+
+/* 4. Контакты (пока плашка) */
+.contact-object {
+    width: clamp(170px, 16vw, 230px);
+}
+.contact-placeholder {
+    transform: rotate(3deg);
+}
+.contact-object .item-label {
+    transform: rotate(-2deg);
 }
 
 /* Тень предметов на стол (аккуратная, только справа-снизу) */
