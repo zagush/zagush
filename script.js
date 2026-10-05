@@ -102,12 +102,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ========================================================
-    // 3. ИНТЕРАКТИВНЫЕ СКВИШИ (SKVISH 1 & SKVISH 2)
+    // 3. ИНТЕРАКТИВНЫЕ СКВИШИ (БИЛИНГВАЛЬНЫЕ + КАОМОДЗИ)
     // ========================================================
-    const words = ["ЖМЯК!", "ЧПОК!", "ОЙ!", "БУЛЬК!", "ПЫЩ!", "ТЫК!", "КВА!"];
+    const squishPhrases = {
+        ru: [
+            "мяу :3", "(=^･ω･^=)", "тыгыдык!", "мур-мур", "шшш!",
+            ":D", ":P", "(⁠≧⁠▽⁠≦⁠)", "приви!", "@zagush",
+            "(⁠つ⁠✧⁠ω⁠✧⁠)⁠つ", "мяу мяу!", "не жмякай!", "кусь!",
+            "ня :3", "(⁠◕⁠‿⁠◕⁠)", "ой!", "чпок!", "бульк!"
+        ],
+        en: [
+            "meow :3", "(=^･ω･^=)", "zoomies!", "purr-purr", "hiss!",
+            ":D", ":P", "(⁠≧⁠▽⁠≦⁠)", "heyy!", "@zagush",
+            "(⁠つ⁠✧⁠ω⁠✧⁠)⁠つ", "meow meow!", "don't squish!", "nom!",
+            "nya :3", "(⁠◕⁠‿⁠◕⁠)", "ouch!", "pop!", "boop!"
+        ]
+    };
+
     const animTypes = ["squash-pancake", "squash-sausage", "squash-diagonal", "squash-pop"];
 
-    // Мультяшный резиновый свист через нативный Web Audio API
     function playSqueak(pitchModifier = 1) {
         try {
             const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -137,23 +150,28 @@ document.addEventListener("DOMContentLoaded", () => {
         const bubble = document.getElementById(bubbleId);
         if (!el) return;
 
-        // pointerdown работает и с мышки, и с тачскрина телефона
         el.addEventListener("pointerdown", () => {
             playSqueak(soundPitch);
 
             animTypes.forEach(a => el.classList.remove(a));
-            void el.offsetWidth; // перезапуск CSS анимации
+            void el.offsetWidth;
             const randomAnim = animTypes[Math.floor(Math.random() * animTypes.length)];
             el.classList.add(randomAnim);
 
             if (bubble) {
-                bubble.textContent = words[Math.floor(Math.random() * words.length)];
+                // Выбираем фразы в зависимости от языка страницы
+                const curLang = document.documentElement.lang === "en" ? "en" : "ru";
+                const list = squishPhrases[curLang] || squishPhrases.ru;
+                bubble.textContent = list[Math.floor(Math.random() * list.length)];
+                
                 bubble.classList.add("show");
-                setTimeout(() => bubble.classList.remove("show"), 500);
+                setTimeout(() => bubble.classList.remove("show"), 550);
             }
         });
     }
 
+    setupSquish("skvish1", "bubble1", 1.0);  // Басовый чпок слева
+    setupSquish("skvish2", "bubble2", 1.45); // Писклявый чпок справа
     setupSquish("skvish1", "bubble1", 1.0);  // Басовитый жмяк слева
     setupSquish("skvish2", "bubble2", 1.45); // Писклявый чпок справа
 });
