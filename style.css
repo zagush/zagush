@@ -182,13 +182,16 @@ body {
     transform: rotate(2deg);
 }
 
-/* 4. Контакты (пока плашка) */
+/* 4. Контакты (нарисованная картинка) */
 .contact-object {
-    width: clamp(170px, 16vw, 230px);
-}
-.contact-placeholder {
+    width: clamp(170px, 16vw, 235px);
     transform: rotate(3deg);
 }
+
+.contact-object:hover {
+    transform: rotate(1deg) translateY(-6px) scale(1.02);
+}
+
 .contact-object .item-label {
     transform: rotate(-2deg);
 }
