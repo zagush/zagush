@@ -520,9 +520,10 @@ body {
    ======================================================== */
 .skvish {
     position: absolute;
-    z-index: 2; /* Под текстом описания и шапкой */
-    cursor: pointer;
+    z-index: 2;
+    cursor: grab;
     user-select: none;
+    touch-action: none; /* Запрещает странице скроллиться на телефоне, когда тащишь лицо */
     -webkit-tap-highlight-color: transparent;
     transform-origin: center bottom;
 }
@@ -533,7 +534,6 @@ body {
     object-fit: contain;
     display: block;
     pointer-events: none;
-    /* Только естественная объемная тень на дерево стола */
     filter: drop-shadow(6px 8px 10px rgba(0, 0, 0, 0.45));
     transition: filter 0.15s ease;
 }
@@ -554,8 +554,28 @@ body {
     aspect-ratio: 1 / 1.2;
 }
 
-/* При наведении — только легкая игривая тряска без свечения */
-.skvish:hover img {
+/* СОСТОЯНИЕ В ПОЛЁТЕ (КОГДА ТАЩИШЬ МЫШКОЙ ИЛИ ПАЛЬЦЕМ) */
+.skvish.is-dragging {
+    cursor: grabbing !important;
+    z-index: 1000 !important; /* Взлетает над всем столом */
+    transition: none !important;
+}
+
+.skvish.is-dragging img {
+    /* Паническая смешная тряска в воздухе */
+    animation: panicDangle 0.14s ease-in-out infinite alternate !important;
+    /* Тень отодвигается — эффект, что оторвали от стола */
+    filter: drop-shadow(14px 22px 18px rgba(0, 0, 0, 0.6)) !important;
+    transform-origin: center top;
+}
+
+@keyframes panicDangle {
+    0% { transform: scale(1.15, 0.88) rotate(-14deg); }
+    100% { transform: scale(0.88, 1.15) rotate(14deg); }
+}
+
+/* Покачивание при обычном наведении мыши (когда не тащишь) */
+.skvish:not(.is-dragging):hover img {
     animation: skvishWiggle 0.35s ease-in-out infinite alternate;
     filter: drop-shadow(8px 12px 14px rgba(0, 0, 0, 0.55));
 }
@@ -581,8 +601,8 @@ body {
     white-space: nowrap;
     pointer-events: none;
     opacity: 0;
-    z-index: 3;
-    transition: transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 0.2s ease;
+    z-index: 1002;
+    transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 0.15s ease;
 }
 
 .skvish-bubble.show {
@@ -590,7 +610,7 @@ body {
     opacity: 1;
 }
 
-/* Анимации жмяканья (сочное желе) */
+/* Анимации жмяканья и плюханья */
 .squash-pancake { animation: animPancake 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards !important; }
 .squash-sausage { animation: animSausage 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards !important; }
 .squash-diagonal { animation: animDiagonal 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards !important; }
@@ -598,8 +618,8 @@ body {
 
 @keyframes animPancake {
     0% { transform: scale(1, 1); }
-    25% { transform: scale(1.55, 0.45) translateY(18px); }
-    55% { transform: scale(0.75, 1.35) translateY(-8px); }
+    25% { transform: scale(1.6, 0.4) translateY(18px); }
+    55% { transform: scale(0.7, 1.35) translateY(-8px); }
     75% { transform: scale(1.15, 0.9); }
     100% { transform: scale(1, 1); }
 }
