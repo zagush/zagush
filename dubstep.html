@@ -12,20 +12,20 @@
         }
 
         body {
-            background: #06050a;
+            background: #09080e;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             font-family: Arial, Helvetica, sans-serif;
-            color: #fff;
+            color: #000;
             overflow: hidden;
             user-select: none;
             padding: 20px;
         }
 
-        /* Полноэкранный визуализатор Windows Media Player */
+        /* Визуализатор Windows Media Player на фоне */
         #bgCanvas {
             position: fixed;
             inset: 0;
@@ -35,27 +35,27 @@
             pointer-events: none;
         }
 
-        /* Кнопка возврата */
+        /* Кнопка НА СТОЛ в стиле рисовалки */
         .back-btn {
             position: fixed;
             top: 20px;
             left: 20px;
-            background: #ffffff;
-            color: #000000;
+            background: #ff5252;
+            color: #ffffff;
             text-decoration: none;
             font-weight: 900;
             font-size: 13px;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.05em;
             padding: 8px 16px;
-            border: 2px solid #000;
-            box-shadow: 4px 4px 0 #00ffcc;
+            border: 2.5px solid #000;
+            box-shadow: 3px 3px 0 #000;
             z-index: 100;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
         .back-btn:hover {
             transform: translate(-1px, -1px);
-            box-shadow: 6px 6px 0 #00ffcc;
+            box-shadow: 4px 4px 0 #000;
         }
 
         /* Главная сцена */
@@ -70,7 +70,7 @@
             max-width: 1050px;
         }
 
-        /* Интерактивные лица-кнопки */
+        /* Лица-кнопки по бокам */
         .head-btn {
             position: relative;
             background: none;
@@ -93,47 +93,51 @@
             object-fit: contain;
             display: block;
             pointer-events: none;
-            filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.9));
+            filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.85));
         }
 
         .head-btn:hover img {
-            filter: drop-shadow(0 0 18px #00ffcc);
+            filter: drop-shadow(0 0 16px #00ffcc);
         }
 
+        /* Стрелки-стикеры над головами */
         .head-hint {
             position: absolute;
-            top: -24px;
-            font-size: 20px;
+            top: -20px;
+            background: #ffffff;
+            color: #000000;
+            border: 2px solid #000;
+            box-shadow: 2px 2px 0 #000;
+            font-size: 14px;
             font-weight: 900;
-            color: #00ffcc;
-            opacity: 0.7;
-            transition: opacity 0.2s ease, transform 0.2s ease;
-        }
-        .head-btn:hover .head-hint {
-            opacity: 1;
-            transform: scale(1.3);
+            padding: 2px 8px;
+            transition: transform 0.15s ease;
         }
 
-        /* Центр: Карточка плейлиста */
+        .head-btn:hover .head-hint {
+            transform: scale(1.15) translateY(-2px);
+        }
+
+        /* Карточка плейлиста в нео-брутализме */
         .playlist-card {
-            background: rgba(18, 15, 25, 0.9);
-            backdrop-filter: blur(8px);
-            border: 3px solid #000;
-            box-shadow: 8px 8px 0 #000, 0 0 30px rgba(0, 255, 204, 0.2);
-            width: min(440px, 88vw);
-            padding: 20px;
+            background: #ffffff;
+            border: 3px solid #000000;
+            box-shadow: 7px 7px 0 #000000;
+            width: min(420px, 88vw);
+            padding: 18px;
             display: flex;
             flex-direction: column;
             gap: 12px;
             z-index: 10;
         }
 
-        /* Полоса прогресса трека */
+        /* Полоса прогресса */
         .progress-bar-wrap {
             width: 100%;
-            height: 10px;
-            background: #252033;
-            border: 1.5px solid #000;
+            height: 14px;
+            background: #f0f0f0;
+            border: 2px solid #000000;
+            box-shadow: 2px 2px 0 #000;
             cursor: pointer;
             position: relative;
         }
@@ -142,11 +146,11 @@
             height: 100%;
             width: 0%;
             background: #00ffcc;
-            box-shadow: 0 0 10px #00ffcc;
+            border-right: 2px solid #000;
             transition: width 0.1s linear;
         }
 
-        /* Список треков с красивым скроллом */
+        /* Список треков */
         .tracks-list {
             display: flex;
             flex-direction: column;
@@ -160,69 +164,65 @@
             width: 6px;
         }
         .tracks-list::-webkit-scrollbar-track {
-            background: #15121e;
+            background: #eeeeee;
+            border-left: 1px solid #000;
         }
         .tracks-list::-webkit-scrollbar-thumb {
-            background: #00ffcc;
-            border-radius: 2px;
+            background: #000000;
         }
 
+        /* Кнопка отдельного трека */
         .track-item {
-            background: #221d2e;
-            border: 2px solid #000;
-            box-shadow: 3px 3px 0 #000;
+            background: #f6f6f6;
+            border: 2px solid #000000;
+            box-shadow: 2.5px 2.5px 0 #000000;
             padding: 10px 14px;
-            font-weight: 800;
+            font-weight: 900;
             font-size: 13px;
             letter-spacing: 0.05em;
+            color: #000000;
             display: flex;
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
-            transition: transform 0.12s ease, background 0.12s ease;
+            transition: transform 0.1s ease, background 0.1s ease;
         }
 
         .track-item:hover {
-            background: #322b42;
-            transform: translateX(3px);
+            background: #ffffff;
+            transform: translate(-1px, -1px);
+            box-shadow: 3.5px 3.5px 0 #000000;
         }
 
         .track-item.active {
             background: #00ffcc;
-            color: #000000;
-            border-color: #000000;
-            box-shadow: 4px 4px 0 #000;
+            box-shadow: 3.5px 3.5px 0 #000000;
         }
 
         .track-num {
             font-size: 11px;
-            opacity: 0.7;
+            opacity: 0.6;
             margin-right: 8px;
         }
 
-        .track-status {
-            font-size: 12px;
-        }
-
-        /* Кнопка Play/Pause */
+        /* Главная кнопка Play / Pause */
         .play-btn {
-            background: #ffffff;
+            background: #00ffcc;
             color: #000000;
-            border: 2px solid #000;
-            box-shadow: 4px 4px 0 #000;
-            padding: 10px;
+            border: 2.5px solid #000000;
+            box-shadow: 3.5px 3.5px 0 #000000;
+            padding: 11px;
             font-weight: 900;
             font-size: 14px;
             letter-spacing: 0.08em;
             cursor: pointer;
             width: 100%;
-            margin-top: 4px;
-            transition: transform 0.1s ease;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
         .play-btn:hover {
             transform: translate(-1px, -1px);
-            box-shadow: 5px 5px 0 #000;
+            box-shadow: 5px 5px 0 #000000;
         }
 
         @media (max-width: 650px) {
@@ -238,7 +238,7 @@
 </head>
 <body>
 
-    <!-- Канвас ретро визуализатора -->
+    <!-- Фон визуализатора -->
     <canvas id="bgCanvas"></canvas>
 
     <a href="index.html" class="back-btn">← НА СТОЛ</a>
@@ -246,7 +246,7 @@
     <div class="stage">
         <!-- Левое лицо: Назад -->
         <button id="prevBtn" class="head-btn" title="Предыдущий трек">
-            <span class="head-hint">◄</span>
+            <span class="head-hint">◄ НАЗАД</span>
             <img src="face2.png" id="leftHead" alt="Назад" onerror="this.src='face.png'">
         </button>
 
@@ -258,29 +258,30 @@
 
             <div class="tracks-list" id="tracksContainer"></div>
 
-            <button id="playPauseBtn" class="play-btn">ПАУЗА ||</button>
+            <button id="playPauseBtn" class="play-btn">ИГРАТЬ ▶</button>
         </div>
 
         <!-- Правое лицо: Вперёд -->
         <button id="nextBtn" class="head-btn" title="Следующий трек">
-            <span class="head-hint">►</span>
+            <span class="head-hint">ВПЕРЁД ►</span>
             <img src="face3.png" id="rightHead" alt="Вперёд" onerror="this.src='face.png'">
         </button>
     </div>
 
-    <audio id="audio" crossorigin="anonymous"></audio>
+    <!-- Аудио элемент (чистый, без ограничений CORS) -->
+    <audio id="audio" preload="auto"></audio>
 
     <script>
-        // ВСЕ ТВОИ 8 ТРЕКОВ
+        // СПИСОК ТРЕКОВ (БЕЗ СЛОВА DUBSTEP)
         const playlist = [
-            { title: "ANGRY BIRDS DUBSTEP", file: "angry-birds.mp3" },
-            { title: "DUBSTEP TRACK 1", file: "track1.mp3" },
-            { title: "DUBSTEP TRACK 2", file: "track2.mp3" },
-            { title: "DUBSTEP TRACK 3", file: "track3.mp3" },
-            { title: "DUBSTEP TRACK 4", file: "track4.mp3" },
-            { title: "DUBSTEP TRACK 5", file: "track5.mp3" },
-            { title: "DUBSTEP TRACK 6", file: "track6.mp3" },
-            { title: "DUBSTEP TRACK 7", file: "track7.mp3" }
+            { title: "ANGRY BIRDS", file: "angry-birds.mp3" },
+            { title: "TRACK 1", file: "track1.mp3" },
+            { title: "TRACK 2", file: "track2.mp3" },
+            { title: "TRACK 3", file: "track3.mp3" },
+            { title: "TRACK 4", file: "track4.mp3" },
+            { title: "TRACK 5", file: "track5.mp3" },
+            { title: "TRACK 6", file: "track6.mp3" },
+            { title: "TRACK 7", file: "track7.mp3" }
         ];
 
         let currentIndex = 0;
@@ -316,7 +317,7 @@
                         <span class="track-num">0${idx + 1}</span>
                         <span>${track.title}</span>
                     </div>
-                    <span class="track-status">${idx === currentIndex && isPlaying ? '▶' : ''}</span>
+                    <span style="font-size:11px;">${idx === currentIndex && isPlaying ? '▶ ИГРАЕТ' : ''}</span>
                 `;
                 item.addEventListener('click', () => {
                     currentIndex = idx;
@@ -331,29 +332,38 @@
             renderPlaylist();
         }
 
-        function loadAndPlay() {
-            initAudioContext();
+        async function loadAndPlay() {
+            await unlockAudioContext();
             loadTrack(currentIndex);
             audio.play().then(() => {
                 isPlaying = true;
                 playPauseBtn.textContent = 'ПАУЗА ||';
+                playPauseBtn.style.background = '#ffffff';
                 renderPlaylist();
-            }).catch(e => console.log('Autoplay policy'));
+            }).catch(e => {
+                console.log("Audio play error:", e);
+            });
         }
 
-        function togglePlay() {
-            initAudioContext();
+        async function togglePlay() {
+            await unlockAudioContext();
             if (audio.paused) {
-                if (!audio.src) loadTrack(currentIndex);
-                audio.play();
-                isPlaying = true;
-                playPauseBtn.textContent = 'ПАУЗА ||';
+                if (!audio.src || audio.src === "") {
+                    loadTrack(currentIndex);
+                }
+                audio.play().then(() => {
+                    isPlaying = true;
+                    playPauseBtn.textContent = 'ПАУЗА ||';
+                    playPauseBtn.style.background = '#ffffff';
+                    renderPlaylist();
+                }).catch(e => console.log("Play error:", e));
             } else {
                 audio.pause();
                 isPlaying = false;
                 playPauseBtn.textContent = 'ИГРАТЬ ▶';
+                playPauseBtn.style.background = '#00ffcc';
+                renderPlaylist();
             }
-            renderPlaylist();
         }
 
         playPauseBtn.addEventListener('click', togglePlay);
@@ -387,27 +397,31 @@
         });
 
         // ========================================================
-        // WEB AUDIO API + WINDOWS MEDIA PLAYER ЭФФЕКТ
+        // WEB AUDIO API: НАДЕЖНЫЙ СТАРТ И АНАЛИЗАТОР
         // ========================================================
         let audioCtx, analyser, source;
         let freqData, timeData;
         let isAudioCtxInit = false;
 
-        function initAudioContext() {
-            if (isAudioCtxInit) return;
-            try {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                analyser = audioCtx.createAnalyser();
-                analyser.fftSize = 256;
-                source = audioCtx.createMediaElementSource(audio);
-                source.connect(analyser);
-                analyser.connect(audioCtx.destination);
+        async function unlockAudioContext() {
+            if (!isAudioCtxInit) {
+                try {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    analyser = audioCtx.createAnalyser();
+                    analyser.fftSize = 256;
+                    source = audioCtx.createMediaElementSource(audio);
+                    source.connect(analyser);
+                    analyser.connect(audioCtx.destination);
 
-                freqData = new Uint8Array(analyser.frequencyBinCount);
-                timeData = new Uint8Array(analyser.frequencyBinCount);
-                isAudioCtxInit = true;
-            } catch (err) {
-                console.log(err);
+                    freqData = new Uint8Array(analyser.frequencyBinCount);
+                    timeData = new Uint8Array(analyser.frequencyBinCount);
+                    isAudioCtxInit = true;
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                await audioCtx.resume();
             }
         }
 
@@ -416,14 +430,12 @@
         function renderVisualizer() {
             requestAnimationFrame(renderVisualizer);
 
-            // Эффект затухания шлейфа как в WMP
-            ctx.fillStyle = 'rgba(7, 6, 11, 0.25)';
+            ctx.fillStyle = 'rgba(9, 8, 14, 0.28)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             if (!analyser || !isPlaying) {
-                // Если на паузе — рисуем спокойную ровную зеленую линию
                 ctx.beginPath();
-                ctx.strokeStyle = 'rgba(0, 255, 204, 0.2)';
+                ctx.strokeStyle = 'rgba(0, 255, 204, 0.25)';
                 ctx.lineWidth = 2;
                 ctx.moveTo(0, canvas.height / 2);
                 ctx.lineTo(canvas.width, canvas.height / 2);
@@ -436,12 +448,12 @@
             analyser.getByteFrequencyData(freqData);
             analyser.getByteTimeDomainData(timeData);
 
-            // 1. Анализ баса для лиц
+            // Бас для лиц
             const bass = (freqData[1] + freqData[2] + freqData[3] + freqData[4]) / 4;
             const normBass = bass / 255;
 
             if (normBass > 0.35) {
-                const scale = 1 + normBass * 0.35;
+                const scale = 1 + normBass * 0.38;
                 leftHead.style.transform = `scale(${scale}) rotate(${-12 * normBass}deg)`;
                 rightHead.style.transform = `scale(${scale}) rotate(${12 * normBass}deg)`;
             } else {
@@ -449,19 +461,19 @@
                 rightHead.style.transform = 'scale(1) rotate(0deg)';
             }
 
-            // 2. Вспышка ударной волны от саб-баса в центре
-            if (normBass > 0.6) {
-                pulseRadius = Math.min(pulseRadius + 18, canvas.width / 2);
+            // Вспышка волны от саб-баса
+            if (normBass > 0.58) {
+                pulseRadius = Math.min(pulseRadius + 20, canvas.width / 2);
                 ctx.beginPath();
                 ctx.arc(canvas.width / 2, canvas.height / 2, pulseRadius, 0, Math.PI * 2);
-                ctx.strokeStyle = `rgba(255, 0, 128, ${normBass * 0.4})`;
+                ctx.strokeStyle = `rgba(0, 255, 204, ${normBass * 0.45})`;
                 ctx.lineWidth = 4;
                 ctx.stroke();
             } else {
-                pulseRadius = Math.max(0, pulseRadius - 10);
+                pulseRadius = Math.max(0, pulseRadius - 12);
             }
 
-            // 3. Волновой осциллограф WMP (синусоида по центру)
+            // Осциллограф WMP (зеленая синусоида)
             ctx.lineWidth = 3;
             ctx.beginPath();
             const sliceWidth = canvas.width / timeData.length;
@@ -470,31 +482,27 @@
             for (let i = 0; i < timeData.length; i++) {
                 const v = timeData[i] / 128.0;
                 const y = (v * canvas.height) / 2;
-
                 if (i === 0) ctx.moveTo(x, y);
                 else ctx.lineTo(x, y);
-
                 x += sliceWidth;
             }
             ctx.strokeStyle = '#00ffcc';
-            ctx.shadowBlur = 15;
+            ctx.shadowBlur = 14;
             ctx.shadowColor = '#00ffcc';
             ctx.stroke();
             ctx.shadowBlur = 0;
 
-            // 4. Частотные столбики WMP снизу и сверху экрана
-            const barCount = 48;
+            // Столбики эквалайзера WMP сверху и снизу
+            const barCount = 42;
             const barWidth = canvas.width / barCount;
             for (let i = 0; i < barCount; i++) {
                 const val = freqData[i * 2] || 0;
-                const barHeight = (val / 255) * (canvas.height * 0.35);
+                const barHeight = (val / 255) * (canvas.height * 0.33);
 
-                // Верхний спектр (фиолетовый)
-                ctx.fillStyle = `rgba(200, 0, 255, 0.45)`;
+                ctx.fillStyle = `rgba(255, 0, 128, 0.4)`;
                 ctx.fillRect(i * barWidth, 0, barWidth - 3, barHeight);
 
-                // Нижний спектр (зелено-бирюзовый)
-                ctx.fillStyle = `rgba(0, 255, 170, 0.45)`;
+                ctx.fillStyle = `rgba(0, 255, 204, 0.45)`;
                 ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 3, barHeight);
             }
         }
