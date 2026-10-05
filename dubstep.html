@@ -25,7 +25,7 @@
             padding: 20px;
         }
 
-        /* Визуализатор на весь фон */
+        /* Фоновый визуализатор WMP */
         #bgCanvas {
             position: fixed;
             inset: 0;
@@ -35,7 +35,7 @@
             pointer-events: none;
         }
 
-        /* Верхняя панель в стиле панели рисовалки */
+        /* Верхняя панель тулбара */
         .top-nav {
             position: fixed;
             top: 15px;
@@ -45,11 +45,11 @@
             align-items: center;
             background: #ffffff;
             border: 2px solid #000000;
-            padding: 5px;
+            padding: 4px;
             box-shadow: 3px 3px 0 #000;
         }
 
-        /* Кнопка НА СТОЛ (как на скриншоте) */
+        /* Кнопка НА СТОЛ точно как на скриншоте */
         .btn-exit {
             background: #e74c3c;
             color: #ffffff;
@@ -57,7 +57,7 @@
             font-weight: 900;
             font-size: 13px;
             letter-spacing: 0.05em;
-            padding: 7px 14px;
+            padding: 6px 14px;
             border: 2px solid #000000;
             display: inline-flex;
             align-items: center;
@@ -70,7 +70,7 @@
             opacity: 0.9;
         }
 
-        /* Главная сцена с головами и плеером */
+        /* Главная сцена */
         .stage {
             position: relative;
             z-index: 10;
@@ -82,7 +82,7 @@
             max-width: 1050px;
         }
 
-        /* Лица-кнопки по бокам */
+        /* Интерактивные головы */
         .head-btn {
             position: relative;
             background: none;
@@ -112,7 +112,7 @@
             filter: drop-shadow(0 0 16px #00ffcc);
         }
 
-        /* Стикерные подсказки над головами в стиле тулбара */
+        /* Стикеры над головами */
         .head-hint {
             position: absolute;
             top: -24px;
@@ -122,7 +122,7 @@
             font-size: 11px;
             font-weight: 900;
             letter-spacing: 0.05em;
-            padding: 3px 8px;
+            padding: 2px 8px;
             white-space: nowrap;
         }
 
@@ -130,19 +130,19 @@
             background: #00ffcc;
         }
 
-        /* Панель плейлиста — стилизация под ретро-тулбар */
+        /* Основной блок плеера */
         .player-panel {
             background: #ffffff;
             border: 2px solid #000000;
-            box-shadow: 5px 5px 0 #000000;
-            width: min(440px, 90vw);
-            padding: 8px;
+            box-shadow: 6px 6px 0 #000000;
+            width: min(450px, 92vw);
+            padding: 10px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
 
-        /* Верхняя служебная плашка плеера */
+        /* Шапка плеера */
         .player-header {
             background: #dbe2e8;
             border: 2px solid #000000;
@@ -150,18 +150,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 900;
             letter-spacing: 0.05em;
         }
 
         .player-status-tag {
-            background: #000;
+            background: #000000;
             color: #00ffcc;
             padding: 2px 6px;
+            font-size: 11px;
         }
 
-        /* Прогресс-бар */
+        /* Полоса прогресса */
         .progress-bar-wrap {
             width: 100%;
             height: 16px;
@@ -178,14 +179,14 @@
             border-right: 2px solid #000000;
         }
 
-        /* Список треков */
+        /* Список треков — теперь с четкими отступами, ничего не обрезается */
         .tracks-list {
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            max-height: 240px;
+            gap: 6px;
+            max-height: 230px;
             overflow-y: auto;
-            padding-right: 4px;
+            padding: 2px 4px 2px 0;
         }
 
         .tracks-list::-webkit-scrollbar {
@@ -225,17 +226,11 @@
 
         .track-num {
             font-size: 11px;
-            opacity: 0.6;
-            margin-right: 6px;
+            opacity: 0.65;
+            margin-right: 8px;
         }
 
-        /* Нижний ряд кнопок управления */
-        .controls-row {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 6px;
-        }
-
+        /* Кнопка ИГРАТЬ / ПАУЗА */
         .play-btn {
             background: #00ffcc;
             color: #000000;
@@ -247,6 +242,7 @@
             letter-spacing: 0.08em;
             cursor: pointer;
             transition: background 0.1s ease;
+            width: 100%;
         }
 
         .play-btn:hover {
@@ -256,20 +252,18 @@
         @media (max-width: 650px) {
             .stage {
                 flex-direction: column;
-                gap: 12px;
+                gap: 14px;
             }
             .head-btn {
-                width: 80px;
+                width: 85px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Canvas Visualizer -->
     <canvas id="bgCanvas"></canvas>
 
-    <!-- Верхний тулбар -->
     <div class="top-nav">
         <a href="index.html" class="btn-exit">← НА СТОЛ</a>
     </div>
@@ -281,7 +275,7 @@
             <img src="face2.png" id="leftHead" alt="Назад" onerror="this.src='face.png'">
         </button>
 
-        <!-- Окно плеера -->
+        <!-- Плеер -->
         <div class="player-panel">
             <div class="player-header">
                 <span>DUBSTEP_AUDIO // SYSTEM</span>
@@ -294,9 +288,7 @@
 
             <div class="tracks-list" id="tracksContainer"></div>
 
-            <div class="controls-row">
-                <button id="playPauseBtn" class="play-btn" type="button">ИГРАТЬ ▶</button>
-            </div>
+            <button id="playPauseBtn" class="play-btn" type="button">ИГРАТЬ ▶</button>
         </div>
 
         <!-- Следующий трек -->
@@ -306,8 +298,8 @@
         </button>
     </div>
 
-    <!-- Нативный элемент Audio -->
-    <audio id="audio" preload="auto"></audio>
+    <!-- Аудио элемент -->
+    <audio id="audio" preload="metadata"></audio>
 
     <script>
         const playlist = [
@@ -355,18 +347,18 @@
                         <span class="track-num">0${idx + 1}</span>
                         <span>${track.title}</span>
                     </div>
-                    <span style="font-size:11px;">${idx === currentIndex && isPlaying ? '● PLAYING' : ''}</span>
+                    <span style="font-size:11px;">${idx === currentIndex && isPlaying ? '● ИГРАЕТ' : ''}</span>
                 `;
                 item.addEventListener('click', () => {
                     currentIndex = idx;
-                    loadAndPlay();
+                    playTrack(currentIndex);
                 });
                 tracksContainer.appendChild(item);
             });
         }
 
         // ========================================================
-        // НАДЕЖНЫЙ WEB AUDIO API
+        // НАДЕЖНАЯ АУДИО-СИСТЕМА
         // ========================================================
         let audioCtx = null;
         let analyser = null;
@@ -388,7 +380,7 @@
                     freqData = new Uint8Array(analyser.frequencyBinCount);
                     timeData = new Uint8Array(analyser.frequencyBinCount);
                 } catch (e) {
-                    console.warn("Web Audio API Init Error:", e);
+                    console.warn("Web Audio API инициализирован с ограничениями:", e);
                 }
             }
 
@@ -397,17 +389,37 @@
             }
         }
 
-        function loadTrack(idx) {
-            audio.src = playlist[idx].file;
-            audio.load();
+        // Отслеживание физических ошибок файла
+        audio.addEventListener('error', () => {
+            const err = audio.error;
+            let msg = 'ОШИБКА';
+            if (err) {
+                if (err.code === 4) msg = 'НЕТ ФАЙЛА 404';
+                else if (err.code === 3) msg = 'СБОЙ ДЕКОДЕРА';
+                else if (err.code === 2) msg = 'ОШИБКА СЕТИ';
+            }
+            statusTag.textContent = msg;
+            statusTag.style.color = '#ff5252';
+            isPlaying = false;
+            playPauseBtn.textContent = 'ИГРАТЬ ▶';
+            playPauseBtn.style.background = '#00ffcc';
             renderPlaylist();
-        }
+        });
 
-        async function loadAndPlay() {
+        async function playTrack(idx) {
             initAudioEngine();
-            loadTrack(currentIndex);
-            
+            currentIndex = idx;
+            const targetFile = playlist[currentIndex].file;
+
+            // Меняем файл только если он отличается
+            if (!audio.src.endsWith(targetFile)) {
+                audio.src = targetFile;
+            }
+
             try {
+                statusTag.textContent = 'ЗАГРУЗКА';
+                statusTag.style.color = '#ffff00';
+                
                 await audio.play();
                 isPlaying = true;
                 playPauseBtn.textContent = 'ПАУЗА ||';
@@ -416,9 +428,12 @@
                 statusTag.style.color = '#00ffcc';
                 renderPlaylist();
             } catch (err) {
-                console.error("Audio playback error:", err);
-                statusTag.textContent = 'ОШИБКА';
-                statusTag.style.color = '#ff5252';
+                console.error("Ошибка воспроизведения:", err);
+                // Если файл отсутствует, сработает audio error listener
+                if (!audio.error) {
+                    statusTag.textContent = 'ОШИБКА';
+                    statusTag.style.color = '#ff5252';
+                }
             }
         }
 
@@ -426,7 +441,7 @@
             initAudioEngine();
 
             if (!audio.src || audio.src === "" || audio.src === window.location.href) {
-                loadTrack(currentIndex);
+                audio.src = playlist[currentIndex].file;
             }
 
             if (audio.paused) {
@@ -456,17 +471,17 @@
 
         prevBtn.addEventListener('click', () => {
             currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
-            loadAndPlay();
+            playTrack(currentIndex);
         });
 
         nextBtn.addEventListener('click', () => {
             currentIndex = (currentIndex + 1) % playlist.length;
-            loadAndPlay();
+            playTrack(currentIndex);
         });
 
         audio.addEventListener('ended', () => {
             currentIndex = (currentIndex + 1) % playlist.length;
-            loadAndPlay();
+            playTrack(currentIndex);
         });
 
         audio.addEventListener('timeupdate', () => {
@@ -484,7 +499,7 @@
         });
 
         // ========================================================
-        // ВИЗУАЛИЗАТОР
+        // РЕНДЕР ВИЗУАЛИЗАТОРА
         // ========================================================
         let pulseRadius = 0;
 
@@ -509,7 +524,7 @@
             analyser.getByteFrequencyData(freqData);
             analyser.getByteTimeDomainData(timeData);
 
-            // Бас для голов
+            // Бас для лиц
             const bass = (freqData[1] + freqData[2] + freqData[3] + freqData[4]) / 4;
             const normBass = bass / 255;
 
@@ -522,7 +537,7 @@
                 rightHead.style.transform = 'scale(1) rotate(0deg)';
             }
 
-            // Вспышка волны от саб-баса
+            // Ударная волна
             if (normBass > 0.58) {
                 pulseRadius = Math.min(pulseRadius + 20, canvas.width / 2);
                 ctx.beginPath();
@@ -534,7 +549,7 @@
                 pulseRadius = Math.max(0, pulseRadius - 12);
             }
 
-            // Зеленый осциллограф
+            // Осциллограф волны
             ctx.lineWidth = 3;
             ctx.beginPath();
             const sliceWidth = canvas.width / timeData.length;
@@ -553,7 +568,7 @@
             ctx.stroke();
             ctx.shadowBlur = 0;
 
-            // Столбики эквалайзера WMP сверху и снизу
+            // Столбики эквалайзера WMP
             const barCount = 42;
             const barWidth = canvas.width / barCount;
             for (let i = 0; i < barCount; i++) {
@@ -568,9 +583,10 @@
             }
         }
 
+        // Старт страницы
+        audio.src = playlist[currentIndex].file;
         renderPlaylist();
         renderVisualizer();
-        loadTrack(currentIndex);
     </script>
 </body>
 </html>
