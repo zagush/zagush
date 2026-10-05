@@ -25,7 +25,7 @@
             padding: 20px;
         }
 
-        /* Фоновый визуализатор WMP */
+        /* Фоновый холст визуализатора */
         #bgCanvas {
             position: fixed;
             inset: 0;
@@ -35,41 +35,94 @@
             pointer-events: none;
         }
 
-        /* Тулбар выхода НА СТОЛ */
+        /* Верхняя консоль управления (стиль панели инструментов) */
         .top-nav {
             position: fixed;
             top: 15px;
             left: 20px;
+            right: 20px;
             z-index: 100;
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .top-left-group, .top-right-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             background: #ffffff;
             border: 2px solid #000000;
             padding: 4px;
             box-shadow: 3px 3px 0 #000000;
+            pointer-events: auto;
         }
 
-        .btn-exit {
-            background: #e74c3c;
-            color: #ffffff;
+        /* Кнопки верхней панели */
+        .nav-btn {
+            color: #000000;
             text-decoration: none;
             font-weight: 900;
-            font-size: 13px;
+            font-size: 12px;
             letter-spacing: 0.05em;
-            padding: 6px 14px;
+            padding: 6px 12px;
             border: 2px solid #000000;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: opacity 0.1s ease;
+            font-family: inherit;
         }
 
-        .btn-exit:hover {
-            opacity: 0.9;
+        .btn-exit {
+            background: #e74c3c;
+            color: #ffffff;
         }
 
-        /* Главная сцена */
+        .btn-upload {
+            background: #f1c40f;
+            color: #000000;
+        }
+
+        .nav-btn:hover {
+            opacity: 0.88;
+        }
+
+        /* Переключатель визуалов */
+        .vis-switcher {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #dbe2e8;
+            border: 2px solid #000000;
+            padding: 3px 8px;
+        }
+
+        .vis-btn {
+            background: #ffffff;
+            border: 2px solid #000000;
+            font-weight: 900;
+            cursor: pointer;
+            padding: 2px 7px;
+            font-size: 12px;
+            font-family: inherit;
+        }
+        .vis-btn:hover {
+            background: #00ffcc;
+        }
+
+        .vis-label {
+            font-size: 11px;
+            font-weight: 900;
+            min-width: 170px;
+            text-align: center;
+            letter-spacing: 0.04em;
+        }
+
+        /* Главная сцена с головами */
         .stage {
             position: relative;
             z-index: 10;
@@ -81,9 +134,7 @@
             max-width: 1050px;
         }
 
-        /* ========================================================
-           ИНТЕРАКТИВНЫЕ ГОЛОВЫ
-           ======================================================== */
+        /* Интерактивные головы */
         .head-btn {
             position: relative;
             background: none;
@@ -110,13 +161,8 @@
             transition: filter 0.2s ease;
         }
 
-        /* Легкое покачивание в покое */
-        #prevBtn img {
-            animation: breatheLeft 3s ease-in-out infinite;
-        }
-        #nextBtn img {
-            animation: breatheRight 3s ease-in-out infinite;
-        }
+        #prevBtn img { animation: breatheLeft 3s ease-in-out infinite; }
+        #nextBtn img { animation: breatheRight 3s ease-in-out infinite; }
 
         @keyframes breatheLeft {
             0%, 100% { transform: translateY(0) rotate(-2deg); }
@@ -127,7 +173,6 @@
             50% { transform: translateY(-5px) rotate(-1deg); }
         }
 
-        /* Реакция на наведение курсора мыши */
         #prevBtn:hover img {
             animation: wobbleHoverLeft 0.4s ease-in-out infinite alternate !important;
             filter: drop-shadow(0 0 18px #00ffcc) drop-shadow(0 8px 12px rgba(0,0,0,0.9));
@@ -148,14 +193,12 @@
             100% { transform: scale(1.22) rotate(-3deg) translateY(-10px); }
         }
 
-        /* Сплющивание при клике */
         .head-btn:active img {
             transform: scale(0.82, 1.25) translateY(12px) !important;
             filter: drop-shadow(0 0 25px #ffffff) !important;
             transition: transform 0.05s ease;
         }
 
-        /* Стикерные стрелки */
         .head-hint {
             position: absolute;
             top: -24px;
@@ -175,14 +218,12 @@
             transform: scale(1.12) translateY(-3px);
         }
 
-        /* ========================================================
-           ПАНЕЛЬ ПЛЕЕРА
-           ======================================================== */
+        /* Панель плеера */
         .player-panel {
             background: #ffffff;
             border: 2px solid #000000;
             box-shadow: 6px 6px 0 #000000;
-            width: min(450px, 92vw);
+            width: min(460px, 92vw);
             padding: 10px;
             display: flex;
             flex-direction: column;
@@ -228,7 +269,7 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
-            max-height: 230px;
+            max-height: 220px;
             overflow-y: auto;
             padding: 2px 4px 2px 0;
         }
@@ -291,23 +332,49 @@
             background: #33ffd6;
         }
 
-        @media (max-width: 650px) {
+        @media (max-width: 750px) {
+            .top-nav {
+                flex-direction: column;
+                align-items: stretch;
+                top: 10px;
+                left: 10px;
+                right: 10px;
+            }
             .stage {
+                margin-top: 75px;
                 flex-direction: column;
                 gap: 16px;
             }
             .head-btn {
                 width: 85px;
             }
+            .vis-label {
+                min-width: 140px;
+                font-size: 10px;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- Канвас 8 визуалов -->
     <canvas id="bgCanvas"></canvas>
 
+    <!-- Верхний тулбар -->
     <div class="top-nav">
-        <a href="index.html" class="btn-exit">← НА СТОЛ</a>
+        <div class="top-left-group">
+            <a href="index.html" class="nav-btn btn-exit">← НА СТОЛ</a>
+            <button id="uploadBtn" class="nav-btn btn-upload" type="button">+ СВОЙ ТРЕК</button>
+            <input type="file" id="fileInput" accept="audio/*" multiple style="display: none;">
+        </div>
+
+        <div class="top-right-group">
+            <div class="vis-switcher">
+                <button class="vis-btn" id="prevVisBtn" type="button">◄</button>
+                <span class="vis-label" id="visNameLabel">01. WMP CLASSIC</span>
+                <button class="vis-btn" id="nextVisBtn" type="button">►</button>
+            </div>
+        </div>
     </div>
 
     <div class="stage">
@@ -320,7 +387,7 @@
         <!-- Плеер -->
         <div class="player-panel">
             <div class="player-header">
-                <span>DUBSTEP_AUDIO // SYSTEM</span>
+                <span>DUBSTEP // MULTI_SYSTEM</span>
                 <span class="player-status-tag" id="statusTag">ГОТОВ</span>
             </div>
 
@@ -344,7 +411,7 @@
     <audio id="audio" preload="metadata"></audio>
 
     <script>
-        // ТОЧНЫЕ ПУТИ В ПАПКУ dubstep/ СО СКРИНШОТА
+        // ИСХОДНЫЕ ТРЕКИ
         const playlist = [
             { title: "ANGRY BIRDS", file: "dubstep/angry-birds.mp3" },
             { title: "TRACK 1", file: "dubstep/track1.mp3" },
@@ -359,6 +426,19 @@
         let currentIndex = 0;
         let isPlaying = false;
 
+        // 8 ВИЗУАЛЬНЫХ СТИЛЕЙ
+        const visualModes = [
+            { id: 0, name: "01. WMP CLASSIC" },
+            { id: 1, name: "02. WINAMP TOWERS" },
+            { id: 2, name: "03. CYBER MATRIX" },
+            { id: 3, name: "04. RADAR SONAR" },
+            { id: 4, name: "05. DUBSTEP BOMB" },
+            { id: 5, name: "06. SYNTHWAVE GRID" },
+            { id: 6, name: "07. LASER LISSAJOUS" },
+            { id: 7, name: "08. RGB GLITCH SEISMIC" }
+        ];
+        let currentVisIndex = 0;
+
         const audio = document.getElementById('audio');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
@@ -367,6 +447,12 @@
         const progressFill = document.getElementById('progressFill');
         const progressWrap = document.getElementById('progressWrap');
         const statusTag = document.getElementById('statusTag');
+
+        const uploadBtn = document.getElementById('uploadBtn');
+        const fileInput = document.getElementById('fileInput');
+        const prevVisBtn = document.getElementById('prevVisBtn');
+        const nextVisBtn = document.getElementById('nextVisBtn');
+        const visNameLabel = document.getElementById('visNameLabel');
 
         const canvas = document.getElementById('bgCanvas');
         const ctx = canvas.getContext('2d');
@@ -384,11 +470,11 @@
                 const item = document.createElement('div');
                 item.className = 'track-item' + (idx === currentIndex ? ' active' : '');
                 item.innerHTML = `
-                    <div>
-                        <span class="track-num">0${idx + 1}</span>
+                    <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding-right:8px;">
+                        <span class="track-num">${idx + 1 < 10 ? '0' + (idx + 1) : idx + 1}</span>
                         <span>${track.title}</span>
                     </div>
-                    <span style="font-size:11px;">${idx === currentIndex && isPlaying ? '● ИГРАЕТ' : ''}</span>
+                    <span style="font-size:11px; flex-shrink:0;">${idx === currentIndex && isPlaying ? '● ИГРАЕТ' : ''}</span>
                 `;
                 item.addEventListener('click', () => {
                     currentIndex = idx;
@@ -397,6 +483,48 @@
                 tracksContainer.appendChild(item);
             });
         }
+
+        // ========================================================
+        // ЗАГРУЗКА СВОИХ ТРЕКОВ
+        // ========================================================
+        uploadBtn.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            if (!files.length) return;
+
+            files.forEach(file => {
+                const url = URL.createObjectURL(file);
+                const cleanName = file.name.replace(/\.[^/.]+$/, "").toUpperCase();
+                playlist.push({
+                    title: "★ " + cleanName,
+                    file: url
+                });
+            });
+
+            // Переключаемся сразу на первый добавленный трек
+            currentIndex = playlist.length - files.length;
+            renderPlaylist();
+            playTrack(currentIndex);
+            fileInput.value = ''; // Сброс
+        });
+
+        // ========================================================
+        // ПЕРЕКЛЮЧАТЕЛЬ 8 ВИЗУАЛОВ
+        // ========================================================
+        function updateVisLabel() {
+            visNameLabel.textContent = visualModes[currentVisIndex].name;
+        }
+
+        prevVisBtn.addEventListener('click', () => {
+            currentVisIndex = (currentVisIndex - 1 + visualModes.length) % visualModes.length;
+            updateVisLabel();
+        });
+
+        nextVisBtn.addEventListener('click', () => {
+            currentVisIndex = (currentVisIndex + 1) % visualModes.length;
+            updateVisLabel();
+        });
 
         // ========================================================
         // WEB AUDIO API
@@ -420,7 +548,7 @@
                     freqData = new Uint8Array(analyser.frequencyBinCount);
                     timeData = new Uint8Array(analyser.frequencyBinCount);
                 } catch (e) {
-                    console.warn("Visualizer fallback notice:", e);
+                    console.warn("Visualizer init warning:", e);
                 }
             }
 
@@ -429,9 +557,6 @@
             }
         }
 
-        // ========================================================
-        // ВОСПРОИЗВЕДЕНИЕ
-        // ========================================================
         async function playTrack(idx) {
             initAudioEngine();
             currentIndex = idx;
@@ -457,7 +582,7 @@
 
         audio.addEventListener('error', () => {
             console.error("Audio error on source:", audio.src);
-            statusTag.textContent = 'НЕТ ФАЙЛА 404';
+            statusTag.textContent = 'ОШИБКА 404';
             statusTag.style.color = '#ff5252';
             isPlaying = false;
             playPauseBtn.textContent = 'ИГРАТЬ ▶';
@@ -528,17 +653,51 @@
         });
 
         // ========================================================
-        // ВИЗУАЛИЗАТОР И ПУЛЬСАЦИЯ ГОЛОВ ПОД БАС
+        // ДАННЫЕ ДЛЯ СПЕЦИАЛЬНЫХ ВИЗУАЛОВ
         // ========================================================
-        let pulseRadius = 0;
+        // 1. Частицы для DUBSTEP BOMB
+        const particles = [];
+        for (let i = 0; i < 90; i++) {
+            particles.push({
+                x: window.innerWidth / 2,
+                y: window.innerHeight / 2,
+                angle: Math.random() * Math.PI * 2,
+                speed: 1 + Math.random() * 4,
+                radius: 1 + Math.random() * 3,
+                color: i % 2 === 0 ? '#00ffcc' : '#ff007f'
+            });
+        }
 
+        // 2. Пиковые шапки для WINAMP TOWERS
+        const peakBars = new Array(48).fill(0);
+
+        // 3. Капли для CYBER MATRIX
+        const matrixDrops = [];
+        const matrixColumns = 60;
+        for (let i = 0; i < matrixColumns; i++) {
+            matrixDrops.push({
+                x: (window.innerWidth / matrixColumns) * i,
+                y: Math.random() * window.innerHeight,
+                speed: 2 + Math.random() * 5
+            });
+        }
+
+        let pulseRadius = 0;
+        let globalTick = 0;
+
+        // ========================================================
+        // ГЛАВНЫЙ ЦИКЛ РЕНДЕРА ВИЗУАЛИЗАЦИИ
+        // ========================================================
         function renderVisualizer() {
             requestAnimationFrame(renderVisualizer);
+            globalTick += 0.03;
 
+            // Заливка шлейфа
             ctx.fillStyle = 'rgba(9, 8, 14, 0.28)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             if (!analyser || !isPlaying) {
+                // Дефолтная линия ожидания
                 ctx.beginPath();
                 ctx.strokeStyle = 'rgba(0, 255, 204, 0.25)';
                 ctx.lineWidth = 2;
@@ -553,13 +712,13 @@
             analyser.getByteFrequencyData(freqData);
             analyser.getByteTimeDomainData(timeData);
 
-            // Бас
+            // Бас для голов и эффектов
             const bass = (freqData[1] + freqData[2] + freqData[3] + freqData[4]) / 4;
             const normBass = bass / 255;
 
-            // Кач голов от реального баса
+            // Кач голов
             if (normBass > 0.38) {
-                const scale = 1 + normBass * 0.35;
+                const scale = 1 + normBass * 0.36;
                 prevBtn.style.transform = `scale(${scale}) rotate(${-11 * normBass}deg)`;
                 nextBtn.style.transform = `scale(${scale}) rotate(${11 * normBass}deg)`;
             } else {
@@ -567,49 +726,278 @@
                 nextBtn.style.transform = 'scale(1) rotate(0deg)';
             }
 
-            // Ударная волна
-            if (normBass > 0.58) {
-                pulseRadius = Math.min(pulseRadius + 22, canvas.width / 2);
-                ctx.beginPath();
-                ctx.arc(canvas.width / 2, canvas.height / 2, pulseRadius, 0, Math.PI * 2);
-                ctx.strokeStyle = `rgba(0, 255, 204, ${normBass * 0.5})`;
-                ctx.lineWidth = 4;
-                ctx.stroke();
-            } else {
-                pulseRadius = Math.max(0, pulseRadius - 14);
-            }
+            // ========================================================
+            // ОТРИСОВКА ВЫБРАННОГО РЕЖИМА
+            // ========================================================
+            switch (currentVisIndex) {
+                // ----------------------------------------------------
+                // 01. WMP CLASSIC
+                // ----------------------------------------------------
+                case 0: {
+                    if (normBass > 0.58) {
+                        pulseRadius = Math.min(pulseRadius + 22, canvas.width / 2);
+                        ctx.beginPath();
+                        ctx.arc(canvas.width / 2, canvas.height / 2, pulseRadius, 0, Math.PI * 2);
+                        ctx.strokeStyle = `rgba(0, 255, 204, ${normBass * 0.5})`;
+                        ctx.lineWidth = 4;
+                        ctx.stroke();
+                    } else {
+                        pulseRadius = Math.max(0, pulseRadius - 14);
+                    }
 
-            // Осциллограф волны
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            const sliceWidth = canvas.width / timeData.length;
-            let x = 0;
+                    // Зеленая синусоида
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    const sliceWidth = canvas.width / timeData.length;
+                    let x = 0;
+                    for (let i = 0; i < timeData.length; i++) {
+                        const v = timeData[i] / 128.0;
+                        const y = (v * canvas.height) / 2;
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                        x += sliceWidth;
+                    }
+                    ctx.strokeStyle = '#00ffcc';
+                    ctx.shadowBlur = 14;
+                    ctx.shadowColor = '#00ffcc';
+                    ctx.stroke();
+                    ctx.shadowBlur = 0;
 
-            for (let i = 0; i < timeData.length; i++) {
-                const v = timeData[i] / 128.0;
-                const y = (v * canvas.height) / 2;
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-                x += sliceWidth;
-            }
-            ctx.strokeStyle = '#00ffcc';
-            ctx.shadowBlur = 14;
-            ctx.shadowColor = '#00ffcc';
-            ctx.stroke();
-            ctx.shadowBlur = 0;
+                    // Столбики эквалайзера WMP
+                    const barCount = 42;
+                    const barWidth = canvas.width / barCount;
+                    for (let i = 0; i < barCount; i++) {
+                        const val = freqData[i * 2] || 0;
+                        const barHeight = (val / 255) * (canvas.height * 0.33);
+                        ctx.fillStyle = `rgba(255, 0, 128, 0.4)`;
+                        ctx.fillRect(i * barWidth, 0, barWidth - 3, barHeight);
+                        ctx.fillStyle = `rgba(0, 255, 204, 0.45)`;
+                        ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 3, barHeight);
+                    }
+                    break;
+                }
 
-            // Столбики эквалайзера WMP
-            const barCount = 42;
-            const barWidth = canvas.width / barCount;
-            for (let i = 0; i < barCount; i++) {
-                const val = freqData[i * 2] || 0;
-                const barHeight = (val / 255) * (canvas.height * 0.33);
+                // ----------------------------------------------------
+                // 02. WINAMP TOWERS (Классический спектроанализатор с пиками)
+                // ----------------------------------------------------
+                case 1: {
+                    const count = 46;
+                    const barW = canvas.width / count;
+                    for (let i = 0; i < count; i++) {
+                        const val = freqData[i * 2] || 0;
+                        const h = (val / 255) * (canvas.height * 0.7);
 
-                ctx.fillStyle = `rgba(255, 0, 128, 0.4)`;
-                ctx.fillRect(i * barWidth, 0, barWidth - 3, barHeight);
+                        // Пиковые точки
+                        if (h > peakBars[i]) peakBars[i] = h;
+                        else peakBars[i] = Math.max(0, peakBars[i] - 3.5);
 
-                ctx.fillStyle = `rgba(0, 255, 204, 0.45)`;
-                ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 3, barHeight);
+                        // Градиент столбика
+                        const grad = ctx.createLinearGradient(0, canvas.height, 0, canvas.height - h);
+                        grad.addColorStop(0, '#00ffcc');
+                        grad.addColorStop(0.7, '#f1c40f');
+                        grad.addColorStop(1, '#ff0055');
+
+                        ctx.fillStyle = grad;
+                        ctx.fillRect(i * barW + 2, canvas.height - h, barW - 4, h);
+
+                        // Пиковая крышечка
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(i * barW + 2, canvas.height - peakBars[i] - 4, barW - 4, 3);
+                    }
+                    break;
+                }
+
+                // ----------------------------------------------------
+                // 03. CYBER MATRIX (Цифровой ливень под частоты)
+                // ----------------------------------------------------
+                case 2: {
+                    ctx.font = '14px monospace';
+                    for (let i = 0; i < matrixDrops.length; i++) {
+                        const drop = matrixDrops[i];
+                        const val = freqData[(i * 2) % freqData.length] || 20;
+                        drop.y += drop.speed + (val / 255) * 12;
+
+                        if (drop.y > canvas.height) drop.y = 0;
+
+                        ctx.fillStyle = i % 3 === 0 ? '#00ffcc' : '#39ff14';
+                        ctx.fillText(String.fromCharCode(0x30A0 + (i % 60)), drop.x, drop.y);
+
+                        // Столбик снизу
+                        ctx.fillStyle = 'rgba(0, 255, 204, 0.2)';
+                        ctx.fillRect(drop.x, canvas.height - val * 1.2, 10, val * 1.2);
+                    }
+                    break;
+                }
+
+                // ----------------------------------------------------
+                // 04. RADAR SONAR (Круговой 360° спектр)
+                // ----------------------------------------------------
+                case 3: {
+                    const cx = canvas.width / 2;
+                    const cy = canvas.height / 2;
+                    const radius = Math.min(cx, cy) * 0.4 + normBass * 30;
+
+                    // Сканирующий луч
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy);
+                    ctx.arc(cx, cy, radius * 1.8, globalTick * 2, globalTick * 2 + 0.35);
+                    ctx.closePath();
+                    ctx.fillStyle = 'rgba(0, 255, 204, 0.08)';
+                    ctx.fill();
+
+                    // Радиальные лучи спектра
+                    const points = 72;
+                    ctx.beginPath();
+                    for (let i = 0; i < points; i++) {
+                        const angle = (i / points) * Math.PI * 2;
+                        const val = freqData[i % freqData.length] || 0;
+                        const len = radius + (val / 255) * 130;
+
+                        const x1 = cx + Math.cos(angle) * radius;
+                        const y1 = cy + Math.sin(angle) * radius;
+                        const x2 = cx + Math.cos(angle) * len;
+                        const y2 = cy + Math.sin(angle) * len;
+
+                        ctx.strokeStyle = i % 2 === 0 ? '#00ffcc' : '#ff007f';
+                        ctx.lineWidth = 3;
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y2);
+                    }
+                    ctx.stroke();
+
+                    // Внутреннее светящееся кольцо
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    break;
+                }
+
+                // ----------------------------------------------------
+                // 05. DUBSTEP BOMB (Взрыв частиц)
+                // ----------------------------------------------------
+                case 4: {
+                    const cx = canvas.width / 2;
+                    const cy = canvas.height / 2;
+
+                    particles.forEach((p, idx) => {
+                        const boost = (freqData[idx % freqData.length] / 255) * 14;
+                        p.x += Math.cos(p.angle) * (p.speed + boost);
+                        p.y += Math.sin(p.angle) * (p.speed + boost);
+
+                        // Возврат в центр
+                        if (p.x < 0 || p.x > canvas.width || p.y < 0 || p.y > canvas.height) {
+                            p.x = cx;
+                            p.y = cy;
+                            p.angle = Math.random() * Math.PI * 2;
+                        }
+
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.radius + normBass * 4, 0, Math.PI * 2);
+                        ctx.fillStyle = p.color;
+                        ctx.shadowBlur = 8;
+                        ctx.shadowColor = p.color;
+                        ctx.fill();
+                        ctx.shadowBlur = 0;
+                    });
+                    break;
+                }
+
+                // ----------------------------------------------------
+                // 06. SYNTHWAVE GRID (3D Кибер-сетка)
+                // ----------------------------------------------------
+                case 5: {
+                    const horizon = canvas.height * 0.45;
+                    const lines = 18;
+
+                    // Перспективные лучи сетки
+                    ctx.strokeStyle = 'rgba(0, 255, 204, 0.35)';
+                    ctx.lineWidth = 2;
+                    for (let i = -canvas.width; i <= canvas.width * 2; i += 75) {
+                        ctx.beginPath();
+                        ctx.moveTo(canvas.width / 2, horizon);
+                        ctx.lineTo(i, canvas.height);
+                        ctx.stroke();
+                    }
+
+                    // Бегущие горизонтальные волны рельефа
+                    for (let j = 0; j < lines; j++) {
+                        const p = (j + (globalTick * 2) % 1) / lines;
+                        const y = horizon + Math.pow(p, 2) * (canvas.height - horizon);
+
+                        ctx.beginPath();
+                        for (let x = 0; x < canvas.width; x += 30) {
+                            const val = timeData[(x + j * 10) % timeData.length] / 128 - 1;
+                            const waveY = y + val * 45 * p;
+                            if (x === 0) ctx.moveTo(x, waveY);
+                            else ctx.lineTo(x, waveY);
+                        }
+                        ctx.strokeStyle = `rgba(255, 0, 128, ${p * 0.8})`;
+                        ctx.lineWidth = 2.5;
+                        ctx.stroke();
+                    }
+                    break;
+                }
+
+                // ----------------------------------------------------
+                // 07. LASER LISSAJOUS (Лазерные фигуры)
+                // ----------------------------------------------------
+                case 6: {
+                    const cx = canvas.width / 2;
+                    const cy = canvas.height / 2;
+                    const r = Math.min(cx, cy) * 0.7;
+
+                    ctx.lineWidth = 3;
+                    ctx.strokeStyle = '#00ffcc';
+                    ctx.shadowBlur = 18;
+                    ctx.shadowColor = '#00ffcc';
+
+                    ctx.beginPath();
+                    for (let i = 0; i < timeData.length; i++) {
+                        const angle = (i / timeData.length) * Math.PI * 4;
+                        const v = (timeData[i] / 128.0) - 1.0;
+                        const x = cx + Math.sin(angle * 2 + globalTick) * (r * 0.8 + v * 120);
+                        const y = cy + Math.cos(angle * 3 + globalTick * 1.5) * (r * 0.6 + v * 120);
+
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                    ctx.shadowBlur = 0;
+                    break;
+                }
+
+                // ----------------------------------------------------
+                // 08. RGB GLITCH SEISMIC (Сейсмограф с глитч-сдвигом)
+                // ----------------------------------------------------
+                case 7: {
+                    const colors = ['#ff0055', '#00ffcc', '#ffffff'];
+                    const offsets = [-4, 0, 4];
+
+                    // Глитч-тряска при мощном саб-басе
+                    const shakeX = normBass > 0.6 ? (Math.random() - 0.5) * 16 : 0;
+                    const shakeY = normBass > 0.6 ? (Math.random() - 0.5) * 16 : 0;
+
+                    for (let c = 0; c < colors.length; c++) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = colors[c];
+                        ctx.lineWidth = 3;
+                        const slice = canvas.width / timeData.length;
+                        let x = 0;
+
+                        for (let i = 0; i < timeData.length; i++) {
+                            const v = timeData[i] / 128.0;
+                            const y = ((v * canvas.height) / 2) + offsets[c] * (normBass * 5) + shakeY;
+                            if (i === 0) ctx.moveTo(x + shakeX, y);
+                            else ctx.lineTo(x + shakeX, y);
+                            x += slice;
+                        }
+                        ctx.stroke();
+                    }
+                    break;
+                }
             }
         }
 
