@@ -35,7 +35,7 @@
             pointer-events: none;
         }
 
-        /* Верхняя панель тулбара */
+        /* Тулбар выхода НА СТОЛ */
         .top-nav {
             position: fixed;
             top: 15px;
@@ -46,10 +46,9 @@
             background: #ffffff;
             border: 2px solid #000000;
             padding: 4px;
-            box-shadow: 3px 3px 0 #000;
+            box-shadow: 3px 3px 0 #000000;
         }
 
-        /* Кнопка НА СТОЛ точно как на скриншоте */
         .btn-exit {
             background: #e74c3c;
             color: #ffffff;
@@ -82,7 +81,9 @@
             max-width: 1050px;
         }
 
-        /* Интерактивные головы */
+        /* ========================================================
+           ИНТЕРАКТИВНЫЕ ГОЛОВЫ
+           ======================================================== */
         .head-btn {
             position: relative;
             background: none;
@@ -90,13 +91,13 @@
             cursor: pointer;
             padding: 0;
             outline: none;
-            width: clamp(85px, 13vw, 150px);
+            width: clamp(90px, 13vw, 155px);
             aspect-ratio: 1 / 1.2;
             display: flex;
             align-items: center;
             justify-content: center;
             transform-origin: center bottom;
-            transition: filter 0.2s ease;
+            transition: transform 0.1s ease;
         }
 
         .head-btn img {
@@ -106,31 +107,77 @@
             display: block;
             pointer-events: none;
             filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.85));
+            transition: filter 0.2s ease;
         }
 
-        .head-btn:hover img {
-            filter: drop-shadow(0 0 16px #00ffcc);
+        /* Легкое покачивание в покое */
+        #prevBtn img {
+            animation: breatheLeft 3s ease-in-out infinite;
+        }
+        #nextBtn img {
+            animation: breatheRight 3s ease-in-out infinite;
         }
 
-        /* Стикеры над головами */
+        @keyframes breatheLeft {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-5px) rotate(1deg); }
+        }
+        @keyframes breatheRight {
+            0%, 100% { transform: translateY(0) rotate(2deg); }
+            50% { transform: translateY(-5px) rotate(-1deg); }
+        }
+
+        /* Реакция на наведение курсора мыши */
+        #prevBtn:hover img {
+            animation: wobbleHoverLeft 0.4s ease-in-out infinite alternate !important;
+            filter: drop-shadow(0 0 18px #00ffcc) drop-shadow(0 8px 12px rgba(0,0,0,0.9));
+        }
+
+        #nextBtn:hover img {
+            animation: wobbleHoverRight 0.4s ease-in-out infinite alternate !important;
+            filter: drop-shadow(0 0 18px #00ffcc) drop-shadow(0 8px 12px rgba(0,0,0,0.9));
+        }
+
+        @keyframes wobbleHoverLeft {
+            0% { transform: scale(1.15) rotate(-10deg) translateY(-4px); }
+            100% { transform: scale(1.22) rotate(3deg) translateY(-10px); }
+        }
+
+        @keyframes wobbleHoverRight {
+            0% { transform: scale(1.15) rotate(10deg) translateY(-4px); }
+            100% { transform: scale(1.22) rotate(-3deg) translateY(-10px); }
+        }
+
+        /* Сплющивание при клике */
+        .head-btn:active img {
+            transform: scale(0.82, 1.25) translateY(12px) !important;
+            filter: drop-shadow(0 0 25px #ffffff) !important;
+            transition: transform 0.05s ease;
+        }
+
+        /* Стикерные стрелки */
         .head-hint {
             position: absolute;
             top: -24px;
             background: #dbe2e8;
             color: #000000;
-            border: 2px solid #000;
+            border: 2px solid #000000;
             font-size: 11px;
             font-weight: 900;
             letter-spacing: 0.05em;
-            padding: 2px 8px;
+            padding: 3px 8px;
             white-space: nowrap;
+            transition: transform 0.15s ease, background 0.15s ease;
         }
 
         .head-btn:hover .head-hint {
             background: #00ffcc;
+            transform: scale(1.12) translateY(-3px);
         }
 
-        /* Основной блок плеера */
+        /* ========================================================
+           ПАНЕЛЬ ПЛЕЕРА
+           ======================================================== */
         .player-panel {
             background: #ffffff;
             border: 2px solid #000000;
@@ -142,7 +189,6 @@
             gap: 10px;
         }
 
-        /* Шапка плеера */
         .player-header {
             background: #dbe2e8;
             border: 2px solid #000000;
@@ -150,7 +196,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 900;
             letter-spacing: 0.05em;
         }
@@ -159,10 +205,9 @@
             background: #000000;
             color: #00ffcc;
             padding: 2px 6px;
-            font-size: 11px;
+            font-size: 10px;
         }
 
-        /* Полоса прогресса */
         .progress-bar-wrap {
             width: 100%;
             height: 16px;
@@ -179,7 +224,6 @@
             border-right: 2px solid #000000;
         }
 
-        /* Список треков — теперь с четкими отступами, ничего не обрезается */
         .tracks-list {
             display: flex;
             flex-direction: column;
@@ -200,7 +244,6 @@
             background: #000000;
         }
 
-        /* Кнопка трека в стиле кнопок тулбара */
         .track-item {
             background: #dbe2e8;
             border: 2px solid #000000;
@@ -230,7 +273,6 @@
             margin-right: 8px;
         }
 
-        /* Кнопка ИГРАТЬ / ПАУЗА */
         .play-btn {
             background: #00ffcc;
             color: #000000;
@@ -252,7 +294,7 @@
         @media (max-width: 650px) {
             .stage {
                 flex-direction: column;
-                gap: 14px;
+                gap: 16px;
             }
             .head-btn {
                 width: 85px;
@@ -272,7 +314,7 @@
         <!-- Предыдущий трек -->
         <button id="prevBtn" class="head-btn" title="Предыдущий трек" type="button">
             <span class="head-hint">◄ НАЗАД</span>
-            <img src="face2.png" id="leftHead" alt="Назад" onerror="this.src='face.png'">
+            <img src="face2.png" alt="Назад" onerror="this.src='face.png'">
         </button>
 
         <!-- Плеер -->
@@ -294,7 +336,7 @@
         <!-- Следующий трек -->
         <button id="nextBtn" class="head-btn" title="Следующий трек" type="button">
             <span class="head-hint">ВПЕРЁД ►</span>
-            <img src="face3.png" id="rightHead" alt="Вперёд" onerror="this.src='face.png'">
+            <img src="face3.png" alt="Вперёд" onerror="this.src='face.png'">
         </button>
     </div>
 
@@ -302,15 +344,16 @@
     <audio id="audio" preload="metadata"></audio>
 
     <script>
+        // ТОЧНЫЕ ПУТИ В ПАПКУ dubstep/ СО СКРИНШОТА
         const playlist = [
-            { title: "ANGRY BIRDS", file: "angry-birds.mp3" },
-            { title: "TRACK 1", file: "track1.mp3" },
-            { title: "TRACK 2", file: "track2.mp3" },
-            { title: "TRACK 3", file: "track3.mp3" },
-            { title: "TRACK 4", file: "track4.mp3" },
-            { title: "TRACK 5", file: "track5.mp3" },
-            { title: "TRACK 6", file: "track6.mp3" },
-            { title: "TRACK 7", file: "track7.mp3" }
+            { title: "ANGRY BIRDS", file: "dubstep/angry-birds.mp3" },
+            { title: "TRACK 1", file: "dubstep/track1.mp3" },
+            { title: "TRACK 2", file: "dubstep/track2.mp3" },
+            { title: "TRACK 3", file: "dubstep/track3.mp3" },
+            { title: "TRACK 4", file: "dubstep/track4.mp3" },
+            { title: "TRACK 5", file: "dubstep/track5.mp3" },
+            { title: "TRACK 6", file: "dubstep/track6.mp3" },
+            { title: "TRACK 7", file: "dubstep/track7.mp3" }
         ];
 
         let currentIndex = 0;
@@ -324,8 +367,6 @@
         const progressFill = document.getElementById('progressFill');
         const progressWrap = document.getElementById('progressWrap');
         const statusTag = document.getElementById('statusTag');
-        const leftHead = document.getElementById('leftHead');
-        const rightHead = document.getElementById('rightHead');
 
         const canvas = document.getElementById('bgCanvas');
         const ctx = canvas.getContext('2d');
@@ -358,11 +399,10 @@
         }
 
         // ========================================================
-        // НАДЕЖНАЯ АУДИО-СИСТЕМА
+        // WEB AUDIO API
         // ========================================================
         let audioCtx = null;
         let analyser = null;
-        let sourceNode = null;
         let freqData, timeData;
 
         function initAudioEngine() {
@@ -373,14 +413,14 @@
                     analyser = audioCtx.createAnalyser();
                     analyser.fftSize = 256;
 
-                    sourceNode = audioCtx.createMediaElementSource(audio);
+                    const sourceNode = audioCtx.createMediaElementSource(audio);
                     sourceNode.connect(analyser);
                     analyser.connect(audioCtx.destination);
 
                     freqData = new Uint8Array(analyser.frequencyBinCount);
                     timeData = new Uint8Array(analyser.frequencyBinCount);
                 } catch (e) {
-                    console.warn("Web Audio API инициализирован с ограничениями:", e);
+                    console.warn("Visualizer fallback notice:", e);
                 }
             }
 
@@ -389,37 +429,20 @@
             }
         }
 
-        // Отслеживание физических ошибок файла
-        audio.addEventListener('error', () => {
-            const err = audio.error;
-            let msg = 'ОШИБКА';
-            if (err) {
-                if (err.code === 4) msg = 'НЕТ ФАЙЛА 404';
-                else if (err.code === 3) msg = 'СБОЙ ДЕКОДЕРА';
-                else if (err.code === 2) msg = 'ОШИБКА СЕТИ';
-            }
-            statusTag.textContent = msg;
-            statusTag.style.color = '#ff5252';
-            isPlaying = false;
-            playPauseBtn.textContent = 'ИГРАТЬ ▶';
-            playPauseBtn.style.background = '#00ffcc';
-            renderPlaylist();
-        });
-
+        // ========================================================
+        // ВОСПРОИЗВЕДЕНИЕ
+        // ========================================================
         async function playTrack(idx) {
             initAudioEngine();
             currentIndex = idx;
             const targetFile = playlist[currentIndex].file;
 
-            // Меняем файл только если он отличается
-            if (!audio.src.endsWith(targetFile)) {
-                audio.src = targetFile;
-            }
+            audio.src = targetFile;
 
             try {
                 statusTag.textContent = 'ЗАГРУЗКА';
-                statusTag.style.color = '#ffff00';
-                
+                statusTag.style.color = '#ffbb00';
+
                 await audio.play();
                 isPlaying = true;
                 playPauseBtn.textContent = 'ПАУЗА ||';
@@ -428,20 +451,26 @@
                 statusTag.style.color = '#00ffcc';
                 renderPlaylist();
             } catch (err) {
-                console.error("Ошибка воспроизведения:", err);
-                // Если файл отсутствует, сработает audio error listener
-                if (!audio.error) {
-                    statusTag.textContent = 'ОШИБКА';
-                    statusTag.style.color = '#ff5252';
-                }
+                console.error("Playback error:", err);
             }
         }
+
+        audio.addEventListener('error', () => {
+            console.error("Audio error on source:", audio.src);
+            statusTag.textContent = 'НЕТ ФАЙЛА 404';
+            statusTag.style.color = '#ff5252';
+            isPlaying = false;
+            playPauseBtn.textContent = 'ИГРАТЬ ▶';
+            playPauseBtn.style.background = '#00ffcc';
+            renderPlaylist();
+        });
 
         async function togglePlay() {
             initAudioEngine();
 
             if (!audio.src || audio.src === "" || audio.src === window.location.href) {
-                audio.src = playlist[currentIndex].file;
+                playTrack(currentIndex);
+                return;
             }
 
             if (audio.paused) {
@@ -454,7 +483,7 @@
                     statusTag.style.color = '#00ffcc';
                     renderPlaylist();
                 } catch (e) {
-                    console.log("Play failed:", e);
+                    playTrack(currentIndex);
                 }
             } else {
                 audio.pause();
@@ -499,7 +528,7 @@
         });
 
         // ========================================================
-        // РЕНДЕР ВИЗУАЛИЗАТОРА
+        // ВИЗУАЛИЗАТОР И ПУЛЬСАЦИЯ ГОЛОВ ПОД БАС
         // ========================================================
         let pulseRadius = 0;
 
@@ -516,37 +545,38 @@
                 ctx.moveTo(0, canvas.height / 2);
                 ctx.lineTo(canvas.width, canvas.height / 2);
                 ctx.stroke();
-                leftHead.style.transform = 'scale(1) rotate(0deg)';
-                rightHead.style.transform = 'scale(1) rotate(0deg)';
+                prevBtn.style.transform = '';
+                nextBtn.style.transform = '';
                 return;
             }
 
             analyser.getByteFrequencyData(freqData);
             analyser.getByteTimeDomainData(timeData);
 
-            // Бас для лиц
+            // Бас
             const bass = (freqData[1] + freqData[2] + freqData[3] + freqData[4]) / 4;
             const normBass = bass / 255;
 
-            if (normBass > 0.35) {
-                const scale = 1 + normBass * 0.38;
-                leftHead.style.transform = `scale(${scale}) rotate(${-12 * normBass}deg)`;
-                rightHead.style.transform = `scale(${scale}) rotate(${12 * normBass}deg)`;
+            // Кач голов от реального баса
+            if (normBass > 0.38) {
+                const scale = 1 + normBass * 0.35;
+                prevBtn.style.transform = `scale(${scale}) rotate(${-11 * normBass}deg)`;
+                nextBtn.style.transform = `scale(${scale}) rotate(${11 * normBass}deg)`;
             } else {
-                leftHead.style.transform = 'scale(1) rotate(0deg)';
-                rightHead.style.transform = 'scale(1) rotate(0deg)';
+                prevBtn.style.transform = 'scale(1) rotate(0deg)';
+                nextBtn.style.transform = 'scale(1) rotate(0deg)';
             }
 
             // Ударная волна
             if (normBass > 0.58) {
-                pulseRadius = Math.min(pulseRadius + 20, canvas.width / 2);
+                pulseRadius = Math.min(pulseRadius + 22, canvas.width / 2);
                 ctx.beginPath();
                 ctx.arc(canvas.width / 2, canvas.height / 2, pulseRadius, 0, Math.PI * 2);
-                ctx.strokeStyle = `rgba(0, 255, 204, ${normBass * 0.45})`;
+                ctx.strokeStyle = `rgba(0, 255, 204, ${normBass * 0.5})`;
                 ctx.lineWidth = 4;
                 ctx.stroke();
             } else {
-                pulseRadius = Math.max(0, pulseRadius - 12);
+                pulseRadius = Math.max(0, pulseRadius - 14);
             }
 
             // Осциллограф волны
@@ -583,10 +613,9 @@
             }
         }
 
-        // Старт страницы
-        audio.src = playlist[currentIndex].file;
         renderPlaylist();
         renderVisualizer();
+        audio.src = playlist[0].file;
     </script>
 </body>
 </html>
