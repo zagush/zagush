@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // ========================================================
+    // 1. БИЛИНГВАЛЬНЫЙ ПЕРЕВОД (RU / EN)
+    // ========================================================
     const translations = {
         ru: {
             logo: "ЗАГУШ",
@@ -63,7 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Модальное окно телефона
+    // ========================================================
+    // 2. МОДАЛКА ТЕЛЕФОНА (СОЦСЕТИ)
+    // ========================================================
     const phoneTrigger = document.getElementById("phoneTrigger");
     const phoneModal = document.getElementById("phoneModal");
     const modalBackdrop = document.getElementById("modalBackdrop");
@@ -95,4 +100,60 @@ document.addEventListener("DOMContentLoaded", () => {
             closeModal();
         }
     });
+
+    // ========================================================
+    // 3. ИНТЕРАКТИВНЫЕ СКВИШИ (SKVISH 1 & SKVISH 2)
+    // ========================================================
+    const words = ["ЖМЯК!", "ЧПОК!", "ОЙ!", "БУЛЬК!", "ПЫЩ!", "ТЫК!", "КВА!"];
+    const animTypes = ["squash-pancake", "squash-sausage", "squash-diagonal", "squash-pop"];
+
+    // Мультяшный резиновый свист через нативный Web Audio API
+    function playSqueak(pitchModifier = 1) {
+        try {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            const ctx = new AudioCtx();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = "sine";
+            const now = ctx.currentTime;
+
+            osc.frequency.setValueAtTime(260 * pitchModifier, now);
+            osc.frequency.exponentialRampToValueAtTime(700 * pitchModifier, now + 0.08);
+
+            gain.gain.setValueAtTime(0.22, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.1);
+        } catch (e) {}
+    }
+
+    function setupSquish(elementId, bubbleId, soundPitch) {
+        const el = document.getElementById(elementId);
+        const bubble = document.getElementById(bubbleId);
+        if (!el) return;
+
+        // pointerdown работает и с мышки, и с тачскрина телефона
+        el.addEventListener("pointerdown", () => {
+            playSqueak(soundPitch);
+
+            animTypes.forEach(a => el.classList.remove(a));
+            void el.offsetWidth; // перезапуск CSS анимации
+            const randomAnim = animTypes[Math.floor(Math.random() * animTypes.length)];
+            el.classList.add(randomAnim);
+
+            if (bubble) {
+                bubble.textContent = words[Math.floor(Math.random() * words.length)];
+                bubble.classList.add("show");
+                setTimeout(() => bubble.classList.remove("show"), 500);
+            }
+        });
+    }
+
+    setupSquish("skvish1", "bubble1", 1.0);  // Басовитый жмяк слева
+    setupSquish("skvish2", "bubble2", 1.45); // Писклявый чпок справа
 });
