@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZAGUSH — DUBSTEP ZONE 🔊</title>
+    <title>ZAGUSH — DUBSTEP</title>
     <style>
         * {
             margin: 0;
@@ -12,19 +12,21 @@
         }
 
         body {
-            background: #09090b;
-            color: #ffffff;
-            font-family: Arial, Helvetica, sans-serif;
+            background: #0e0d11;
+            background-image: radial-gradient(circle at center, #1b1622 0%, #070609 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #fff;
             overflow: hidden;
-            text-align: center;
+            user-select: none;
             padding: 20px;
         }
 
+        /* Кнопка возврата */
         .back-btn {
             position: fixed;
             top: 20px;
@@ -33,68 +35,183 @@
             color: #000000;
             text-decoration: none;
             font-weight: 900;
-            font-size: 14px;
+            font-size: 13px;
+            letter-spacing: 0.08em;
             padding: 8px 16px;
-            border: 2.5px solid #000;
-            box-shadow: 4px 4px 0 #ff0055;
-            transition: transform 0.15s ease;
+            border: 2px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            z-index: 100;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
 
         .back-btn:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0 #ff0055;
+            transform: translate(-1px, -1px);
+            box-shadow: 5px 5px 0 #000;
         }
 
-        h1 {
-            font-size: clamp(32px, 5vw, 64px);
+        /* Главная сцена: Лицо слева - Плейлист - Лицо справа */
+        .stage {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(20px, 4vw, 60px);
+            width: 100%;
+            max-width: 1050px;
+        }
+
+        /* Интерактивные лица-кнопки */
+        .head-btn {
+            position: relative;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            outline: none;
+            width: clamp(90px, 14vw, 170px);
+            aspect-ratio: 1 / 1.2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-origin: center bottom;
+            transition: filter 0.2s ease;
+        }
+
+        .head-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            pointer-events: none;
+            filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.8));
+        }
+
+        .head-btn:hover img {
+            filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4));
+        }
+
+        /* Стрелочки-подсказки над лицами */
+        .head-hint {
+            position: absolute;
+            top: -24px;
+            font-size: 20px;
             font-weight: 900;
-            letter-spacing: 0.08em;
-            color: #00ffff;
-            text-shadow: 4px 4px 0 #ff0055;
-            margin-bottom: 8px;
-            text-transform: uppercase;
+            color: #fff;
+            opacity: 0.6;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .head-btn:hover .head-hint {
+            opacity: 1;
+            transform: scale(1.2);
         }
 
-        p {
-            font-size: 15px;
-            color: #aaa;
-            margin-bottom: 30px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-        }
-
-        /* Плеер */
-        .player-box {
-            background: #141419;
-            border: 3px solid #00ffff;
-            box-shadow: 8px 8px 0 #ff0055;
-            padding: 25px;
-            width: min(440px, 90vw);
+        /* Центр: Список треков */
+        .playlist-card {
+            background: #17151e;
+            border: 3px solid #000;
+            box-shadow: 8px 8px 0 #000;
+            width: min(440px, 88vw);
+            padding: 22px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 18px;
+            gap: 14px;
+            z-index: 10;
         }
 
-        .bass-icon {
-            font-size: 55px;
-            animation: pulse 0.5s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.18); }
-        }
-
-        audio {
+        /* Полоса прогресса */
+        .progress-bar-wrap {
             width: 100%;
-            outline: none;
+            height: 10px;
+            background: #282433;
+            border: 1.5px solid #000;
+            cursor: pointer;
+            position: relative;
         }
 
-        .track-info {
-            font-size: 13px;
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: #ffffff;
+            transition: width 0.1s linear;
+        }
+
+        /* Список треков */
+        .tracks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .track-item {
+            background: #231f2d;
+            border: 2px solid #000;
+            box-shadow: 3px 3px 0 #000;
+            padding: 12px 16px;
             font-weight: 800;
-            color: #00ffff;
+            font-size: 14px;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        .track-item:hover {
+            background: #312b3f;
+            transform: translateX(3px);
+        }
+
+        .track-item.active {
+            background: #ffffff;
+            color: #000000;
+            border-color: #000000;
+            box-shadow: 4px 4px 0 #000;
+        }
+
+        .track-num {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-right: 10px;
+        }
+
+        .track-status {
+            font-size: 13px;
+        }
+
+        /* Кнопка Play/Pause внизу плейлиста */
+        .play-btn {
+            background: #fff;
+            color: #000;
+            border: 2px solid #000;
+            box-shadow: 3px 3px 0 #000;
+            padding: 10px;
+            font-weight: 900;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 4px;
+            transition: transform 0.1s ease;
+        }
+
+        .play-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0 #000;
+        }
+
+        @media (max-width: 650px) {
+            .stage {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .head-btn {
+                width: 90px;
+            }
+            .heads-mobile-row {
+                display: flex;
+                gap: 50px;
+            }
         }
     </style>
 </head>
@@ -102,19 +219,189 @@
 
     <a href="index.html" class="back-btn">← НА СТОЛ</a>
 
-    <div class="bass-icon">🔊💀🔊</div>
-    <h1>DUBSTEP ZONE</h1>
-    <p>ТЫ НАШЁЛ СЕКРЕТНУЮ КОМНАТУ</p>
+    <div class="stage">
+        <!-- Левое лицо: Предыдущий трек -->
+        <button id="prevBtn" class="head-btn" title="Предыдущий трек">
+            <span class="head-hint">◄</span>
+            <img src="face2.png" id="leftHead" alt="Назад" onerror="this.src='face.png'">
+        </button>
 
-    <div class="player-box">
-        <div class="track-info">ТРЕК: Spag Heddy — The Master (NCS Free)</div>
-        
-        <!-- Замени ссылку на свой .mp3 файл, когда скачаешь -->
-        <audio id="audioPlayer" controls autoplay loop>
-            <source src="https://ia800701.us.archive.org/26/items/spag-heddy-the-master/Spag%20Heddy%20-%20The%20Master.mp3" type="audio/mpeg">
-            Ваш браузер не поддерживает аудио.
-        </audio>
+        <!-- Список треков -->
+        <div class="playlist-card">
+            <div class="progress-bar-wrap" id="progressWrap">
+                <div class="progress-bar-fill" id="progressFill"></div>
+            </div>
+
+            <div class="tracks-list" id="tracksContainer">
+                <!-- Треки генерятся скриптом -->
+            </div>
+
+            <button id="playPauseBtn" class="play-btn">ПАУЗА ||</button>
+        </div>
+
+        <!-- Правое лицо: Следующий трек -->
+        <button id="nextBtn" class="head-btn" title="Следующий трек">
+            <span class="head-hint">►</span>
+            <img src="face3.png" id="rightHead" alt="Вперёд" onerror="this.src='face.png'">
+        </button>
     </div>
 
+    <!-- Аудио элемент -->
+    <audio id="audio" crossorigin="anonymous"></audio>
+
+    <script>
+        // СПИСОК ТРЕКОВ
+        // Скачай свои 3 трека из чата и сохрани их с такими именами:
+        const playlist = [
+            { title: "DUBSTEP TRACK 1", file: "track1.mp3" },
+            { title: "DUBSTEP TRACK 2", file: "track2.mp3" },
+            { title: "DUBSTEP TRACK 3", file: "track3.mp3" }
+        ];
+
+        let currentIndex = 0;
+        let isPlaying = false;
+
+        const audio = document.getElementById('audio');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const tracksContainer = document.getElementById('tracksContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressWrap = document.getElementById('progressWrap');
+        const leftHead = document.getElementById('leftHead');
+        const rightHead = document.getElementById('rightHead');
+
+        // Рендер списка треков
+        function renderPlaylist() {
+            tracksContainer.innerHTML = '';
+            playlist.forEach((track, idx) => {
+                const item = document.createElement('div');
+                item.className = 'track-item' + (idx === currentIndex ? ' active' : '');
+                item.innerHTML = `
+                    <div>
+                        <span class="track-num">0${idx + 1}</span>
+                        <span>${track.title}</span>
+                    </div>
+                    <span class="track-status">${idx === currentIndex && isPlaying ? '▶' : ''}</span>
+                `;
+                item.addEventListener('click', () => {
+                    currentIndex = idx;
+                    loadAndPlay();
+                });
+                tracksContainer.appendChild(item);
+            });
+        }
+
+        function loadTrack(idx) {
+            audio.src = playlist[idx].file;
+            renderPlaylist();
+        }
+
+        function loadAndPlay() {
+            initAudioContext();
+            loadTrack(currentIndex);
+            audio.play().then(() => {
+                isPlaying = true;
+                playPauseBtn.textContent = 'ПАУЗА ||';
+                renderPlaylist();
+            }).catch(e => console.log('Wait for user gesture'));
+        }
+
+        function togglePlay() {
+            initAudioContext();
+            if (audio.paused) {
+                if (!audio.src) loadTrack(currentIndex);
+                audio.play();
+                isPlaying = true;
+                playPauseBtn.textContent = 'ПАУЗА ||';
+            } else {
+                audio.pause();
+                isPlaying = false;
+                playPauseBtn.textContent = 'ИГРАТЬ ▶';
+            }
+            renderPlaylist();
+        }
+
+        playPauseBtn.addEventListener('click', togglePlay);
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+            loadAndPlay();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % playlist.length;
+            loadAndPlay();
+        });
+
+        // Автопереход на следующий трек
+        audio.addEventListener('ended', () => {
+            currentIndex = (currentIndex + 1) % playlist.length;
+            loadAndPlay();
+        });
+
+        // Прогресс бар
+        audio.addEventListener('timeupdate', () => {
+            if (audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = percent + '%';
+            }
+        });
+
+        progressWrap.addEventListener('click', (e) => {
+            const rect = progressWrap.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            audio.currentTime = (clickX / rect.width) * audio.duration;
+        });
+
+        // ========================================================
+        // WEB AUDIO API: ДВИЖЕНИЕ ЛИЦ В ТАКТ БАСА
+        // ========================================================
+        let audioCtx, analyser, source, dataArray;
+        let isAudioCtxInit = false;
+
+        function initAudioContext() {
+            if (isAudioCtxInit) return;
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 64; // Быстрый анализ частот
+                source = audioCtx.createMediaElementSource(audio);
+                source.connect(analyser);
+                analyser.connect(audioCtx.destination);
+                dataArray = new Uint8Array(analyser.frequencyBinCount);
+                isAudioCtxInit = true;
+                renderDance();
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        function renderDance() {
+            requestAnimationFrame(renderDance);
+            if (!isPlaying || !analyser) return;
+
+            analyser.getByteFrequencyData(dataArray);
+
+            // Считываем суб-бас и бочку (первые 4 частотные полосы)
+            const bass = (dataArray[1] + dataArray[2] + dataArray[3]) / 3;
+            const normBass = bass / 255; // значение от 0 до 1
+
+            if (normBass > 0.35) {
+                const scale = 1 + normBass * 0.35; // увеличение от баса
+                const tiltLeft = -10 * normBass;
+                const tiltRight = 10 * normBass;
+
+                leftHead.style.transform = `scale(${scale}) rotate(${tiltLeft}deg)`;
+                rightHead.style.transform = `scale(${scale}) rotate(${tiltRight}deg)`;
+            } else {
+                leftHead.style.transform = 'scale(1) rotate(0deg)';
+                rightHead.style.transform = 'scale(1) rotate(0deg)';
+            }
+        }
+
+        // Старт первого трека
+        loadTrack(currentIndex);
+    </script>
 </body>
 </html>
