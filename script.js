@@ -237,6 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (hasMoved) {
                 // ПРИЗЕМЛЕНИЕ: смачно плюхается на стол
                 playThud();
+                el.style.zIndex = "20"; // Сквиш лежит поверх предмета и не застревает
                 el.classList.remove(...animTypes);
                 void el.offsetWidth;
                 el.classList.add("squash-pancake");
