@@ -107,20 +107,19 @@ body {
 }
 
 /* ========================================================
-   СТОЛ И ПРЕДМЕТЫ
+   СТОЛ И ПРЕДМЕТЫ (ИДЕАЛЬНАЯ АДАПТИВНАЯ СЕТКА)
    ======================================================== */
-
 .desk {
     position: relative;
     z-index: 5;
-    width: min(1100px, 92vw);
-    margin: 40px auto 70px;
+    /* Золотая середина: не улетает к краям на широких мониторах, но держит ровную форму */
+    width: min(880px, 90vw);
+    margin: 30px auto 60px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: clamp(40px, 8vw, 120px);
-    row-gap: 50px;
-    align-items: end;
-    justify-items: center;
+    column-gap: clamp(20px, 6vw, 90px); /* Плавно сжимается при сужении экрана */
+    row-gap: 45px;
+    align-items: end; /* Выравнивание предметов по их нижнему краю */
 }
 
 /* Контейнер предмета */
@@ -135,20 +134,19 @@ body {
     transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Расположение по колонкам стола */
-/* Левая колонка (Телефон и Контакты) прижимается вправо к центру */
+/* ЛЕВАЯ СТОРОНА: Телефон и Контакты держат ровный левый край */
 .phone-object,
 .contact-object {
-    justify-self: end;
-}
-
-/* Правая колонка (Скетчбук и Листок) прижимается влево к центру */
-.sketchbook-object,
-.draw-object {
     justify-self: start;
 }
 
-/* 1. Телефон (Сверху слева) */
+/* ПРАВАЯ СТОРОНА: Скетчбук и Листок держат ровный правый край */
+.sketchbook-object,
+.draw-object {
+    justify-self: end;
+}
+
+/* 1. Телефон (Сверху слева) — свой компактный размер */
 .phone-object {
     width: clamp(110px, 10vw, 145px);
     transform: rotate(-3deg);
@@ -160,7 +158,7 @@ body {
     transform: rotate(-2deg);
 }
 
-/* 2. Скетчбук (Сверху справа) */
+/* 2. Скетчбук (Сверху справа) — широкий альбомный размер */
 .sketchbook-object {
     width: clamp(190px, 18vw, 260px);
     transform: rotate(3deg);
@@ -172,7 +170,7 @@ body {
     transform: rotate(2deg);
 }
 
-/* 3. Контакты (Снизу слева) */
+/* 3. Контакты (Снизу слева) — размер конверта */
 .contact-object {
     width: clamp(170px, 16vw, 235px);
     transform: rotate(-3deg);
@@ -184,7 +182,7 @@ body {
     transform: rotate(2deg);
 }
 
-/* 4. Листок для рисования (Снизу справа) */
+/* 4. Листок для рисования (Снизу справа) — вертикальный лист бумаги */
 .draw-object {
     width: clamp(180px, 17vw, 245px);
     transform: rotate(3deg);
