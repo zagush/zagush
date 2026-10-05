@@ -437,5 +437,32 @@ body {
     .draw-object,
     .contact-object {
         width: min(210px, 60vw) !important;
+        /* ========================================================
+   СЕКРЕТНАЯ ПАСХАЛКА ВНИЗУ
+   ======================================================== */
+.secret-face {
+    position: fixed;
+    bottom: -18px; /* прячется за краем экрана */
+    right: 25px;
+    z-index: 99;
+    width: 42px;
+    height: 42px;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28), bottom 0.25s ease;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+}
+
+.secret-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* При наведении лицо смешно вылезает наружу */
+.secret-face:hover {
+    bottom: 8px;
+    transform: scale(1.25) rotate(-8deg);
+}
     }
 }
