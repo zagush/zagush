@@ -11,7 +11,7 @@ html {
 body {
     min-width: 320px;
     min-height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Rubik Mono One', monospace, sans-serif;
     background: #2b2118;
     color: #171717;
 }
