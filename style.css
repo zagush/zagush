@@ -37,6 +37,7 @@ body {
 }
 
 /* Кнопка языка */
+/* Кнопка языка: чистая белая плашка с мягкой тенью на дерево */
 .language-switch {
     position: fixed;
     top: 20px;
@@ -45,22 +46,23 @@ body {
     width: 52px;
     height: 38px;
     padding: 0;
-    border: 2.5px solid #000;
+    border: none; /* УБРАНА ОБВОДКА */
     border-radius: 4px;
     background: #ffffff;
-    color: #000;
-    font-family: 'Rubik Mono One', monospace, sans-serif; /* НАШ ШРИФТ */
+    color: #000000;
+    font-family: 'Rubik Mono One', monospace, sans-serif;
     font-size: 13px;
     cursor: pointer;
-    box-shadow: 3px 3px 0 #000;
-    transition: transform 0.15s ease, background 0.15s ease;
+    /* Естественная мягкая тень на стол */
+    box-shadow: 3px 6px 12px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
     user-select: none;
 }
 
 .language-switch:hover {
-    background: #f0f0f0;
-    transform: translate(-1px, -1px);
-    box-shadow: 4px 4px 0 #000;
+    background: #f7f7f7;
+    transform: translateY(-2px);
+    box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.45);
 }
 
 .site-header {
@@ -221,7 +223,7 @@ body {
 /* ========================================================
    ЕДИНЫЙ БРУТАЛИСТСКИЙ СТИЛЬ НАДПИСЕЙ (СТИКЕРЫ / СКОТЧ)
    ======================================================== */
-/* Стикеры-подписи кнопок: БЕЗ ОБВОДКИ */
+/* Плашки подписей: без обводки + мягкая тень на дерево */
 .item-title,
 .item-label,
 .phone-label,
@@ -248,10 +250,10 @@ body {
     user-select: none;
     pointer-events: none;
     
-    /* УБРАНА ОБВОДКА */
     border: none;
     border-radius: 2px;
-    box-shadow: 4px 4px 0 #000000;
+    /* Реалистичная тень бумажной плашки на доски стола */
+    box-shadow: 3px 6px 12px rgba(0, 0, 0, 0.35), 1px 2px 4px rgba(0, 0, 0, 0.2);
     -webkit-text-stroke: 0;
     text-shadow: none;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
