@@ -73,18 +73,25 @@ body {
     align-items: center;
 }
 
-/* Логотип */
+/* Логотип: тонкий идеальный контур + реалистичная тень на дерево */
 .logo {
     display: block;
     color: #ffffff;
     text-decoration: none;
-    font-family: 'Rubik Mono One', monospace, sans-serif; /* НАШ ШРИФТ */
-    font-size: clamp(38px, 5.5vw, 72px); /* Сбалансированный размер для широкого шрифта */
-    letter-spacing: -0.02em;             /* Буквы плотно прижаты друг к другу */
+    font-family: 'Rubik Mono One', monospace, sans-serif;
+    font-size: clamp(38px, 5.5vw, 72px);
+    letter-spacing: -0.02em;
     line-height: 1;
     text-align: center;
-    -webkit-text-stroke: 2.5px #000000;
-    text-shadow: 5px 5px 0 #000000;      /* Жирная брутальная тень */
+
+    /* Тонкая обводка без закругления углов */
+    -webkit-text-stroke: 1.5px #000000;
+    paint-order: stroke fill;
+
+    /* Убрали жесткую тень, добавили реалистичную мягкую тень на стол */
+    text-shadow: none;
+    filter: drop-shadow(4px 6px 6px rgba(0, 0, 0, 0.45)) 
+            drop-shadow(8px 14px 18px rgba(0, 0, 0, 0.35));
 }
 .about {
     position: relative;
@@ -211,6 +218,7 @@ body {
 /* ========================================================
    ЕДИНЫЙ БРУТАЛИСТСКИЙ СТИЛЬ НАДПИСЕЙ (СТИКЕРЫ / СКОТЧ)
    ======================================================== */
+/* Стикеры-подписи кнопок: БЕЗ ОБВОДКИ */
 .item-title,
 .item-label,
 .phone-label,
@@ -224,12 +232,12 @@ body {
     display: inline-block;
     z-index: 10;
     margin-top: -14px;
-    padding: 6px 12px;
+    padding: 6px 14px;
     
     background: #ffffff;
     color: #000000;
-    font-family: 'Rubik Mono One', monospace, sans-serif; /* НАШ ШРИФТ */
-    font-size: clamp(11px, 1.1vw, 14px);                 /* Чуть подогнан под ширину букв */
+    font-family: 'Rubik Mono One', monospace, sans-serif;
+    font-size: clamp(11px, 1.1vw, 14px);
     letter-spacing: 0;
     text-transform: uppercase;
     text-align: center;
@@ -237,7 +245,8 @@ body {
     user-select: none;
     pointer-events: none;
     
-    border: 2.5px solid #000000;
+    /* УБРАНА ОБВОДКА */
+    border: none;
     border-radius: 2px;
     box-shadow: 4px 4px 0 #000000;
     -webkit-text-stroke: 0;
