@@ -42,16 +42,15 @@ body {
     top: 20px;
     right: 20px;
     z-index: 100;
-    width: 48px;
-    height: 36px;
+    width: 52px;
+    height: 38px;
     padding: 0;
-    border: 2px solid #000;
-    border-radius: 6px;
+    border: 2.5px solid #000;
+    border-radius: 4px;
     background: #ffffff;
     color: #000;
+    font-family: 'Rubik Mono One', monospace, sans-serif; /* НАШ ШРИФТ */
     font-size: 13px;
-    font-weight: 800;
-    letter-spacing: 0.06em;
     cursor: pointer;
     box-shadow: 3px 3px 0 #000;
     transition: transform 0.15s ease, background 0.15s ease;
@@ -79,15 +78,14 @@ body {
     display: block;
     color: #ffffff;
     text-decoration: none;
-    font-size: clamp(44px, 6vw, 80px);
-    font-weight: 900;
-    letter-spacing: 0.08em;
+    font-family: 'Rubik Mono One', monospace, sans-serif; /* НАШ ШРИФТ */
+    font-size: clamp(38px, 5.5vw, 72px); /* Сбалансированный размер для широкого шрифта */
+    letter-spacing: -0.02em;             /* Буквы плотно прижаты друг к другу */
     line-height: 1;
     text-align: center;
     -webkit-text-stroke: 2.5px #000000;
-    text-shadow: 4px 4px 0 #000000;
+    text-shadow: 5px 5px 0 #000000;      /* Жирная брутальная тень */
 }
-
 .about {
     position: relative;
     z-index: 5;
@@ -213,27 +211,37 @@ body {
 /* ========================================================
    ЕДИНЫЙ БРУТАЛИСТСКИЙ СТИЛЬ НАДПИСЕЙ (СТИКЕРЫ / СКОТЧ)
    ======================================================== */
+.item-title,
 .item-label,
 .phone-label,
 .sticker-title {
     position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none;
+    
     display: inline-block;
     z-index: 10;
     margin-top: -14px;
-    padding: 5px 14px;
+    padding: 6px 12px;
+    
     background: #ffffff;
     color: #000000;
-    font-size: clamp(13px, 1.3vw, 16px);
-    font-weight: 900;
-    letter-spacing: 0.12em;
+    font-family: 'Rubik Mono One', monospace, sans-serif; /* НАШ ШРИФТ */
+    font-size: clamp(11px, 1.1vw, 14px);                 /* Чуть подогнан под ширину букв */
+    letter-spacing: 0;
     text-transform: uppercase;
     text-align: center;
     white-space: nowrap;
     user-select: none;
     pointer-events: none;
+    
     border: 2.5px solid #000000;
     border-radius: 2px;
     box-shadow: 4px 4px 0 #000000;
+    -webkit-text-stroke: 0;
+    text-shadow: none;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -493,11 +501,11 @@ body {
     transform: translateX(-50%) scale(0);
     background: #ffffff;
     color: #000000;
+    font-family: 'Rubik Mono One', monospace, sans-serif; /* НАШ ШРИФТ */
     border: 2px solid #000000;
     box-shadow: 2.5px 2.5px 0 #000000;
-    font-size: 11px;
-    font-weight: 900;
-    padding: 3px 8px;
+    font-size: 10px;
+    padding: 4px 7px;
     white-space: nowrap;
     pointer-events: none;
     opacity: 0;
