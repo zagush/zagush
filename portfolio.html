@@ -25,7 +25,7 @@
             align-items: center;
         }
 
-        /* Верхняя панель */
+        /* Верхняя панель навигации */
         .top-bar {
             width: min(960px, 100%);
             display: flex;
@@ -74,23 +74,14 @@
             cursor: pointer;
             transition: color 0.15s ease;
         }
-        .crumb-link:hover {
-            color: #000;
-        }
-        .crumb-active {
-            color: #000;
-        }
-        .crumb-sep {
-            color: #aaa;
-        }
+        .crumb-link:hover { color: #000; }
+        .crumb-active { color: #000; }
+        .crumb-sep { color: #aaa; }
 
-        /* ========================================================
-           ЛИСТ СКЕТЧБУКА (Подложка paper.png)
-           ======================================================== */
+        /* Лист скетчбука */
         .sketchbook-sheet {
             width: min(960px, 100%);
             min-height: 82vh;
-            /* Фоновый файл paper.png + запасной бумажный цвет */
             background: #fbf8f1 url('paper.png') center center / cover no-repeat;
             box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.2);
             border-radius: 6px;
@@ -99,7 +90,7 @@
             border-left: 12px solid #eae2d3;
         }
 
-        /* Заголовок строго посередине, кнопка назад впереди */
+        /* Заголовок строго посередине, назад слева */
         .sheet-title-row {
             display: grid;
             grid-template-columns: 110px 1fr 110px;
@@ -131,13 +122,9 @@
             display: none;
             transition: background 0.15s ease;
         }
-        .nav-back-step:hover {
-            background: #e0d4bf;
-        }
+        .nav-back-step:hover { background: #e0d4bf; }
 
-        /* ========================================================
-           СЕТКА ПАПОК С ВЕЕРОМ ИЗ 6–8 КАРТИНОК
-           ======================================================== */
+        /* Сетка папок */
         .folders-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
@@ -151,11 +138,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 55px; /* Место под веер миниатюр */
+            padding-top: 55px;
             transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
         }
 
-        /* Веер из 6–8 картинок */
+        /* Веер миниатюр */
         .folder-previews {
             position: absolute;
             top: 0;
@@ -169,8 +156,8 @@
 
         .preview-thumb {
             position: absolute;
-            width: 70px;
-            height: 70px;
+            width: 68px;
+            height: 68px;
             object-fit: cover;
             border-radius: 4px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
@@ -179,7 +166,6 @@
             transition: transform 0.25s ease;
         }
 
-        /* Индивидуальные углы и сдвиги веера */
         .preview-thumb:nth-child(1) { left: 10px;  top: 14px; transform: rotate(-22deg); }
         .preview-thumb:nth-child(2) { left: 35px;  top: 8px;  transform: rotate(-15deg); }
         .preview-thumb:nth-child(3) { left: 60px;  top: 3px;  transform: rotate(-8deg); }
@@ -188,7 +174,6 @@
         .preview-thumb:nth-child(6) { left: 135px; top: 8px;  transform: rotate(15deg); }
         .preview-thumb:nth-child(7) { left: 160px; top: 14px; transform: rotate(22deg); }
 
-        /* Эффект вылезания веера при наведении */
         .folder-card:hover .preview-thumb:nth-child(1) { transform: rotate(-26deg) translateY(-14px); }
         .folder-card:hover .preview-thumb:nth-child(2) { transform: rotate(-18deg) translateY(-18px); }
         .folder-card:hover .preview-thumb:nth-child(3) { transform: rotate(-10deg) translateY(-22px); }
@@ -197,7 +182,6 @@
         .folder-card:hover .preview-thumb:nth-child(6) { transform: rotate(18deg)  translateY(-18px); }
         .folder-card:hover .preview-thumb:nth-child(7) { transform: rotate(26deg)  translateY(-14px); }
 
-        /* Карман папки */
         .folder-pocket {
             position: relative;
             z-index: 2;
@@ -243,9 +227,7 @@
             color: #444;
         }
 
-        /* ========================================================
-           СЕТКА САМИХ РАБОТ
-           ======================================================== */
+        /* Сетка работ */
         .works-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
@@ -286,9 +268,17 @@
             white-space: nowrap;
         }
 
-        /* ========================================================
-           LIGHTBOX МОДАЛКА
-           ======================================================== */
+        /* Загрузка */
+        .loading-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px 0;
+            font-family: 'Rubik Mono One', monospace, sans-serif;
+            font-size: 12px;
+            color: #777;
+        }
+
+        /* Модалка просмотра */
         .lightbox-modal {
             position: fixed;
             inset: 0;
@@ -301,13 +291,11 @@
             padding: 20px;
         }
 
-        .lightbox-modal.active {
-            display: flex;
-        }
+        .lightbox-modal.active { display: flex; }
 
         .lightbox-content {
             position: relative;
-            max-width: min(850px, 94vw);
+            max-width: min(900px, 94vw);
             max-height: 88vh;
             display: flex;
             flex-direction: column;
@@ -326,7 +314,7 @@
             margin-top: 14px;
             font-family: 'Rubik Mono One', monospace, sans-serif;
             color: #fff;
-            font-size: 14px;
+            font-size: 13px;
             text-align: center;
         }
 
@@ -343,9 +331,7 @@
         }
 
         @media (max-width: 650px) {
-            .sheet-title-row {
-                grid-template-columns: 80px 1fr 80px;
-            }
+            .sheet-title-row { grid-template-columns: 80px 1fr 80px; }
             .sketchbook-sheet {
                 padding: 16px 10px;
                 border-left-width: 6px;
@@ -363,7 +349,6 @@
 </head>
 <body>
 
-    <!-- Верхний тулбар -->
     <div class="top-bar">
         <a href="index.html" class="back-desk-btn" id="toDeskBtn">← НА СТОЛ</a>
 
@@ -374,18 +359,16 @@
         <button class="lang-btn" id="langBtn" type="button">EN</button>
     </div>
 
-    <!-- Разворот скетчбука -->
     <main class="sketchbook-sheet">
         <div class="sheet-title-row">
             <button class="nav-back-step" id="navBackBtn" type="button">← НАЗАД</button>
             <h1 class="sheet-title" id="sectionTitle">ПОРТФОЛИО</h1>
-            <div></div> <!-- Балансировочный блок справа для точного центра -->
+            <div></div>
         </div>
 
         <div id="contentView"></div>
     </main>
 
-    <!-- Полноэкранный просмотрщик арта -->
     <div class="lightbox-modal" id="lightboxModal">
         <div class="lightbox-content">
             <button class="lightbox-close" id="lightboxClose">&times;</button>
@@ -395,131 +378,135 @@
     </div>
 
     <script>
-        // Общий пул картинок-заглушек для 7 миниатюр веера, пока не положишь свои
+        // Имя репозитория Zagush на GitHub
+        const GITHUB_REPO = "zagush/zagush";
+
+        // Стандартные картинки для превью папок, если папка пуста
         const defaultFan = [
             "phone.png", "contact.png", "draw.png", "sketchbook1.png",
             "face3.png", "face4.png", "face.png"
         ];
 
         // ========================================================
-        // ОБНОВЛЕННАЯ СТРУКТУРА ПОРТФОЛИО
+        // КАРТА ПАПОК (Пути точно соответствуют твоим папкам)
         // ========================================================
         const portfolioData = {
             id: "root",
             title: { ru: "ПОРТФОЛИО", en: "PORTFOLIO" },
             items: [
-                // 1. ПИКСЕЛЬ-АРТ (с добавленной папкой UI/UX)
+                // 1. ПИКСЕЛЬ-АРТ
                 {
                     id: "pixel-art",
                     title: { ru: "ПИКСЕЛЬ-АРТ", en: "PIXEL ART" },
-                    previews: defaultFan,
                     type: "category",
                     items: [
-                        {
-                            id: "pixel-chars",
-                            title: { ru: "ПЕРСОНАЖИ", en: "CHARACTERS" },
-                            previews: defaultFan,
-                            type: "gallery",
-                            works: []
-                        },
-                        {
-                            id: "pixel-full",
-                            title: { ru: "ПОЛНОЦЕННЫЕ / ФОНЫ", en: "FULL ART & BG" },
-                            previews: defaultFan,
-                            type: "gallery",
-                            works: []
-                        },
-                        {
-                            id: "pixel-ui",
-                            title: { ru: "UI / UX", en: "UI / UX" },
-                            previews: defaultFan,
-                            type: "gallery",
-                            works: []
-                        },
-                        {
-                            id: "pixel-stickers",
-                            title: { ru: "СТИКЕРЫ", en: "STICKERS" },
-                            previews: defaultFan,
-                            type: "gallery",
-                            works: []
-                        },
-                        {
-                            id: "pixel-other",
-                            title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" },
-                            previews: defaultFan,
-                            type: "gallery",
-                            works: []
-                        }
+                        { id: "pixel-chars", title: { ru: "ПЕРСОНАЖИ", en: "CHARACTERS" }, folder: "portfolio/pixel-art/characters", type: "gallery" },
+                        { id: "pixel-full", title: { ru: "ПОЛНОЦЕННЫЕ / ФОНЫ", en: "FULL ART & BG" }, folder: "portfolio/pixel-art/full-art", type: "gallery" },
+                        { id: "pixel-ui", title: { ru: "UI / UX", en: "UI / UX" }, folder: "portfolio/pixel-art/ui-ux", type: "gallery" },
+                        { id: "pixel-stickers", title: { ru: "СТИКЕРЫ", en: "STICKERS" }, folder: "portfolio/pixel-art/stickers", type: "gallery" },
+                        { id: "pixel-other", title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" }, folder: "portfolio/pixel-art/other", type: "gallery" }
                     ]
                 },
 
-                // 2. ХОЛСТЫ (Строго на убывание: 2026 -> 2023)
+                // 2. ХОЛСТЫ
                 {
                     id: "canvases",
                     title: { ru: "ХОЛСТЫ", en: "CANVASES" },
                     desc: { ru: "Акрил, масло, аэрозольная краска", en: "Acrylic, oil, spray paint" },
-                    previews: defaultFan,
                     type: "category",
                     items: [
-                        { id: "canvas-2026", title: { ru: "2026", en: "2026" }, previews: defaultFan, type: "gallery", works: [] },
-                        { id: "canvas-2025", title: { ru: "2025", en: "2025" }, previews: defaultFan, type: "gallery", works: [] },
-                        { id: "canvas-2024", title: { ru: "2024", en: "2024" }, previews: defaultFan, type: "gallery", works: [] },
-                        { id: "canvas-2023", title: { ru: "2023", en: "2023" }, previews: defaultFan, type: "gallery", works: [] }
+                        { id: "canvas-2026", title: { ru: "2026", en: "2026" }, folder: "portfolio/canvases/2026", type: "gallery" },
+                        { id: "canvas-2025", title: { ru: "2025", en: "2025" }, folder: "portfolio/canvases/2025", type: "gallery" },
+                        { id: "canvas-2024", title: { ru: "2024", en: "2024" }, folder: "portfolio/canvases/2024", type: "gallery" },
+                        { id: "canvas-2023", title: { ru: "2023", en: "2023" }, folder: "portfolio/canvases/2023", type: "gallery" }
                     ]
                 },
 
-                // 3. МЕРЧ (Значки, брелоки, фигурки, стикеры)
+                // 3. МЕРЧ
                 {
                     id: "merch",
                     title: { ru: "МЕРЧ", en: "MERCH" },
                     desc: { ru: "Значки, брелоки, фигурки, стикеры", en: "Pins, keychains, figurines, stickers" },
-                    previews: defaultFan,
                     type: "category",
                     items: [
-                        { id: "merch-pins", title: { ru: "ЗНАЧКИ", en: "PINS" }, previews: defaultFan, type: "gallery", works: [] },
-                        { id: "merch-keychains", title: { ru: "БРЕЛОКИ", en: "KEYCHAINS" }, previews: defaultFan, type: "gallery", works: [] },
-                        { id: "merch-figures", title: { ru: "ФИГУРКИ", en: "FIGURINES" }, previews: defaultFan, type: "gallery", works: [] },
-                        { id: "merch-stickers", title: { ru: "СТИКЕРЫ", en: "STICKERS" }, previews: defaultFan, type: "gallery", works: [] }
+                        { id: "merch-pins", title: { ru: "ЗНАЧКИ", en: "PINS" }, folder: "portfolio/merch/pins", type: "gallery" },
+                        { id: "merch-keychains", title: { ru: "БРЕЛОКИ", en: "KEYCHAINS" }, folder: "portfolio/merch/keychains", type: "gallery" },
+                        { id: "merch-figures", title: { ru: "ФИГУРКИ", en: "FIGURINES" }, folder: "portfolio/merch/figures", type: "gallery" },
+                        { id: "merch-stickers", title: { ru: "СТИКЕРЫ", en: "STICKERS" }, folder: "portfolio/merch/stickers", type: "gallery" }
                     ]
                 },
 
-                // 4. ТРАДИШКА (подпись «Разное»)
+                // 4. ТРАДИШКА
                 {
                     id: "traditional",
                     title: { ru: "ТРАДИШКА", en: "TRADITIONAL" },
                     desc: { ru: "Разное", en: "Miscellaneous" },
-                    previews: defaultFan,
-                    type: "gallery",
-                    works: []
+                    folder: "portfolio/traditional",
+                    type: "gallery"
                 },
 
-                // 5. ОСТАЛЬНОЕ (подпись «Остальное», а внутри папка «ТЕГИ»)
+                // 5. ОСТАЛЬНОЕ
                 {
                     id: "other",
                     title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" },
                     desc: { ru: "Остальное", en: "Other" },
-                    previews: defaultFan,
                     type: "category",
                     items: [
-                        {
-                            id: "other-tags",
-                            title: { ru: "ТЕГИ", en: "TAGS" },
-                            desc: { ru: "Граффити, теги, маркеры", en: "Graffiti, tags, markers" },
-                            previews: defaultFan,
-                            type: "gallery",
-                            works: []
-                        },
-                        {
-                            id: "other-misc",
-                            title: { ru: "РАЗНОЕ", en: "MISC" },
-                            previews: defaultFan,
-                            type: "gallery",
-                            works: []
-                        }
+                        { id: "other-tags", title: { ru: "ТЕГИ", en: "TAGS" }, desc: { ru: "Граффити, теги, маркеры", en: "Graffiti, tags, markers" }, folder: "portfolio/other/tags", type: "gallery" },
+                        { id: "other-misc", title: { ru: "РАЗНОЕ", en: "MISC" }, folder: "portfolio/other/misc", type: "gallery" }
                     ]
                 }
             ]
         };
+
+        // ========================================================
+        // АВТОМАТИЧЕСКОЕ ЧТЕНИЕ ПАПОК С GITHUB API С КЭШИРОВАНИЕМ
+        // ========================================================
+        async function fetchImagesFromFolder(folderPath) {
+            if (!folderPath) return [];
+
+            // Проверяем кэш сессии, чтобы не тратить лимит запросов
+            const cacheKey = "zagush_cache_" + folderPath;
+            try {
+                const cached = sessionStorage.getItem(cacheKey);
+                if (cached) return JSON.parse(cached);
+            } catch(e) {}
+
+            try {
+                const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${folderPath}`);
+                if (!res.ok) return [];
+
+                const files = await res.json();
+                if (!Array.isArray(files)) return [];
+
+                // Фильтруем только картинки
+                const imageExtensions = /\.(png|jpe?g|webp|gif)$/i;
+                const images = files
+                    .filter(f => f.type === "file" && imageExtensions.test(f.name))
+                    .map(f => {
+                        // Чистим имя файла в красивую подпись
+                        const cleanTitle = f.name
+                            .replace(imageExtensions, "")
+                            .replace(/[-_]/g, " ")
+                            .toUpperCase();
+
+                        return {
+                            title: cleanTitle,
+                            img: f.path // Локальный путь для сайта
+                        };
+                    });
+
+                // Сохраняем в кэш
+                try {
+                    sessionStorage.setItem(cacheKey, JSON.stringify(images));
+                } catch(e) {}
+
+                return images;
+            } catch (err) {
+                console.warn("GitHub API folder fetch:", err);
+                return [];
+            }
+        }
 
         let navStack = [portfolioData];
         let currentLang = localStorage.getItem("user_lang") || "ru";
@@ -536,7 +523,6 @@
         const lightboxTitle = document.getElementById("lightboxTitle");
         const lightboxClose = document.getElementById("lightboxClose");
 
-        // Запись в историю браузера, чтобы на телефоне «Назад» возвращал по папкам
         function pushNav(item) {
             navStack.push(item);
             history.pushState({ depth: navStack.length }, "");
@@ -590,13 +576,14 @@
             });
         }
 
-        function renderCurrentView() {
+        async function renderCurrentView() {
             const current = navStack[navStack.length - 1];
             sectionTitle.textContent = current.title[currentLang];
             navBackBtn.style.display = navStack.length > 1 ? "block" : "none";
             renderBreadcrumbs();
             contentView.innerHTML = "";
 
+            // Ветка с подпапками
             if (current.type === "category" || current.id === "root") {
                 const grid = document.createElement("div");
                 grid.className = "folders-grid";
@@ -605,28 +592,41 @@
                     const card = document.createElement("div");
                     card.className = "folder-card";
 
-                    // Веер из 6–7 картинок
                     const previewsWrap = document.createElement("div");
                     previewsWrap.className = "folder-previews";
-                    const thumbs = (item.previews && item.previews.length >= 6) ? item.previews : defaultFan;
-                    thumbs.slice(0, 7).forEach(src => {
+
+                    // Дефолтный веер
+                    defaultFan.slice(0, 7).forEach(src => {
                         const img = document.createElement("img");
                         img.className = "preview-thumb";
                         img.src = src;
-                        img.onerror = () => { img.src = "draw.png"; };
                         previewsWrap.appendChild(img);
                     });
 
-                    // Кармашек папки
+                    // Если это папка с работами — подгружаем реальные картинки для веера
+                    if (item.folder) {
+                        fetchImagesFromFolder(item.folder).then(realImages => {
+                            if (realImages.length > 0) {
+                                previewsWrap.innerHTML = "";
+                                realImages.slice(0, 7).forEach(work => {
+                                    const img = document.createElement("img");
+                                    img.className = "preview-thumb";
+                                    img.loading = "lazy";
+                                    img.src = work.img;
+                                    previewsWrap.appendChild(img);
+                                });
+                            }
+                        });
+                    }
+
                     const pocket = document.createElement("div");
                     pocket.className = "folder-pocket";
                     pocket.innerHTML = `
                         <div class="folder-title">${item.title[currentLang]}</div>
                         ${item.desc ? `<div class="folder-desc">${item.desc[currentLang]}</div>` : ''}
-                        <div class="folder-count-badge">${
-                            item.items ? (item.items.length + (currentLang === 'ru' ? ' категорий' : ' sections')) :
-                            ((item.works ? item.works.length : 0) + (currentLang === 'ru' ? ' работ' : ' works'))
-                        }</div>
+                        <div class="folder-count-badge">
+                            ${item.items ? (item.items.length + (currentLang === 'ru' ? ' разделов' : ' sections')) : (currentLang === 'ru' ? 'галерея' : 'gallery')}
+                        </div>
                     `;
 
                     card.appendChild(previewsWrap);
@@ -641,20 +641,27 @@
 
                 contentView.appendChild(grid);
             } 
+            // Ветка с галереей работ
             else if (current.type === "gallery") {
                 const grid = document.createElement("div");
                 grid.className = "works-grid";
+                grid.innerHTML = `<div class="loading-state">${currentLang === 'ru' ? 'ЗАГРУЗКА РАБОТ...' : 'LOADING ARTWORKS...'}</div>`;
+                contentView.appendChild(grid);
 
-                if (!current.works || current.works.length === 0) {
+                // Автоматически сканируем папку на GitHub
+                const works = await fetchImagesFromFolder(current.folder);
+                grid.innerHTML = "";
+
+                if (works.length === 0) {
                     grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #888; font-weight: 700; padding: 40px 0;">
-                        ${currentLang === 'ru' ? 'В этом разделе скоро появятся работы...' : 'Artworks coming soon...'}
+                        ${currentLang === 'ru' ? 'Работы пока загружаются на GitHub...' : 'Artworks coming soon...'}
                     </div>`;
                 } else {
-                    current.works.forEach(work => {
+                    works.forEach(work => {
                         const item = document.createElement("div");
                         item.className = "work-item";
                         item.innerHTML = `
-                            <img src="${work.img}" alt="${work.title}" onerror="this.src='draw.png'">
+                            <img src="${work.img}" alt="${work.title}" loading="lazy" decoding="async">
                             <div class="work-caption">${work.title}</div>
                         `;
                         item.addEventListener("click", () => {
@@ -663,19 +670,15 @@
                         grid.appendChild(item);
                     });
                 }
-
-                contentView.appendChild(grid);
             }
         }
 
-        // Кнопка «Назад»
         navBackBtn.addEventListener("click", () => {
             if (navStack.length > 1) {
-                history.back(); // Вызывает popstate
+                history.back();
             }
         });
 
-        // Модалка
         function openLightbox(src, title) {
             lightboxImg.src = src;
             lightboxTitle.textContent = title;
@@ -690,7 +693,6 @@
             if (e.key === "Escape") lightboxModal.classList.remove("active");
         });
 
-        // Старт
         history.replaceState({ depth: 1 }, "");
         updateLangUI();
     </script>
