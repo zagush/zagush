@@ -92,14 +92,14 @@ body {
     position: relative;
     z-index: 5;
     width: min(680px, 90vw);
-    margin: 14px auto 0;
+    margin: 12px auto 0;
     text-align: center;
 }
 
 /* Описание */
 .intro-text {
     font-size: clamp(14px, 1.25vw, 17px);
-    line-height: 1.6;
+    line-height: 1.5;
     font-weight: 800;
     color: #ffffff;
     -webkit-text-stroke: 1px #000000;
@@ -107,19 +107,19 @@ body {
 }
 
 /* ========================================================
-   СТОЛ И ПРЕДМЕТЫ (ИДЕАЛЬНАЯ АДАПТИВНАЯ СЕТКА)
+   СТОЛ И ПРЕДМЕТЫ (СДВИНУТЫ БЛИЖЕ К ЦЕНТРУ И ДРУГ К ДРУГУ)
    ======================================================== */
 .desk {
     position: relative;
     z-index: 5;
-    /* Золотая середина: не улетает к краям на широких мониторах, но держит ровную форму */
-    width: min(880px, 90vw);
-    margin: 30px auto 60px;
+    /* Уменьшили ширину и разрывы, чтобы кнопки встали плотно к центру */
+    width: min(720px, 86vw);
+    margin: 15px auto 40px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: clamp(20px, 6vw, 90px); /* Плавно сжимается при сужении экрана */
-    row-gap: 45px;
-    align-items: end; /* Выравнивание предметов по их нижнему краю */
+    column-gap: clamp(15px, 3.5vw, 45px); /* Минимальный зазор посередине */
+    row-gap: 24px;                        /* Минимальный зазор между рядами */
+    align-items: end;
 }
 
 /* Контейнер предмета */
@@ -134,21 +134,23 @@ body {
     transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* ЛЕВАЯ СТОРОНА: Телефон и Контакты держат ровный левый край */
+/* Левая колонка */
 .phone-object,
 .contact-object {
-    justify-self: start;
+    justify-self: end; /* Прижимаются ближе к середине */
+    margin-right: 10px;
 }
 
-/* ПРАВАЯ СТОРОНА: Скетчбук и Листок держат ровный правый край */
+/* Правая колонка */
 .sketchbook-object,
 .draw-object {
-    justify-self: end;
+    justify-self: start; /* Прижимаются ближе к середине */
+    margin-left: 10px;
 }
 
-/* 1. Телефон (Сверху слева) — свой компактный размер */
+/* 1. ТЕЛЕФОН (Сверху слева) — по вертикали НЕ ТРОГАЕМ */
 .phone-object {
-    width: clamp(110px, 10vw, 145px);
+    width: clamp(110px, 10vw, 140px);
     transform: rotate(-3deg);
 }
 .phone-object:hover {
@@ -158,43 +160,43 @@ body {
     transform: rotate(-2deg);
 }
 
-/* 2. Скетчбук (Сверху справа) — широкий альбомный размер */
+/* 2. СКЕТЧБУК (Сверху справа) — ПОДНЯТ НА -26px */
 .sketchbook-object {
-    width: clamp(190px, 18vw, 260px);
-    transform: rotate(3deg);
+    width: clamp(190px, 17vw, 250px);
+    transform: translateY(-26px) rotate(3deg);
 }
 .sketchbook-object:hover {
-    transform: rotate(1deg) translateY(-6px) scale(1.02);
+    transform: translateY(-32px) rotate(1deg) scale(1.02);
 }
 .sketchbook-object .item-label {
     transform: rotate(2deg);
 }
 
-/* 3. Контакты (Снизу слева) — размер конверта */
+/* 3. КОНТАКТЫ (Снизу слева) — СОВСЕМ НЕМНОГО ПОДНЯТ (-12px) */
 .contact-object {
-    width: clamp(170px, 16vw, 235px);
-    transform: rotate(-3deg);
+    width: clamp(165px, 15vw, 225px);
+    transform: translateY(-12px) rotate(-3deg);
 }
 .contact-object:hover {
-    transform: rotate(-1deg) translateY(-6px) scale(1.02);
+    transform: translateY(-18px) rotate(-1deg) scale(1.02);
 }
 .contact-object .item-label {
     transform: rotate(2deg);
 }
 
-/* 4. Листок для рисования (Снизу справа) — вертикальный лист бумаги */
+/* 4. РИСОВАТЬ (Снизу справа) — ПОДНЯТ РОВНО КАК СКЕТЧБУК (-26px) */
 .draw-object {
-    width: clamp(180px, 17vw, 245px);
-    transform: rotate(3deg);
+    width: clamp(175px, 16vw, 235px);
+    transform: translateY(-26px) rotate(3deg);
 }
 .draw-object:hover {
-    transform: rotate(1deg) translateY(-6px) scale(1.02);
+    transform: translateY(-32px) rotate(1deg) scale(1.02);
 }
 .draw-object .item-label {
     transform: rotate(-1deg);
 }
 
-/* Тень предметов на стол (аккуратная, только справа-снизу) */
+/* Тень предметов на стол */
 .item-img {
     width: 100%;
     height: auto;
@@ -206,10 +208,6 @@ body {
     transition: filter 0.2s ease;
 }
 
-.object:hover {
-    transform: translateY(-6px) scale(1.02);
-}
-
 .object:hover .item-img {
     filter: drop-shadow(8px 12px 12px rgba(0, 0, 0, 0.4));
 }
@@ -217,22 +215,14 @@ body {
 /* ========================================================
    ЕДИНЫЙ БРУТАЛИСТСКИЙ СТИЛЬ НАДПИСЕЙ (СТИКЕРЫ / СКОТЧ)
    ======================================================== */
-
-.item-title,
 .item-label,
 .phone-label,
 .sticker-title {
     position: relative !important;
-    top: auto !important;
-    bottom: auto !important;
-    left: auto !important;
-    transform: none;
-    
     display: inline-block;
     z-index: 10;
-    margin-top: -14px; /* Наезд на нижний край */
+    margin-top: -14px;
     padding: 5px 14px;
-    
     background: #ffffff;
     color: #000000;
     font-size: clamp(13px, 1.3vw, 16px);
@@ -243,74 +233,10 @@ body {
     white-space: nowrap;
     user-select: none;
     pointer-events: none;
-    
-    /* Бруталистская черная рамка + жесткая тень без размытия */
     border: 2.5px solid #000000;
     border-radius: 2px;
     box-shadow: 4px 4px 0 #000000;
-    -webkit-text-stroke: 0;
-    text-shadow: none;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* Скетчбук (пропорции и легкий наклон стикера) */
-.sketchbook-object {
-    width: clamp(190px, 18vw, 260px);
-    transform: rotate(-3deg);
-}
-.sketchbook-object:hover {
-    transform: rotate(-1deg) translateY(-6px) scale(1.02);
-}
-.sketchbook-object .item-title,
-.sketchbook-object .item-label {
-    transform: rotate(-2deg);
-}
-
-/* Телефон: уменьшен по ширине, чтобы не был гигантским */
-.phone-object {
-    width: clamp(110px, 10vw, 145px); /* Аккуратный масштаб под референс */
-    transform: rotate(4deg);
-}
-.phone-object:hover {
-    transform: rotate(2deg) translateY(-6px) scale(1.03);
-}
-.phone-label {
-    transform: rotate(2deg);
-}
-
-/* Карточки Рисовать / Контакты */
-.draw-object,
-.contact-object {
-    width: clamp(170px, 16vw, 230px);
-}
-
-.placeholder {
-    width: 100%;
-    aspect-ratio: 1 / 0.75;
-    border: 2px dashed #1f1f1f;
-    background: rgba(245, 238, 220, 0.65);
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 5px 7px 8px rgba(0, 0, 0, 0.22);
-}
-
-.draw-placeholder {
-    transform: rotate(-2deg);
-}
-.contact-placeholder {
-    transform: rotate(3deg);
-}
-
-.draw-object .item-title,
-.draw-object .item-label {
-    transform: rotate(1deg);
-}
-
-.contact-object .item-title,
-.contact-object .item-label {
-    transform: rotate(-2deg);
 }
 
 /* ========================================================
@@ -456,53 +382,20 @@ body {
 }
 
 /* ========================================================
-   АДАПТИВ (СТОЛБИК ПО ЦЕНТРУ СТОЛА)
-   ======================================================== */
-@media (max-width: 700px) {
-    .desk {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 40px;
-        margin-top: 30px;
-    }
-
-    .sketchbook-object,
-    .draw-object,
-    .phone-object,
-    .contact-object {
-        justify-self: center;
-        align-self: center;
-    }
-
-    .sketchbook-object {
-        width: min(240px, 68vw) !important;
-    }
-
-    .phone-object {
-        width: 135px !important;
-    }
-
-    .draw-object,
-    .contact-object {
-        width: min(210px, 60vw) !important;
-    }
-}
-
-/* ========================================================
-   СЕКРЕТНАЯ ПАСХАЛКА ВНИЗУ
+   СЕКРЕТНАЯ ПАСХАЛКА ВНИЗУ (ДАБСТЕП-ГОЛОВА)
    ======================================================== */
 .secret-face {
     position: fixed;
-    bottom: -18px;
-    right: 25px;
-    z-index: 999;
-    width: 44px;
-    height: 44px;
+    bottom: 8px;
+    right: 20px;
+    z-index: 25; /* На слое с кнопками стола, чуть выше упавших предметов */
+    width: 58px;
+    height: 72px;
     display: block;
     cursor: pointer;
-    transition: bottom 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28), transform 0.25s ease;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.7));
+    user-select: none;
+    filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.65));
+    transition: transform 0.22s cubic-bezier(0.18, 0.89, 0.32, 1.28), filter 0.22s ease;
 }
 
 .secret-face img {
@@ -510,21 +403,30 @@ body {
     height: 100%;
     object-fit: contain;
     display: block;
+    pointer-events: none;
 }
 
+/* Сочная интерактивная анимация при наведении */
 .secret-face:hover {
-    bottom: 8px;
-    transform: scale(1.25) rotate(-8deg);
+    transform: translateY(-8px) scale(1.22) rotate(-8deg);
+    filter: drop-shadow(6px 12px 14px rgba(0, 0, 0, 0.85));
+    animation: dubstepHeadPeek 0.28s ease-in-out infinite alternate;
 }
+
+@keyframes dubstepHeadPeek {
+    0% { transform: translateY(-8px) scale(1.22) rotate(-8deg); }
+    100% { transform: translateY(-11px) scale(1.26) rotate(6deg); }
+}
+
 /* ========================================================
-   СКВИШИ НА СТОЛЕ (БЕЗ СВЕЧЕНИЯ, СЛОЙ ПОД ТЕКСТОМ)
+   СКВИШИ НА СТОЛЕ (УВЕЛИЧЕНЫ В 1.5 РАЗА)
    ======================================================== */
 .skvish {
     position: absolute;
     z-index: 2;
     cursor: grab;
     user-select: none;
-    touch-action: none; /* Запрещает странице скроллиться на телефоне, когда тащишь лицо */
+    touch-action: none;
     -webkit-tap-highlight-color: transparent;
     transform-origin: center bottom;
 }
@@ -539,33 +441,31 @@ body {
     transition: filter 0.15s ease;
 }
 
-/* Skvish 1: Слева от текста «Обо мне» */
+/* Skvish 1 (слева): сделали крупнее на 50% */
 .skvish1 {
-    top: 135px;
-    left: clamp(15px, 6vw, 90px);
-    width: clamp(55px, 5.5vw, 75px);
+    top: 125px;
+    left: clamp(15px, 5vw, 85px);
+    width: clamp(85px, 8vw, 115px);
     aspect-ratio: 1 / 1.2;
 }
 
-/* Skvish 2: Справа от текста «Обо мне» */
+/* Skvish 2 (справа): авторский чуть отличающийся размер */
 .skvish2 {
-    top: 140px;
-    right: clamp(15px, 6vw, 90px);
-    width: clamp(55px, 5.5vw, 75px);
+    top: 130px;
+    right: clamp(15px, 5vw, 85px);
+    width: clamp(80px, 7.5vw, 108px);
     aspect-ratio: 1 / 1.2;
 }
 
-/* СОСТОЯНИЕ В ПОЛЁТЕ (КОГДА ТАЩИШЬ МЫШКОЙ ИЛИ ПАЛЬЦЕМ) */
+/* Состояние в полёте при таскании */
 .skvish.is-dragging {
     cursor: grabbing !important;
-    z-index: 1000 !important; /* Взлетает над всем столом */
+    z-index: 1000 !important;
     transition: none !important;
 }
 
 .skvish.is-dragging img {
-    /* Паническая смешная тряска в воздухе */
     animation: panicDangle 0.14s ease-in-out infinite alternate !important;
-    /* Тень отодвигается — эффект, что оторвали от стола */
     filter: drop-shadow(14px 22px 18px rgba(0, 0, 0, 0.6)) !important;
     transform-origin: center top;
 }
@@ -575,7 +475,6 @@ body {
     100% { transform: scale(0.88, 1.15) rotate(14deg); }
 }
 
-/* Покачивание при обычном наведении мыши (когда не тащишь) */
 .skvish:not(.is-dragging):hover img {
     animation: skvishWiggle 0.35s ease-in-out infinite alternate;
     filter: drop-shadow(8px 12px 14px rgba(0, 0, 0, 0.55));
@@ -586,7 +485,7 @@ body {
     100% { transform: scale(1.1) rotate(5deg); }
 }
 
-/* Вылетающий стикер с каомодзи и фразами */
+/* Вылетающее облачко */
 .skvish-bubble {
     position: absolute;
     top: -26px;
@@ -611,7 +510,7 @@ body {
     opacity: 1;
 }
 
-/* Анимации жмяканья и плюханья */
+/* Деформации формы */
 .squash-pancake { animation: animPancake 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards !important; }
 .squash-sausage { animation: animSausage 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards !important; }
 .squash-diagonal { animation: animDiagonal 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards !important; }
@@ -648,16 +547,52 @@ body {
     100% { transform: scale(1, 1); }
 }
 
-/* На мобильных (до 700px) они аккуратно смещаются */
+/* ========================================================
+   МОБИЛЬНАЯ ВЕРСИЯ (ДО 700px):
+   ======================================================== */
 @media (max-width: 700px) {
+    /* Сквиши на телефоне: встают по бокам от заголовка «ЗАГУШ» */
     .skvish1 {
-        top: 90px;
-        left: 8px;
-        width: 46px;
+        top: 18px;
+        left: 12px;
+        width: 58px;
     }
+    
     .skvish2 {
-        top: 90px;
-        right: 8px;
-        width: 46px;
+        top: 18px;
+        right: 76px; /* Не перекрывает кнопку языка EN/RU справа */
+        width: 54px;
+    }
+
+    /* Столбик предметов */
+    .desk {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 32px;
+        margin-top: 25px;
+    }
+
+    .phone-object,
+    .contact-object,
+    .sketchbook-object,
+    .draw-object {
+        justify-self: center;
+        align-self: center;
+        margin: 0 !important;
+        transform: none !important; /* На телефоне стоят ровно */
+    }
+
+    .sketchbook-object {
+        width: min(240px, 68vw) !important;
+    }
+
+    .phone-object {
+        width: 135px !important;
+    }
+
+    .draw-object,
+    .contact-object {
+        width: min(210px, 60vw) !important;
     }
 }
