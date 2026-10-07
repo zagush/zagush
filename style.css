@@ -107,17 +107,17 @@ body {
 }
 
 /* ========================================================
-   СТОЛ И ПРЕДМЕТЫ
+   СТОЛ И ПРЕДМЕТЫ (ШИРОКИЙ ЦЕНТР, ГРАНЖЕВЫЙ НАКЛОН)
    ======================================================== */
 .desk {
     position: relative;
     z-index: 5;
-    /* Оптимальная ширина: не слипаются в кашу, но и не разлетаются по краям */
-    width: min(800px, 88vw);
+    /* Увеличили общую ширину и раздвинули центр в 1.5 раза */
+    width: min(890px, 92vw);
     margin: 15px auto 40px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: clamp(30px, 5vw, 70px); /* Нормальное комфортное расстояние посередине */
+    column-gap: clamp(60px, 9vw, 130px); /* Большой простор между левой и правой колонкой */
     row-gap: 25px;
     align-items: end;
 }
@@ -144,16 +144,16 @@ body {
     justify-self: start;
 }
 
-/* 1. ТЕЛЕФОН: наклонен левее (-6deg) и еле-еле шире */
+/* 1. ТЕЛЕФОН: наклонён влево ещё сильнее (-11deg) */
 .phone-object {
     width: clamp(118px, 10.8vw, 154px);
-    transform: rotate(-6deg);
+    transform: rotate(-11deg);
 }
 .phone-object:hover {
-    transform: rotate(-3deg) translateY(-6px) scale(1.03);
+    transform: rotate(-7deg) translateY(-6px) scale(1.03);
 }
 .phone-label {
-    transform: rotate(2deg);
+    transform: rotate(4deg); /* Стикер слегка компенсирует сильный наклон */
 }
 
 /* 2. СКЕТЧБУК (Сверху справа): поднят на 28px */
@@ -169,11 +169,11 @@ body {
     transform: rotate(2deg);
 }
 
-/* 3. КОНТАКТЫ (Снизу слева): чуть поднят на 14px */
+/* 3. КОНТАКТЫ (Снизу слева): ПОДНЯЛИ ЕЩЁ ВЫШЕ (на 38px) */
 .contact-object {
     width: clamp(170px, 16vw, 235px);
     transform: rotate(-3deg);
-    margin-bottom: 14px;
+    margin-bottom: 38px;
 }
 .contact-object:hover {
     transform: rotate(-1deg) translateY(-6px) scale(1.02);
@@ -182,7 +182,7 @@ body {
     transform: rotate(2deg);
 }
 
-/* 4. РИСОВАТЬ (Снизу справа): поднят как скетчбук на 28px */
+/* 4. РИСОВАТЬ (Снизу справа): поднят на 28px */
 .draw-object {
     width: clamp(180px, 17vw, 245px);
     transform: rotate(3deg);
@@ -442,18 +442,18 @@ body {
     transition: filter 0.15s ease;
 }
 
-/* Skvish 1: Слева (золотая середина) */
+/* Skvish 1: Справа от телефона */
 .skvish1 {
-    top: 130px;
-    left: clamp(15px, 5vw, 85px);
+    top: clamp(230px, 28vh, 300px);
+    left: calc(50% - clamp(95px, 12vw, 140px));
     width: clamp(70px, 6.8vw, 92px);
     aspect-ratio: 1 / 1.2;
 }
 
-/* Skvish 2: Справа (чуть другого размера для живости) */
+/* Skvish 2: Слева от кнопки «Рисовать» */
 .skvish2 {
-    top: 135px;
-    right: clamp(15px, 5vw, 85px);
+    top: clamp(480px, 57vh, 580px);
+    right: calc(50% - clamp(50px, 7vw, 90px));
     width: clamp(64px, 6.2vw, 85px);
     aspect-ratio: 1 / 1.2;
 }
