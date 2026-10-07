@@ -107,18 +107,18 @@ body {
 }
 
 /* ========================================================
-   СТОЛ И ПРЕДМЕТЫ (СДВИНУТЫ БЛИЖЕ К ЦЕНТРУ И ДРУГ К ДРУГУ)
+   СТОЛ И ПРЕДМЕТЫ
    ======================================================== */
 .desk {
     position: relative;
     z-index: 5;
-    /* Уменьшили ширину и разрывы, чтобы кнопки встали плотно к центру */
-    width: min(720px, 86vw);
+    /* Оптимальная ширина: не слипаются в кашу, но и не разлетаются по краям */
+    width: min(800px, 88vw);
     margin: 15px auto 40px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: clamp(15px, 3.5vw, 45px); /* Минимальный зазор посередине */
-    row-gap: 24px;                        /* Минимальный зазор между рядами */
+    column-gap: clamp(30px, 5vw, 70px); /* Нормальное комфортное расстояние посередине */
+    row-gap: 25px;
     align-items: end;
 }
 
@@ -134,63 +134,62 @@ body {
     transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Левая колонка */
 .phone-object,
 .contact-object {
-    justify-self: end; /* Прижимаются ближе к середине */
-    margin-right: 10px;
+    justify-self: end;
 }
 
-/* Правая колонка */
 .sketchbook-object,
 .draw-object {
-    justify-self: start; /* Прижимаются ближе к середине */
-    margin-left: 10px;
+    justify-self: start;
 }
 
-/* 1. ТЕЛЕФОН (Сверху слева) — по вертикали НЕ ТРОГАЕМ */
+/* 1. ТЕЛЕФОН: наклонен левее (-6deg) и еле-еле шире */
 .phone-object {
-    width: clamp(110px, 10vw, 140px);
-    transform: rotate(-3deg);
+    width: clamp(118px, 10.8vw, 154px);
+    transform: rotate(-6deg);
 }
 .phone-object:hover {
-    transform: rotate(-1deg) translateY(-6px) scale(1.03);
+    transform: rotate(-3deg) translateY(-6px) scale(1.03);
 }
 .phone-label {
-    transform: rotate(-2deg);
+    transform: rotate(2deg);
 }
 
-/* 2. СКЕТЧБУК (Сверху справа) — ПОДНЯТ НА -26px */
+/* 2. СКЕТЧБУК (Сверху справа): поднят на 28px */
 .sketchbook-object {
-    width: clamp(190px, 17vw, 250px);
-    transform: translateY(-26px) rotate(3deg);
+    width: clamp(190px, 18vw, 260px);
+    transform: rotate(3deg);
+    margin-bottom: 28px;
 }
 .sketchbook-object:hover {
-    transform: translateY(-32px) rotate(1deg) scale(1.02);
+    transform: rotate(1deg) translateY(-6px) scale(1.02);
 }
 .sketchbook-object .item-label {
     transform: rotate(2deg);
 }
 
-/* 3. КОНТАКТЫ (Снизу слева) — СОВСЕМ НЕМНОГО ПОДНЯТ (-12px) */
+/* 3. КОНТАКТЫ (Снизу слева): чуть поднят на 14px */
 .contact-object {
-    width: clamp(165px, 15vw, 225px);
-    transform: translateY(-12px) rotate(-3deg);
+    width: clamp(170px, 16vw, 235px);
+    transform: rotate(-3deg);
+    margin-bottom: 14px;
 }
 .contact-object:hover {
-    transform: translateY(-18px) rotate(-1deg) scale(1.02);
+    transform: rotate(-1deg) translateY(-6px) scale(1.02);
 }
 .contact-object .item-label {
     transform: rotate(2deg);
 }
 
-/* 4. РИСОВАТЬ (Снизу справа) — ПОДНЯТ РОВНО КАК СКЕТЧБУК (-26px) */
+/* 4. РИСОВАТЬ (Снизу справа): поднят как скетчбук на 28px */
 .draw-object {
-    width: clamp(175px, 16vw, 235px);
-    transform: translateY(-26px) rotate(3deg);
+    width: clamp(180px, 17vw, 245px);
+    transform: rotate(3deg);
+    margin-bottom: 28px;
 }
 .draw-object:hover {
-    transform: translateY(-32px) rotate(1deg) scale(1.02);
+    transform: rotate(1deg) translateY(-6px) scale(1.02);
 }
 .draw-object .item-label {
     transform: rotate(-1deg);
@@ -382,20 +381,20 @@ body {
 }
 
 /* ========================================================
-   СЕКРЕТНАЯ ПАСХАЛКА ВНИЗУ (ДАБСТЕП-ГОЛОВА)
+   СЕКРЕТНАЯ ПАСХАЛКА ВНИЗУ
    ======================================================== */
 .secret-face {
     position: fixed;
     bottom: 8px;
     right: 20px;
-    z-index: 25; /* На слое с кнопками стола, чуть выше упавших предметов */
-    width: 58px;
-    height: 72px;
+    z-index: 25;
+    width: 55px;
+    height: 70px;
     display: block;
     cursor: pointer;
     user-select: none;
-    filter: drop-shadow(4px 6px 8px rgba(0, 0, 0, 0.65));
-    transition: transform 0.22s cubic-bezier(0.18, 0.89, 0.32, 1.28), filter 0.22s ease;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
+    transition: filter 0.15s ease;
 }
 
 .secret-face img {
@@ -406,16 +405,18 @@ body {
     pointer-events: none;
 }
 
-/* Сочная интерактивная анимация при наведении */
+/* Смешной бешеный дёргающийся расколбас */
 .secret-face:hover {
-    transform: translateY(-8px) scale(1.22) rotate(-8deg);
-    filter: drop-shadow(6px 12px 14px rgba(0, 0, 0, 0.85));
-    animation: dubstepHeadPeek 0.28s ease-in-out infinite alternate;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.95));
+    animation: dubstepTwitch 0.12s infinite linear;
 }
 
-@keyframes dubstepHeadPeek {
-    0% { transform: translateY(-8px) scale(1.22) rotate(-8deg); }
-    100% { transform: translateY(-11px) scale(1.26) rotate(6deg); }
+@keyframes dubstepTwitch {
+    0%   { transform: translateY(-8px) rotate(-10deg) scale(1.22, 1.15); }
+    25%  { transform: translateY(-13px) rotate(8deg) scale(1.15, 1.25); }
+    50%  { transform: translateY(-7px) rotate(-14deg) scale(1.25, 1.12); }
+    75%  { transform: translateY(-12px) rotate(11deg) scale(1.14, 1.22); }
+    100% { transform: translateY(-8px) rotate(-10deg) scale(1.22, 1.15); }
 }
 
 /* ========================================================
@@ -441,19 +442,19 @@ body {
     transition: filter 0.15s ease;
 }
 
-/* Skvish 1 (слева): сделали крупнее на 50% */
+/* Skvish 1: Слева (золотая середина) */
 .skvish1 {
-    top: 125px;
+    top: 130px;
     left: clamp(15px, 5vw, 85px);
-    width: clamp(85px, 8vw, 115px);
+    width: clamp(70px, 6.8vw, 92px);
     aspect-ratio: 1 / 1.2;
 }
 
-/* Skvish 2 (справа): авторский чуть отличающийся размер */
+/* Skvish 2: Справа (чуть другого размера для живости) */
 .skvish2 {
-    top: 130px;
+    top: 135px;
     right: clamp(15px, 5vw, 85px);
-    width: clamp(80px, 7.5vw, 108px);
+    width: clamp(64px, 6.2vw, 85px);
     aspect-ratio: 1 / 1.2;
 }
 
