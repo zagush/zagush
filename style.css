@@ -169,19 +169,18 @@ body {
     transform: rotate(2deg);
 }
 
-/* 3. КОНТАКТЫ (Снизу слева): ПОДНЯЛИ ЕЩЁ ВЫШЕ (на 38px) */
+/* 3. КОНТАКТЫ: чуть выше (margin-bottom: 48px) и чуть правее (translateX(12px)) */
 .contact-object {
     width: clamp(170px, 16vw, 235px);
-    transform: rotate(-3deg);
-    margin-bottom: 38px;
+    transform: translateX(12px) rotate(-3deg);
+    margin-bottom: 48px;
 }
 .contact-object:hover {
-    transform: rotate(-1deg) translateY(-6px) scale(1.02);
+    transform: translateX(12px) translateY(-6px) rotate(-1deg) scale(1.02);
 }
 .contact-object .item-label {
     transform: rotate(2deg);
 }
-
 /* 4. РИСОВАТЬ (Снизу справа): поднят на 28px */
 .draw-object {
     width: clamp(180px, 17vw, 245px);
@@ -424,7 +423,7 @@ body {
    ======================================================== */
 .skvish {
     position: absolute;
-    z-index: 2;
+    z-index: 100; /* ВЫШЕ ВСЕХ КНОПОК И ТЕКСТА НА СТОЛЕ */
     cursor: grab;
     user-select: none;
     touch-action: none;
@@ -552,17 +551,19 @@ body {
    МОБИЛЬНАЯ ВЕРСИЯ (ДО 700px):
    ======================================================== */
 @media (max-width: 700px) {
-    /* Сквиши на телефоне: встают по бокам от заголовка «ЗАГУШ» */
+    /* На телефоне: сквиши лежат по бокам от кнопок на свободном дереве */
     .skvish1 {
-        top: 18px;
-        left: 12px;
-        width: 58px;
+        top: 260px;          /* Сбоку от верхней группы кнопок */
+        left: 10px;          /* Прижат к левому краю экрана */
+        right: auto;
+        width: 62px;
     }
     
     .skvish2 {
-        top: 18px;
-        right: 76px; /* Не перекрывает кнопку языка EN/RU справа */
-        width: 54px;
+        top: 540px;          /* Сбоку от нижней группы кнопок */
+        right: 10px;         /* Прижат к правому краю экрана */
+        left: auto;
+        width: 58px;
     }
 
     /* Столбик предметов */
@@ -570,18 +571,18 @@ body {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 32px;
-        margin-top: 25px;
+        gap: 40px;
+        margin-top: 30px;
     }
 
-    .phone-object,
-    .contact-object,
     .sketchbook-object,
-    .draw-object {
+    .draw-object,
+    .phone-object,
+    .contact-object {
         justify-self: center;
         align-self: center;
         margin: 0 !important;
-        transform: none !important; /* На телефоне стоят ровно */
+        transform: none !important;
     }
 
     .sketchbook-object {
