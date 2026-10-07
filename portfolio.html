@@ -402,13 +402,13 @@
         ];
 
         // ========================================================
-        // ДАННЫЕ ПОРТФОЛИО СО ВСЕМИ НОВЫМИ КАТЕГОРИЯМИ
+        // ОБНОВЛЕННАЯ СТРУКТУРА ПОРТФОЛИО
         // ========================================================
         const portfolioData = {
             id: "root",
             title: { ru: "ПОРТФОЛИО", en: "PORTFOLIO" },
             items: [
-                // 1. ПИКСЕЛЬ-АРТ
+                // 1. ПИКСЕЛЬ-АРТ (с добавленной папкой UI/UX)
                 {
                     id: "pixel-art",
                     title: { ru: "ПИКСЕЛЬ-АРТ", en: "PIXEL ART" },
@@ -420,42 +420,40 @@
                             title: { ru: "ПЕРСОНАЖИ", en: "CHARACTERS" },
                             previews: defaultFan,
                             type: "gallery",
-                            works: [
-                                { title: "Character 01", img: "portfolio/char1.png" },
-                                { title: "Character 02", img: "portfolio/char2.png" }
-                            ]
+                            works: []
                         },
                         {
                             id: "pixel-full",
                             title: { ru: "ПОЛНОЦЕННЫЕ / ФОНЫ", en: "FULL ART & BG" },
                             previews: defaultFan,
                             type: "gallery",
-                            works: [
-                                { title: "Background 01", img: "portfolio/bg1.png" }
-                            ]
+                            works: []
+                        },
+                        {
+                            id: "pixel-ui",
+                            title: { ru: "UI / UX", en: "UI / UX" },
+                            previews: defaultFan,
+                            type: "gallery",
+                            works: []
                         },
                         {
                             id: "pixel-stickers",
                             title: { ru: "СТИКЕРЫ", en: "STICKERS" },
                             previews: defaultFan,
                             type: "gallery",
-                            works: [
-                                { title: "Sticker Pack", img: "portfolio/sticker1.png" }
-                            ]
+                            works: []
                         },
                         {
                             id: "pixel-other",
                             title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" },
                             previews: defaultFan,
                             type: "gallery",
-                            works: [
-                                { title: "Misc Pixel", img: "portfolio/misc1.png" }
-                            ]
+                            works: []
                         }
                     ]
                 },
 
-                // 2. ХОЛСТЫ (Категории по годам 2023–2026 + подпись)
+                // 2. ХОЛСТЫ (Строго на убывание: 2026 -> 2023)
                 {
                     id: "canvases",
                     title: { ru: "ХОЛСТЫ", en: "CANVASES" },
@@ -463,10 +461,10 @@
                     previews: defaultFan,
                     type: "category",
                     items: [
-                        { id: "canvas-2023", title: { ru: "2023", en: "2023" }, previews: defaultFan, type: "gallery", works: [] },
-                        { id: "canvas-2024", title: { ru: "2024", en: "2024" }, previews: defaultFan, type: "gallery", works: [] },
+                        { id: "canvas-2026", title: { ru: "2026", en: "2026" }, previews: defaultFan, type: "gallery", works: [] },
                         { id: "canvas-2025", title: { ru: "2025", en: "2025" }, previews: defaultFan, type: "gallery", works: [] },
-                        { id: "canvas-2026", title: { ru: "2026", en: "2026" }, previews: defaultFan, type: "gallery", works: [] }
+                        { id: "canvas-2024", title: { ru: "2024", en: "2024" }, previews: defaultFan, type: "gallery", works: [] },
+                        { id: "canvas-2023", title: { ru: "2023", en: "2023" }, previews: defaultFan, type: "gallery", works: [] }
                     ]
                 },
 
@@ -485,32 +483,40 @@
                     ]
                 },
 
-                // 4. ТРАДИШКА (Разное, остальное)
+                // 4. ТРАДИШКА (подпись «Разное»)
                 {
                     id: "traditional",
                     title: { ru: "ТРАДИШКА", en: "TRADITIONAL" },
-                    desc: { ru: "Разное, остальное", en: "Mixed, miscellaneous" },
+                    desc: { ru: "Разное", en: "Miscellaneous" },
                     previews: defaultFan,
                     type: "gallery",
                     works: []
                 },
 
-                // 5. ТЕГИ
-                {
-                    id: "tags",
-                    title: { ru: "ТЕГИ", en: "TAGS" },
-                    previews: defaultFan,
-                    type: "gallery",
-                    works: []
-                },
-
-                // 6. ОСТАЛЬНОЕ
+                // 5. ОСТАЛЬНОЕ (подпись «Остальное», а внутри папка «ТЕГИ»)
                 {
                     id: "other",
                     title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" },
+                    desc: { ru: "Остальное", en: "Other" },
                     previews: defaultFan,
-                    type: "gallery",
-                    works: []
+                    type: "category",
+                    items: [
+                        {
+                            id: "other-tags",
+                            title: { ru: "ТЕГИ", en: "TAGS" },
+                            desc: { ru: "Граффити, теги, маркеры", en: "Graffiti, tags, markers" },
+                            previews: defaultFan,
+                            type: "gallery",
+                            works: []
+                        },
+                        {
+                            id: "other-misc",
+                            title: { ru: "РАЗНОЕ", en: "MISC" },
+                            previews: defaultFan,
+                            type: "gallery",
+                            works: []
+                        }
+                    ]
                 }
             ]
         };
