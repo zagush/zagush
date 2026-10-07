@@ -144,16 +144,16 @@ body {
     justify-self: start;
 }
 
-/* 1. ТЕЛЕФОН: наклонён влево ещё сильнее (-11deg) */
+/* 1. ТЕЛЕФОН: сдвинут чуть влево (-10px) и чуть вниз (+14px) */
 .phone-object {
     width: clamp(118px, 10.8vw, 154px);
-    transform: rotate(-11deg);
+    transform: translate(-10px, 14px) rotate(-11deg);
 }
 .phone-object:hover {
-    transform: rotate(-7deg) translateY(-6px) scale(1.03);
+    transform: translate(-10px, 8px) rotate(-7deg) scale(1.03);
 }
 .phone-label {
-    transform: rotate(4deg); /* Стикер слегка компенсирует сильный наклон */
+    transform: rotate(4deg);
 }
 
 /* 2. СКЕТЧБУК (Сверху справа): поднят на 28px */
