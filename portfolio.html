@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZAGUSH — PORTFOLIO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #2b2118 url('stol.jpg') center center / cover fixed no-repeat;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #1a1a1a;
+            padding: 20px 15px 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Верхняя панель навигации */
+        .top-bar {
+            width: min(940px, 100%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .back-desk-btn, .lang-btn {
+            background: #ffffff;
+            color: #000;
+            font-family: 'Rubik Mono One', monospace, sans-serif;
+            font-size: 11px;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 3px 5px 12px rgba(0, 0, 0, 0.35);
+            transition: transform 0.15s ease, background 0.15s ease;
+            user-select: none;
+        }
+
+        .back-desk-btn:hover, .lang-btn:hover {
+            transform: translateY(-2px);
+            background: #f0f0f0;
+        }
+
+        /* Хлебные крошки (путь) */
+        .breadcrumbs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Rubik Mono One', monospace, sans-serif;
+            font-size: clamp(10px, 1.2vw, 13px);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 14px;
+            border-radius: 4px;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.25);
+            flex-wrap: wrap;
+        }
+
+        .crumb-link {
+            color: #666;
+            cursor: pointer;
+            transition: color 0.15s ease;
+        }
+        .crumb-link:hover {
+            color: #000;
+        }
+        .crumb-active {
+            color: #000;
+        }
+        .crumb-sep {
+            color: #aaa;
+        }
+
+        /* ========================================================
+           ЛИСТ СКЕТЧБУКА (БАЗОВАЯ ПОДЛОЖКА)
+           ======================================================== */
+        .sketchbook-sheet {
+            width: min(940px, 100%);
+            min-height: 80vh;
+            background: #fbf8f1; /* Текстурный цвет плотной бумаги */
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            padding: clamp(20px, 4vw, 40px);
+            position: relative;
+            /* Легкая перфорация/поля скетчбука слева */
+            border-left: 12px solid #eae2d3;
+        }
+
+        /* Заголовок текущего раздела */
+        .sheet-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px dashed #d5cbba;
+            padding-bottom: 14px;
+            margin-bottom: 30px;
+        }
+
+        .sheet-title {
+            font-family: 'Rubik Mono One', monospace, sans-serif;
+            font-size: clamp(18px, 3vw, 28px);
+            letter-spacing: -0.02em;
+            color: #171717;
+        }
+
+        .nav-back-step {
+            font-family: 'Rubik Mono One', monospace, sans-serif;
+            font-size: 11px;
+            background: #eee6d8;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            display: none; /* видна только когда внутри подкатегории */
+        }
+        .nav-back-step:hover {
+            background: #e2d7c3;
+        }
+
+        /* ========================================================
+           СЕТКА ПАПОК-ЛИСТИКОВ С ТОРЧАЩИМИ АРТАМИ
+           ======================================================== */
+        .folders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 40px 25px;
+            margin-top: 20px;
+        }
+
+        /* Карточка-папка */
+        .folder-card {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 45px; /* Место сверху для торчащих превьюшек */
+            transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+
+        /* Стопка торчащих картинок сзади папки */
+        .folder-previews {
+            position: absolute;
+            top: 0;
+            width: 190px;
+            height: 90px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .preview-thumb {
+            position: absolute;
+            width: 85px;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+            background: #e5ded2;
+            transition: transform 0.25s ease;
+            border: 2px solid #fff;
+        }
+
+        /* Веерное расположение 3 превью */
+        .preview-thumb:nth-child(1) {
+            left: 15px;
+            top: 6px;
+            transform: rotate(-10deg);
+        }
+        .preview-thumb:nth-child(2) {
+            left: 55px;
+            top: 0px;
+            transform: rotate(2deg);
+        }
+        .preview-thumb:nth-child(3) {
+            left: 95px;
+            top: 8px;
+            transform: rotate(12deg);
+        }
+
+        /* При наведении картинки весело вылезают из папки вверх! */
+        .folder-card:hover .preview-thumb:nth-child(1) {
+            transform: rotate(-14deg) translateY(-14px);
+        }
+        .folder-card:hover .preview-thumb:nth-child(2) {
+            transform: rotate(0deg) translateY(-20px);
+        }
+        .folder-card:hover .preview-thumb:nth-child(3) {
+            transform: rotate(16deg) translateY(-14px);
+        }
+
+        /* Сам передний листик-конверт папки */
+        .folder-pocket {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 4px;
+            padding: 24px 16px 18px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+            border-top: 4px solid #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .folder-card:hover .folder-pocket {
+            background: #fafafa;
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
+        }
+
+        .folder-title {
+            font-family: 'Rubik Mono One', monospace, sans-serif;
+            font-size: 13px;
+            color: #000;
+            line-height: 1.3;
+        }
+
+        .folder-desc {
+            font-size: 11px;
+            font-weight: 700;
+            color: #777;
+        }
+
+        .folder-count-badge {
+            align-self: flex-start;
+            margin-top: 8px;
+            background: #eee8dc;
+            padding: 3px 7px;
+            font-size: 10px;
+            font-weight: 800;
+            border-radius: 3px;
+            color: #444;
+        }
+
+        /* ========================================================
+           СЕТКА САМИХ РАБОТ (КОГДА ЗАШЛИ ВНУТРЬ КАТЕГОРИИ)
+           ======================================================== */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .work-item {
+            position: relative;
+            background: #fff;
+            padding: 8px 8px 12px;
+            border-radius: 3px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .work-item:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .work-item img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 2px;
+            display: block;
+            background: #ece6da;
+        }
+
+        .work-caption {
+            margin-top: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #222;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* ========================================================
+           МОДАЛЬНОЕ ОКНО ПРОСМОТРА АРТА (LIGHTBOX)
+           ======================================================== */
+        .lightbox-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(10, 8, 14, 0.88);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: min(850px, 94vw);
+            max-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.8);
+        }
+
+        .lightbox-title {
+            margin-top: 14px;
+            font-family: 'Rubik Mono One', monospace, sans-serif;
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -38px;
+            right: 0;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 32px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        @media (max-width: 600px) {
+            .sketchbook-sheet {
+                padding: 16px 12px;
+                border-left-width: 6px;
+            }
+            .folders-grid {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+            .works-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Верхний тулбар -->
+    <div class="top-bar">
+        <a href="index.html" class="back-desk-btn" id="toDeskBtn">← НА СТОЛ</a>
+
+        <div class="breadcrumbs" id="breadcrumbs">
+            <span class="crumb-active" id="rootCrumb">ПОРТФОЛИО</span>
+        </div>
+
+        <button class="lang-btn" id="langBtn" type="button">EN</button>
+    </div>
+
+    <!-- Разворот скетчбука -->
+    <main class="sketchbook-sheet">
+        <div class="sheet-title-row">
+            <h1 class="sheet-title" id="sectionTitle">ПОРТФОЛИО</h1>
+            <button class="nav-back-step" id="navBackBtn" type="button">← НАЗАД</button>
+        </div>
+
+        <!-- Контейнер для отображения папок или работ -->
+        <div id="contentView"></div>
+    </main>
+
+    <!-- Полноэкранный просмотрщик арта -->
+    <div class="lightbox-modal" id="lightboxModal">
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="lightboxClose">&times;</button>
+            <img src="" alt="" class="lightbox-img" id="lightboxImg">
+            <div class="lightbox-title" id="lightboxTitle"></div>
+        </div>
+    </div>
+
+    <script>
+        // ========================================================
+        // ДАННЫЕ ПОРТФОЛИО (СТРУКТУРА КАТЕГОРИЙ И ПОДКАТЕГОРИЙ)
+        // ========================================================
+        const portfolioData = {
+            id: "root",
+            title: { ru: "ПОРТФОЛИО", en: "PORTFOLIO" },
+            items: [
+                // 1. ПИКСЕЛЬ-АРТ (Содержит подкатегории)
+                {
+                    id: "pixel-art",
+                    title: { ru: "ПИКСЕЛЬ-АРТ", en: "PIXEL ART" },
+                    desc: { ru: "Спрайты, персонажи, фоны", en: "Sprites, characters, environments" },
+                    previews: ["draw.png", "phone.png", "contact.png"], // Подставятся твои арты
+                    type: "category",
+                    items: [
+                        {
+                            id: "pixel-chars",
+                            title: { ru: "ПЕРСОНАЖИ", en: "CHARACTERS" },
+                            desc: { ru: "Разработка персонажей и спрайты", en: "Character design & sprite art" },
+                            previews: ["draw.png", "phone.png"],
+                            type: "gallery",
+                            works: [
+                                { title: "Hero Sprite 01", img: "draw.png" },
+                                { title: "NPC Concept", img: "draw.png" }
+                            ]
+                        },
+                        {
+                            id: "pixel-full",
+                            title: { ru: "ПОЛНОЦЕННЫЕ / ФОНЫ", en: "FULL ART & BG" },
+                            desc: { ru: "Иллюстрации и окружение", en: "Detailed scenes & background art" },
+                            previews: ["draw.png", "contact.png"],
+                            type: "gallery",
+                            works: [
+                                { title: "Cyber Alley Night", img: "draw.png" }
+                            ]
+                        },
+                        {
+                            id: "pixel-stickers",
+                            title: { ru: "СТИКЕРЫ", en: "STICKERS" },
+                            desc: { ru: "Пиксельные стикерпаки", en: "Pixelated sticker sets" },
+                            previews: ["phone.png", "draw.png"],
+                            type: "gallery",
+                            works: [
+                                { title: "Cat Sticker Pack", img: "phone.png" }
+                            ]
+                        },
+                        {
+                            id: "pixel-other",
+                            title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" },
+                            desc: { ru: "Эксперименты и наброски", en: "Experiments & rough sketches" },
+                            previews: ["contact.png", "draw.png"],
+                            type: "gallery",
+                            works: [
+                                { title: "Item Icons Test", img: "contact.png" }
+                            ]
+                        }
+                    ]
+                },
+
+                // 2. ХОЛСТЫ
+                {
+                    id: "canvases",
+                    title: { ru: "ХОЛСТЫ", en: "CANVASES" },
+                    desc: { ru: "Акрил, аэрозоли, авторские холсты", en: "Acrylic, spray paint, physical canvas" },
+                    previews: ["sketchbook1.png", "draw.png", "contact.png"],
+                    type: "gallery",
+                    works: [
+                        { title: "Canvas Artwork 01", img: "sketchbook1.png" },
+                        { title: "Street Canvas 02", img: "sketchbook1.png" }
+                    ]
+                },
+
+                // 3. МЕРЧ (Значки, брелоки и т.д.)
+                {
+                    id: "merch",
+                    title: { ru: "МЕРЧ", en: "MERCH" },
+                    desc: { ru: "Значки, брелоки, крафт, стикеры", en: "Pins, acrylic keychains, crafts" },
+                    previews: ["face3.png", "face4.png", "face.png"],
+                    type: "gallery",
+                    works: [
+                        { title: "Acrylic Keychain Series", img: "face3.png" },
+                        { title: "Metal Pin Badges", img: "face4.png" }
+                    ]
+                },
+
+                // 4. ТРАДИШКА (Рисунки на бумаге)
+                {
+                    id: "traditional",
+                    title: { ru: "ТРАДИШКА", en: "TRADITIONAL" },
+                    desc: { ru: "Графика, маркеры, скетчи на бумаге", en: "Markers, ink, sketchbook drawings" },
+                    previews: ["sketchbook1.png", "draw.png"],
+                    type: "gallery",
+                    works: [
+                        { title: "Marker Sketch 2024", img: "draw.png" },
+                        { title: "Blackbook Tag Piece", img: "sketchbook1.png" }
+                    ]
+                },
+
+                // 5. ОСТАЛЬНОЕ
+                {
+                    id: "other",
+                    title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" },
+                    desc: { ru: "Разное, граффити-эксперименты", en: "Graffiti walls, miscellaneous" },
+                    previews: ["contact.png", "draw.png"],
+                    type: "gallery",
+                    works: [
+                        { title: "Street Mural Piece", img: "contact.png" }
+                    ]
+                }
+            ]
+        };
+
+        // Состояние навигации
+        let navStack = [portfolioData];
+        let currentLang = localStorage.getItem("user_lang") || "ru";
+
+        const contentView = document.getElementById("contentView");
+        const sectionTitle = document.getElementById("sectionTitle");
+        const breadcrumbs = document.getElementById("breadcrumbs");
+        const navBackBtn = document.getElementById("navBackBtn");
+        const langBtn = document.getElementById("langBtn");
+        const toDeskBtn = document.getElementById("toDeskBtn");
+
+        // Модалка просмотра
+        const lightboxModal = document.getElementById("lightboxModal");
+        const lightboxImg = document.getElementById("lightboxImg");
+        const lightboxTitle = document.getElementById("lightboxTitle");
+        const lightboxClose = document.getElementById("lightboxClose");
+
+        function updateLangUI() {
+            document.documentElement.lang = currentLang;
+            langBtn.textContent = currentLang === "ru" ? "EN" : "RU";
+            toDeskBtn.textContent = currentLang === "ru" ? "← НА СТОЛ" : "← TO DESK";
+            navBackBtn.textContent = currentLang === "ru" ? "← НАЗАД" : "← BACK";
+            renderCurrentView();
+        }
+
+        langBtn.addEventListener("click", () => {
+            currentLang = currentLang === "ru" ? "en" : "ru";
+            try { localStorage.setItem("user_lang", currentLang); } catch (e) {}
+            updateLangUI();
+        });
+
+        // Отрисовка хлебных крошек
+        function renderBreadcrumbs() {
+            breadcrumbs.innerHTML = "";
+            navStack.forEach((node, index) => {
+                if (index > 0) {
+                    const sep = document.createElement("span");
+                    sep.className = "crumb-sep";
+                    sep.textContent = ">";
+                    breadcrumbs.appendChild(sep);
+                }
+
+                const span = document.createElement("span");
+                const isLast = index === navStack.length - 1;
+                span.className = isLast ? "crumb-active" : "crumb-link";
+                span.textContent = node.title[currentLang];
+
+                if (!isLast) {
+                    span.addEventListener("click", () => {
+                        navStack = navStack.slice(0, index + 1);
+                        renderCurrentView();
+                    });
+                }
+                breadcrumbs.appendChild(span);
+            });
+        }
+
+        // Отрисовка экрана
+        function renderCurrentView() {
+            const current = navStack[navStack.length - 1];
+            sectionTitle.textContent = current.title[currentLang];
+            navBackBtn.style.display = navStack.length > 1 ? "block" : "none";
+            renderBreadcrumbs();
+            contentView.innerHTML = "";
+
+            // Если это категория с подпапками
+            if (current.type === "category" || current.id === "root") {
+                const grid = document.createElement("div");
+                grid.className = "folders-grid";
+
+                current.items.forEach(item => {
+                    const card = document.createElement("div");
+                    card.className = "folder-card";
+
+                    // Выглядывающие картинки
+                    const previewsWrap = document.createElement("div");
+                    previewsWrap.className = "folder-previews";
+                    (item.previews || []).slice(0, 3).forEach(src => {
+                        const img = document.createElement("img");
+                        img.className = "preview-thumb";
+                        img.src = src;
+                        previewsWrap.appendChild(img);
+                    });
+
+                    // Кармашек папки
+                    const pocket = document.createElement("div");
+                    pocket.className = "folder-pocket";
+                    pocket.innerHTML = `
+                        <div class="folder-title">${item.title[currentLang]}</div>
+                        <div class="folder-desc">${item.desc ? item.desc[currentLang] : ''}</div>
+                        <div class="folder-count-badge">${
+                            item.items ? (item.items.length + (currentLang === 'ru' ? ' категорий' : ' sections')) :
+                            ((item.works ? item.works.length : 0) + (currentLang === 'ru' ? ' работ' : ' works'))
+                        }</div>
+                    `;
+
+                    card.appendChild(previewsWrap);
+                    card.appendChild(pocket);
+
+                    card.addEventListener("click", () => {
+                        navStack.push(item);
+                        renderCurrentView();
+                    });
+
+                    grid.appendChild(card);
+                });
+
+                contentView.appendChild(grid);
+            } 
+            // Если это конечная галерея работ
+            else if (current.type === "gallery") {
+                const grid = document.createElement("div");
+                grid.className = "works-grid";
+
+                (current.works || []).forEach(work => {
+                    const item = document.createElement("div");
+                    item.className = "work-item";
+                    item.innerHTML = `
+                        <img src="${work.img}" alt="${work.title}">
+                        <div class="work-caption">${work.title}</div>
+                    `;
+                    item.addEventListener("click", () => {
+                        openLightbox(work.img, work.title);
+                    });
+                    grid.appendChild(item);
+                });
+
+                contentView.appendChild(grid);
+            }
+        }
+
+        // Шаг назад
+        navBackBtn.addEventListener("click", () => {
+            if (navStack.length > 1) {
+                navStack.pop();
+                renderCurrentView();
+            }
+        });
+
+        // Модалка просмотрщика
+        function openLightbox(src, title) {
+            lightboxImg.src = src;
+            lightboxTitle.textContent = title;
+            lightboxModal.classList.add("active");
+        }
+
+        lightboxClose.addEventListener("click", () => lightboxModal.classList.remove("active"));
+        lightboxModal.addEventListener("click", (e) => {
+            if (e.target === lightboxModal) lightboxModal.classList.remove("active");
+        });
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") lightboxModal.classList.remove("active");
+        });
+
+        // Старт
+        updateLangUI();
+    </script>
+</body>
+</html>
