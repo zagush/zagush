@@ -8,17 +8,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
     <style>
-        /* РЕЖИМ ЧЁТКОГО ПИКСЕЛЬ-АРТА БЕЗ РАЗМЫТИЯ */
-.pixel-crisp,
-.pixel-mode img,
-.lightbox-modal.pixel-mode .lightbox-img {
-    image-rendering: pixelated !important;
-    image-rendering: crisp-edges !important;
+        /* РЕЖИМ ЧЁТКОГО ПИКСЕЛЬ-АРТА */
+        .pixel-crisp,
+        .pixel-mode img,
+        .lightbox-modal.pixel-mode .lightbox-img {
+            image-rendering: pixelated !important;
+            image-rendering: crisp-edges !important;
         }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-text-stroke: 0 !important; /* УБРАНА ОБВОДКА У ВСЕХ ТЕКСТОВ */
         }
 
         body {
@@ -49,7 +51,7 @@
             font-size: 11px;
             padding: 10px 16px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             text-decoration: none;
             cursor: pointer;
             box-shadow: 3px 5px 12px rgba(0, 0, 0, 0.35);
@@ -71,7 +73,7 @@
             font-size: clamp(10px, 1.2vw, 12px);
             background: rgba(255, 255, 255, 0.92);
             padding: 8px 14px;
-            border-radius: 4px;
+            border-radius: 6px;
             box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.25);
             flex-wrap: wrap;
         }
@@ -111,8 +113,8 @@
             grid-column: 2;
             text-align: center;
             font-family: 'Rubik Mono One', monospace, sans-serif;
-            font-size: clamp(16px, 2.8vw, 26px);
-            letter-spacing: -0.02em;
+            font-size: clamp(16px, 2.8vw, 24px);
+            letter-spacing: 0;
             color: #171717;
         }
 
@@ -123,7 +125,7 @@
             font-size: 11px;
             background: #eee6d8;
             padding: 8px 12px;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             border: none;
             display: none;
@@ -135,8 +137,8 @@
         .folders-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 50px 25px;
-            margin-top: 25px;
+            gap: 40px 25px;
+            margin-top: 20px;
         }
 
         .folder-card {
@@ -145,16 +147,16 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 55px;
+            padding-top: 45px;
             transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
         }
 
-        /* Веер миниатюр */
+        /* Лёгкий веер миниатюр (3 карточки) */
         .folder-previews {
             position: absolute;
             top: 0;
-            width: 240px;
-            height: 95px;
+            width: 200px;
+            height: 80px;
             pointer-events: none;
             z-index: 1;
             display: flex;
@@ -163,40 +165,32 @@
 
         .preview-thumb {
             position: absolute;
-            width: 68px;
-            height: 68px;
+            width: 65px;
+            height: 65px;
             object-fit: cover;
             border-radius: 4px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
             background: #e5ded2;
             border: 2px solid #fff;
-            transition: transform 0.25s ease;
+            transition: transform 0.2s ease;
         }
 
-        .preview-thumb:nth-child(1) { left: 10px;  top: 14px; transform: rotate(-22deg); }
-        .preview-thumb:nth-child(2) { left: 35px;  top: 8px;  transform: rotate(-15deg); }
-        .preview-thumb:nth-child(3) { left: 60px;  top: 3px;  transform: rotate(-8deg); }
-        .preview-thumb:nth-child(4) { left: 85px;  top: 0px;  transform: rotate(0deg); }
-        .preview-thumb:nth-child(5) { left: 110px; top: 3px;  transform: rotate(8deg); }
-        .preview-thumb:nth-child(6) { left: 135px; top: 8px;  transform: rotate(15deg); }
-        .preview-thumb:nth-child(7) { left: 160px; top: 14px; transform: rotate(22deg); }
+        .preview-thumb:nth-child(1) { left: 35px; top: 6px; transform: rotate(-12deg); }
+        .preview-thumb:nth-child(2) { left: 68px; top: 0px; transform: rotate(0deg); }
+        .preview-thumb:nth-child(3) { left: 100px; top: 6px; transform: rotate(12deg); }
 
-        .folder-card:hover .preview-thumb:nth-child(1) { transform: rotate(-26deg) translateY(-14px); }
-        .folder-card:hover .preview-thumb:nth-child(2) { transform: rotate(-18deg) translateY(-18px); }
-        .folder-card:hover .preview-thumb:nth-child(3) { transform: rotate(-10deg) translateY(-22px); }
-        .folder-card:hover .preview-thumb:nth-child(4) { transform: rotate(0deg)   translateY(-24px); }
-        .folder-card:hover .preview-thumb:nth-child(5) { transform: rotate(10deg)  translateY(-22px); }
-        .folder-card:hover .preview-thumb:nth-child(6) { transform: rotate(18deg)  translateY(-18px); }
-        .folder-card:hover .preview-thumb:nth-child(7) { transform: rotate(26deg)  translateY(-14px); }
+        .folder-card:hover .preview-thumb:nth-child(1) { transform: rotate(-16deg) translateY(-12px); }
+        .folder-card:hover .preview-thumb:nth-child(2) { transform: rotate(0deg)   translateY(-16px); }
+        .folder-card:hover .preview-thumb:nth-child(3) { transform: rotate(16deg)  translateY(-12px); }
 
         .folder-pocket {
             position: relative;
             z-index: 2;
             width: 100%;
             background: #ffffff;
-            border-radius: 4px;
-            padding: 22px 16px 16px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            border-radius: 6px;
+            padding: 20px 16px 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             border-top: 4px solid #1a1a1a;
             display: flex;
             flex-direction: column;
@@ -206,7 +200,7 @@
 
         .folder-card:hover .folder-pocket {
             background: #fafafa;
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
         }
 
         .folder-title {
@@ -214,6 +208,7 @@
             font-size: 13px;
             color: #000;
             line-height: 1.3;
+            letter-spacing: 0;
         }
 
         .folder-desc {
@@ -227,30 +222,29 @@
             align-self: flex-start;
             margin-top: 8px;
             background: #eee8dc;
-            padding: 3px 7px;
+            padding: 4px 8px;
             font-size: 10px;
             font-weight: 800;
-            border-radius: 3px;
+            border-radius: 4px;
             color: #444;
         }
 
-/* ========================================================
-           СЕТКА РАБОТ: РОВНО ПО 6 ШТУК В РЯД + МАКСИМАЛЬНАЯ ОПТИМИЗАЦИЯ
+        /* ========================================================
+           СЕТКА РАБОТ: 6 В РЯД, БЕЗ ПОДПИСЕЙ
            ======================================================== */
         .works-grid {
             display: grid;
-            grid-template-columns: repeat(6, 1fr); /* РОВНО 6 В РЯД */
+            grid-template-columns: repeat(6, 1fr);
             gap: 10px;
             margin-top: 20px;
         }
 
         .work-item {
             background: #fff;
-            padding: 4px 4px 6px;
-            border-radius: 3px;
+            padding: 4px;
+            border-radius: 4px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
             cursor: pointer;
-            /* Снимает 80% нагрузки с процессора */
             content-visibility: auto;
             contain-intrinsic-size: 110px;
             transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -268,36 +262,23 @@
             border-radius: 2px;
             display: block;
             background: #ece6da;
-            transform: translateZ(0); /* Включает видеокарту для плавности */
+            transform: translateZ(0);
         }
 
-        .work-caption {
-            margin-top: 4px;
-            font-size: 9px;
-            font-weight: 800;
-            color: #222;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            text-align: center;
-        }
-
-        /* Адаптивность для меньших экранов */
         @media (max-width: 880px) {
             .works-grid {
-                grid-template-columns: repeat(4, 1fr); /* 4 в ряд на планшетах */
+                grid-template-columns: repeat(4, 1fr);
                 gap: 8px;
             }
         }
 
         @media (max-width: 550px) {
             .works-grid {
-                grid-template-columns: repeat(3, 1fr); /* 3 в ряд на телефонах */
+                grid-template-columns: repeat(3, 1fr);
                 gap: 6px;
             }
         }
 
-        /* Загрузка */
         .loading-state {
             grid-column: 1 / -1;
             text-align: center;
@@ -307,7 +288,9 @@
             color: #777;
         }
 
-        /* ПРОСМОТРЩИК С ЗУМОМ И СТРЕЛКАМИ */
+        /* ========================================================
+           ПРОСМОТРЩИК (LIGHTBOX PRO: СТЕКЛО, КВАДРАТЫ, АВТО-МАСШТАБ)
+           ======================================================== */
         .lightbox-modal {
             position: fixed;
             inset: 0;
@@ -337,6 +320,7 @@
         .lightbox-viewport.is-zoomed { cursor: grab; }
         .lightbox-viewport.is-dragging { cursor: grabbing; }
 
+        /* Обычные картины и фото */
         .lightbox-img {
             max-width: 90vw;
             max-height: 82vh;
@@ -348,110 +332,132 @@
             pointer-events: auto;
         }
 
+        /* Автоматическое комфортное увеличение пиксель-арта */
+        .lightbox-modal.pixel-mode .lightbox-img {
+            image-rendering: pixelated !important;
+            image-rendering: crisp-edges !important;
+            width: min(80vw, 75vh);
+            height: min(80vw, 75vh);
+            object-fit: contain;
+        }
+
+        /* КНОПКА ЗАКРЫТЬ (Стеклянный прямоугольник) */
         .lightbox-close {
             position: absolute;
             top: 20px;
             right: 25px;
             z-index: 2010;
-            background: rgba(255, 255, 255, 0.12);
-            border: none;
-            color: #fff;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
             width: 44px;
             height: 44px;
-            border-radius: 50%;
-            font-size: 26px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.15s ease, transform 0.15s ease;
-        }
-        .lightbox-close:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: scale(1.1);
-        }
-
-        .lightbox-counter {
-            position: absolute;
-            top: 25px;
-            left: 25px;
-            z-index: 2010;
-            font-family: 'Rubik Mono One', monospace, sans-serif;
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.7);
-            background: rgba(0, 0, 0, 0.4);
-            padding: 6px 12px;
-            border-radius: 20px;
-        }
-
-        .lightbox-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 2010;
-            background: rgba(255, 255, 255, 0.12);
-            color: #fff;
-            border: none;
-            width: 52px;
-            height: 60px;
-            border-radius: 6px;
+            border-radius: 8px; /* Четырёхугольник с мягкими углами */
             font-size: 24px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: background 0.15s ease, transform 0.15s ease;
+        }
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.28);
+            transform: scale(1.05);
+        }
+
+        /* СЧЁТЧИК РАБОТ (Стеклянная плашка) */
+        .lightbox-counter {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            z-index: 2010;
+            font-family: 'Rubik Mono One', monospace, sans-serif;
+            font-size: 11px;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 10px 14px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* СТРЕЛКИ ВПРАВО / ВЛЕВО (Стеклянные прямоугольники) */
+        .lightbox-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2010;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            width: 48px;
+            height: 64px;
+            border-radius: 8px;
+            font-size: 20px;
+            font-family: 'Rubik Mono One', monospace, sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             transition: background 0.15s ease, transform 0.15s ease;
         }
         .lightbox-arrow:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-50%) scale(1.08);
+            background: rgba(255, 255, 255, 0.28);
+            transform: translateY(-50%) scale(1.06);
         }
         .lb-prev { left: 20px; }
         .lb-next { right: 20px; }
 
+        /* ПАНЕЛЬ ЗУМА СНИЗУ (Стеклянный контейнер) */
         .lightbox-toolbar {
             position: absolute;
             bottom: 22px;
             z-index: 2010;
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: rgba(22, 20, 28, 0.75);
-            backdrop-filter: blur(8px);
-            padding: 6px 12px;
-            border-radius: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(14px);
+            padding: 6px 10px;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.25);
         }
 
         .lb-tool-btn {
             background: rgba(255, 255, 255, 0.15);
-            color: #fff;
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            font-size: 16px;
-            font-weight: 900;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            width: 34px;
+            height: 34px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'Rubik Mono One', monospace, sans-serif;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background 0.15s ease;
         }
-        .lb-tool-btn:hover { background: rgba(255, 255, 255, 0.35); }
-        .lb-reset-btn { font-size: 18px; }
+        .lb-tool-btn:hover { background: rgba(255, 255, 255, 0.32); }
+
+        .lb-reset-btn { font-size: 16px; }
 
         .lb-zoom-val {
             font-family: 'Rubik Mono One', monospace, sans-serif;
             font-size: 11px;
-            color: #fff;
-            min-width: 52px;
+            color: #ffffff;
+            min-width: 54px;
             text-align: center;
         }
 
         @media (max-width: 600px) {
-            .lightbox-arrow { width: 40px; height: 48px; font-size: 18px; }
+            .lightbox-arrow { width: 38px; height: 50px; font-size: 16px; }
             .lb-prev { left: 8px; }
             .lb-next { right: 8px; }
             .lightbox-toolbar { bottom: 15px; }
@@ -496,7 +502,7 @@
         <div id="contentView"></div>
     </main>
 
-    <!-- ПРОДВИНУТЫЙ ПРОСМОТРЩИК АРТА -->
+    <!-- ПРОДВИНУТЫЙ ПРОСМОТРЩИК АРТА (СТЕКЛО) -->
     <div class="lightbox-modal" id="lightboxModal">
         <button class="lightbox-close" id="lightboxClose" title="Закрыть (Esc)">&times;</button>
         <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
@@ -517,17 +523,10 @@
     </div>
 
     <script>
-        // Имя репозитория Zagush на GitHub
         const GITHUB_REPO = "zagush/zagush";
 
-        // Стандартные картинки для превью папок, если папка пуста
-        const defaultFan = [
-            "phone.png", "contact.png", "draw.png", "sketchbook1.png",
-            "face3.png", "face4.png", "face.png"
-        ];
-
-       // ========================================================
-        // ТОЧНАЯ СТРУКТУРА ПОД ТВОИ РЕАЛЬНЫЕ ПАПКИ
+        // ========================================================
+        // СТРУКТУРА ПАПОК ПОД ТВОЙ РЕПОЗИТОРИЙ
         // ========================================================
         const portfolioData = {
             id: "root",
@@ -592,7 +591,7 @@
                     ]
                 },
 
-                // 2. ХОЛСТЫ (2026 -> 2023)
+                // 2. ХОЛСТЫ
                 {
                     id: "canvases",
                     title: { ru: "ХОЛСТЫ", en: "CANVASES" },
@@ -644,13 +643,10 @@
             ]
         };
 
-        // ========================================================
-        // АВТОМАТИЧЕСКОЕ ЧТЕНИЕ ПАПОК С GITHUB API С КЭШИРОВАНИЕМ
-        // ========================================================
+        // Чтение папок GitHub API
         async function fetchImagesFromFolder(folderPath) {
             if (!folderPath) return [];
 
-            // Проверяем кэш сессии, чтобы не тратить лимит запросов
             const cacheKey = "zagush_cache_" + folderPath;
             try {
                 const cached = sessionStorage.getItem(cacheKey);
@@ -664,12 +660,10 @@
                 const files = await res.json();
                 if (!Array.isArray(files)) return [];
 
-                // Фильтруем только картинки
                 const imageExtensions = /\.(png|jpe?g|webp|gif)$/i;
                 const images = files
                     .filter(f => f.type === "file" && imageExtensions.test(f.name))
                     .map(f => {
-                        // Чистим имя файла в красивую подпись
                         const cleanTitle = f.name
                             .replace(imageExtensions, "")
                             .replace(/[-_]/g, " ")
@@ -677,20 +671,33 @@
 
                         return {
                             title: cleanTitle,
-                            img: f.path // Локальный путь для сайта
+                            img: f.path
                         };
                     });
 
-                // Сохраняем в кэш
-                try {
-                    sessionStorage.setItem(cacheKey, JSON.stringify(images));
-                } catch(e) {}
+                if (images.length > 0) {
+                    try {
+                        sessionStorage.setItem(cacheKey, JSON.stringify(images));
+                    } catch(e) {}
+                }
 
                 return images;
             } catch (err) {
                 console.warn("GitHub API folder fetch:", err);
                 return [];
             }
+        }
+
+        // Поиск папки для превью обложки (без заглушек)
+        function findTargetFolder(item) {
+            if (item.folder) return item.folder;
+            if (item.items && item.items.length > 0) {
+                for (let sub of item.items) {
+                    const found = findTargetFolder(sub);
+                    if (found) return found;
+                }
+            }
+            return null;
         }
 
         let navStack = [portfolioData];
@@ -705,8 +712,6 @@
 
         const lightboxModal = document.getElementById("lightboxModal");
         const lightboxImg = document.getElementById("lightboxImg");
-        const lightboxTitle = document.getElementById("lightboxTitle");
-        const lightboxClose = document.getElementById("lightboxClose");
 
         function pushNav(item) {
             navStack.push(item);
@@ -768,7 +773,7 @@
             renderBreadcrumbs();
             contentView.innerHTML = "";
 
-            // Ветка с подпапками
+            // Ветка категорий
             if (current.type === "category" || current.id === "root") {
                 const grid = document.createElement("div");
                 grid.className = "folders-grid";
@@ -780,20 +785,13 @@
                     const previewsWrap = document.createElement("div");
                     previewsWrap.className = "folder-previews";
 
-                    // Дефолтный веер
-                    defaultFan.slice(0, 7).forEach(src => {
-                        const img = document.createElement("img");
-                        img.className = "preview-thumb";
-                        img.src = src;
-                        previewsWrap.appendChild(img);
-                    });
-
-                    // Если это папка с работами — подгружаем реальные картинки для веера
-                    if (item.folder) {
-                        fetchImagesFromFolder(item.folder).then(realImages => {
-                            if (realImages.length > 0) {
+                    // Берем реальные картинки для веера (если есть)
+                    const targetFolder = findTargetFolder(item);
+                    if (targetFolder) {
+                        fetchImagesFromFolder(targetFolder).then(realImages => {
+                            if (realImages && realImages.length > 0) {
                                 previewsWrap.innerHTML = "";
-                                realImages.slice(0, 7).forEach(work => {
+                                realImages.slice(0, 3).forEach(work => {
                                     const img = document.createElement("img");
                                     img.className = "preview-thumb";
                                     img.loading = "lazy";
@@ -826,12 +824,11 @@
 
                 contentView.appendChild(grid);
             } 
-            // Ветка с галереей работ
+            // Ветка галереи работ
             else if (current.type === "gallery") {
                 const grid = document.createElement("div");
                 grid.className = "works-grid";
 
-                // ВОТ СЮДА ВСТАВЛЯЕМ ЭТИ СТРОЧКИ:
                 const isPixelCategory = navStack.some(node => node.id && node.id.includes("pixel"));
                 if (isPixelCategory) {
                     grid.classList.add("pixel-mode");
@@ -840,7 +837,6 @@
                 grid.innerHTML = `<div class="loading-state">${currentLang === 'ru' ? 'ЗАГРУЗКА РАБОТ...' : 'LOADING ARTWORKS...'}</div>`;
                 contentView.appendChild(grid);
 
-                // Автоматически сканируем папку на GitHub
                 const works = await fetchImagesFromFolder(current.folder);
                 grid.innerHTML = "";
 
@@ -849,13 +845,12 @@
                         ${currentLang === 'ru' ? 'Работы пока загружаются на GitHub...' : 'Artworks coming soon...'}
                     </div>`;
                 } else {
-                    } else {
                     works.forEach((work, idx) => {
                         const item = document.createElement("div");
                         item.className = "work-item";
+                        // ТОЛЬКО КАРТИНКА БЕЗ ПОДПИСЕЙ:
                         item.innerHTML = `
-    <img src="${work.img}" alt="${work.title}" loading="lazy" decoding="async">
-    <div class="work-caption">${work.title}</div>
+                            <img src="${work.img}" alt="" loading="lazy" decoding="async">
                         `;
                         item.addEventListener("click", () => {
                             openLightbox(works, idx);
@@ -890,6 +885,7 @@
         const zoomInBtn = document.getElementById("zoomInBtn");
         const zoomOutBtn = document.getElementById("zoomOutBtn");
         const zoomResetBtn = document.getElementById("zoomResetBtn");
+        const lightboxClose = document.getElementById("lightboxClose");
 
         function updateTransform() {
             lightboxImg.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomLevel})`;
@@ -927,7 +923,7 @@
             lightboxImg.src = work.img;
             lightboxCounter.textContent = `${currentWorkIdx + 1} / ${currentGalleryWorks.length}`;
 
-            // Пиксель-арт без размытия
+            // Пиксель-арт авто-определение
             const isPixel = navStack.some(node => node.id && node.id.includes("pixel"));
             if (isPixel) {
                 lightboxModal.classList.add("pixel-mode");
@@ -953,23 +949,19 @@
             resetZoom();
         }
 
-        // Кнопки листания
         lightboxPrev.addEventListener("click", (e) => { e.stopPropagation(); showImageAt(currentWorkIdx - 1); });
         lightboxNext.addEventListener("click", (e) => { e.stopPropagation(); showImageAt(currentWorkIdx + 1); });
 
-        // Кнопки зума
         zoomInBtn.addEventListener("click", (e) => { e.stopPropagation(); setZoom(zoomLevel + 0.4); });
         zoomOutBtn.addEventListener("click", (e) => { e.stopPropagation(); setZoom(zoomLevel - 0.4); });
         zoomResetBtn.addEventListener("click", (e) => { e.stopPropagation(); resetZoom(); });
 
-        // Колёсико мыши
         lightboxViewport.addEventListener("wheel", (e) => {
             e.preventDefault();
             const delta = e.deltaY < 0 ? 0.25 : -0.25;
             setZoom(zoomLevel + delta);
         }, { passive: false });
 
-        // Перетаскивание увеличенной картинки
         lightboxViewport.addEventListener("pointerdown", (e) => {
             if (zoomLevel <= 1) return;
             isDragging = true;
@@ -995,7 +987,6 @@
         lightboxViewport.addEventListener("pointerup", endDrag);
         lightboxViewport.addEventListener("pointercancel", endDrag);
 
-        // Клавиатура: стрелки, зум, Esc
         document.addEventListener("keydown", (e) => {
             if (!lightboxModal.classList.contains("active")) return;
             if (e.key === "Escape") closeLightbox();
