@@ -653,6 +653,13 @@
             else if (current.type === "gallery") {
                 const grid = document.createElement("div");
                 grid.className = "works-grid";
+
+                // ВОТ СЮДА ВСТАВЛЯЕМ ЭТИ СТРОЧКИ:
+                const isPixelCategory = navStack.some(node => node.id && node.id.includes("pixel"));
+                if (isPixelCategory) {
+                    grid.classList.add("pixel-mode");
+                }
+
                 grid.innerHTML = `<div class="loading-state">${currentLang === 'ru' ? 'ЗАГРУЗКА РАБОТ...' : 'LOADING ARTWORKS...'}</div>`;
                 contentView.appendChild(grid);
 
@@ -688,10 +695,26 @@
         });
 
         function openLightbox(src, title) {
-            lightboxImg.src = src;
-            lightboxTitle.textContent = title;
-            lightboxModal.classList.add("active");
+    lightboxImg.src = src;
+    lightboxTitle.textContent = title;
+    
+    // Проверяем: если мы в папке pixel-art — включаем бритвенную чёткость пикселей
+    const isPixel = navStack.some(node => node.id && node.id.includes("pixel"));
+    if (isPixel) {
+        lightboxModal.classList.add("pixel-mode");
+    } else {
+        lightboxModal.classList.remove("pixel-mode");
+    }
+
+    // Если картинка загрузилась и она крошечная (1:1) — тоже включаем pixelated
+    lightboxImg.onload = () => {
+        if (lightboxImg.naturalWidth <= 320) {
+            lightboxModal.classList.add("pixel-mode");
         }
+    };
+
+    lightboxModal.classList.add("active");
+}
 
         lightboxClose.addEventListener("click", () => lightboxModal.classList.remove("active"));
         lightboxModal.addEventListener("click", (e) => {
