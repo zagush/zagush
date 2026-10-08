@@ -87,10 +87,10 @@
         .crumb-active { color: #000; }
         .crumb-sep { color: #aaa; }
 
-        /* Лист скетчбука (Твой авторский рисунок ПК) */
+        /* Лист скетчбука: всегда держит свой реальный размер без растягивания */
         .sketchbook-sheet {
             width: min(980px, 100%);
-            min-height: 85vh;
+            height: min(88vh, 880px); /* Держит пропорции экрана */
             background: transparent url('paper-pc.png') center top / 100% 100% no-repeat;
             border: none;
             border-radius: 0;
@@ -98,6 +98,9 @@
             filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.5));
             padding: clamp(35px, 5vw, 65px) clamp(25px, 4vw, 55px);
             position: relative;
+            display: flex;
+            flex-direction: column; /* Шапка сверху, контент внутри */
+            overflow: hidden;
         }
 
         /* Заголовок строго посередине, назад слева */
@@ -119,6 +122,29 @@
             color: #171717;
         }
 
+        /* Внутренний плавный скролл для картинок с красивой тонкой полоской */
+        #contentView {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 6px;
+            padding-bottom: 20px;
+        }
+
+        #contentView::-webkit-scrollbar {
+            width: 6px;
+        }
+        #contentView::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #contentView::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+        #contentView::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.35);
+        }
+        
         /* КНОПКА «НАЗАД» (Подготовлена под твой рисунок btn_back.png) */
         .nav-back-step {
             grid-column: 1;
@@ -538,10 +564,10 @@
             .sheet-title-row { grid-template-columns: 90px 1fr 90px; }
             .sketchbook-sheet {
                 background: transparent url('paper-mobile.png') center top / 100% 100% no-repeat;
-                padding: 45px 20px 60px;
+                height: 88vh; /* СТРОГО height: чтобы на телефоне лист тоже не растягивался */
+                padding: 45px 16px 50px;
                 border: none;
                 width: 100%;
-                min-height: 88vh;
             }
             .folders-grid {
                 grid-template-columns: 1fr;
