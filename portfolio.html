@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>ZAGUSH — PORTFOLIO</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,10 +37,10 @@
             -webkit-text-stroke: 0 !important;
         }
 
-        /* УБИРАЕМ ВТОРОЙ СКРОЛЛБАР СТРАНИЦЫ */
+        /* УБИРАЕМ ВТОРОЙ СКРОЛЛБАР СТРАНИЦЫ НА ПК */
         html, body {
             height: 100vh;
-            overflow: hidden; /* Запрещает внешний скролл на ПК */
+            overflow: hidden;
         }
 
         body {
@@ -60,8 +60,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
             gap: 10px;
+            flex-shrink: 0;
         }
 
         .back-desk-btn, .lang-btn {
@@ -107,11 +108,11 @@
         .crumb-active { color: #000; }
         .crumb-sep { color: #aaa; }
 
-        /* Лист скетчбука: идеально уложен в экран */
+        /* Лист скетчбука: идеальная фиксация без деформации */
         .sketchbook-sheet {
             width: min(980px, 100%);
-            flex: 1; /* Занимает всё свободное место без вылезания вниз */
-            max-height: calc(100vh - 85px); /* Ровно по высоте экрана */
+            flex: 1;
+            max-height: calc(100vh - 85px);
             background: transparent url('paper-pc.png') center top / 100% 100% no-repeat;
             border: none;
             border-radius: 0;
@@ -121,10 +122,10 @@
             position: relative;
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* Обрезает контент, чтобы не вылезал */
+            overflow: hidden;
         }
 
-        /* Шапка листа: ВСЕГДА ВЫШЕ КАРТИНОК И НЕ СЖИМАЕТСЯ */
+        /* Шапка листа */
         .sheet-title-row {
             display: grid;
             grid-template-columns: 120px 1fr 120px;
@@ -133,8 +134,8 @@
             padding-bottom: 12px;
             margin-bottom: 15px;
             position: relative;
-            z-index: 500; /* ВЫШЕ КАРТИНОК */
-            flex-shrink: 0; /* Никогда не сплющивается */
+            z-index: 500;
+            flex-shrink: 0;
             user-select: none;
         }
 
@@ -148,7 +149,7 @@
             user-select: none;
         }
 
-        /* КНОПКА «НАЗАД»: НАИВЫСШИЙ СЛОЙ, НАЖИМАЕТСЯ ВСЕГДА */
+        /* Кнопка «Назад» */
         .nav-back-step {
             grid-column: 1;
             justify-self: start;
@@ -162,7 +163,7 @@
             display: none;
             color: #000;
             position: relative;
-            z-index: 1000 !important; /* НА САМОМ ВЕРХУ, ПЕРЕХВАТЫВАЕТ ВСЕ КЛИКИ */
+            z-index: 1000 !important;
             pointer-events: auto !important;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
             transition: transform 0.15s ease, filter 0.15s ease;
@@ -172,7 +173,7 @@
             filter: drop-shadow(0 6px 12px rgba(0,0,0,0.22));
         }
 
-        /* Зона картинок: СТРОГО НИЖЕ ШАПКИ, НЕ НАЛЕЗАЕТ НА КНОПКИ */
+        /* Зона контента: скроллятся только картинки внутри листа */
         #contentView {
             flex: 1;
             overflow-y: auto;
@@ -181,6 +182,7 @@
             z-index: 1;
             padding-right: 6px;
             padding-bottom: 20px;
+            -webkit-overflow-scrolling: touch;
         }
 
         #contentView::-webkit-scrollbar {
@@ -196,29 +198,8 @@
         #contentView::-webkit-scrollbar-thumb:hover {
             background: rgba(0, 0, 0, 0.35);
         }
-        
-        /* КНОПКА «НАЗАД» (Подготовлена под твой рисунок btn_back.png) */
-        .nav-back-step {
-            grid-column: 1;
-            justify-self: start;
-            font-family: 'Rubik Mono One', monospace, sans-serif;
-            font-size: 11px;
-            background: #eee6d8 url('btn_back.png') center / 100% 100% no-repeat;
-            padding: 10px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            border: none;
-            display: none;
-            color: #000;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
-            transition: transform 0.15s ease, filter 0.15s ease;
-        }
-        .nav-back-step:hover {
-            transform: translateY(-2px);
-            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.22));
-        }
 
-        /* Сетка папок: более компактная и аккуратная */
+        /* Сетка папок */
         .folders-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -248,7 +229,6 @@
             justify-content: center;
         }
 
-        /* Картинки стали крупнее (72px) с минимальной белой каймой */
         .preview-thumb {
             position: absolute;
             width: 72px;
@@ -261,7 +241,6 @@
             transition: transform 0.22s ease;
         }
 
-        /* Размашистое распределение 4 картинок */
         .preview-thumb:nth-child(1) { left: 8px;   top: 10px; transform: rotate(-18deg); }
         .preview-thumb:nth-child(2) { left: 54px;  top: 2px;  transform: rotate(-6deg); }
         .preview-thumb:nth-child(3) { left: 102px; top: 2px;  transform: rotate(6deg); }
@@ -272,7 +251,7 @@
         .folder-card:hover .preview-thumb:nth-child(3) { transform: rotate(8deg)   translateY(-18px); }
         .folder-card:hover .preview-thumb:nth-child(4) { transform: rotate(22deg)  translateY(-14px); }
 
-        /* Компактный нарисованный кармашек */
+        /* Компактный нарисованный кармашек (без белых квадратов сзади) */
         .folder-pocket {
             position: relative;
             z-index: 2;
@@ -316,19 +295,6 @@
             color: #333;
         }
 
-        /* Аккуратная белая рамочка холстов в галерее без лишних полей */
-        .work-item {
-            background: #ffffff;
-            padding: 2px;
-            border: 2px solid #ffffff;
-            border-radius: 2px;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            content-visibility: auto;
-            contain-intrinsic-size: 110px;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
-
         /* ========================================================
            СЕТКА РАБОТ: 6 В РЯД + БЕЛАЯ РАМОЧКА ВОКРУГ КАРТИНОК
            ======================================================== */
@@ -336,13 +302,12 @@
             display: grid;
             grid-template-columns: repeat(6, 1fr);
             gap: 12px;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         .work-item {
             background: #ffffff;
             padding: 4px;
-            /* БЕЛАЯ РАМОЧКА ОБРАМЛЯЕТ ХОЛСТ: */
             border: 3px solid #ffffff;
             border-radius: 3px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.22);
@@ -374,13 +339,6 @@
             }
         }
 
-        @media (max-width: 550px) {
-            .works-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 6px;
-            }
-        }
-
         .loading-state {
             grid-column: 1 / -1;
             text-align: center;
@@ -391,7 +349,7 @@
         }
 
         /* ========================================================
-           ПРОСМОТРЩИК (LIGHTBOX PRO: ЧИСТЫЕ PNG, БЕЛАЯ РАМКА)
+           ПРОСМОТРЩИК (LIGHTBOX PRO: ЗАМОРОЗКА СКРОЛЛА + ЧИСТЫЕ PNG)
            ======================================================== */
         .lightbox-modal {
             position: fixed;
@@ -404,6 +362,7 @@
             justify-content: center;
             overflow: hidden;
             user-select: none;
+            touch-action: none; /* Запрещает скроллить фон на телефоне! */
         }
 
         .lightbox-modal.active { display: flex; }
@@ -417,6 +376,7 @@
             overflow: hidden;
             position: relative;
             cursor: default;
+            touch-action: none;
         }
 
         .lightbox-viewport.is-zoomed { cursor: grab; }
@@ -427,7 +387,7 @@
             max-width: 90vw;
             max-height: 82vh;
             object-fit: contain;
-            border: 4px solid #ffffff; /* БЕЛАЯ РАМКА */
+            border: 4px solid #ffffff;
             border-radius: 2px;
             box-shadow: 0 14px 45px rgba(0, 0, 0, 0.9);
             transition: transform 0.1s ease-out;
@@ -444,7 +404,7 @@
             border: 4px solid #ffffff;
         }
 
-        /* 1. КРЕСТИК ЗАКРЫТИЯ — ТЁМНО-КРАСНЫЙ (#990000) */
+        /* КРЕСТИК ЗАКРЫТИЯ — ТЁМНО-КРАСНЫЙ (#990000) */
         .lightbox-close {
             position: absolute;
             top: 20px;
@@ -458,7 +418,7 @@
             border: none !important;
             box-shadow: none !important;
             backdrop-filter: none !important;
-            color: #990000 !important; /* ТЁМНО-КРАСНЫЙ КРЕСТИК */
+            color: #990000 !important;
             width: 48px;
             height: 48px;
             font-size: 26px;
@@ -473,7 +433,7 @@
             transform: scale(1.08);
         }
 
-        /* 2. СЧЁТЧИК РАБОТ — ЦВЕТ СО СКРИНШОТА (#565071) */
+        /* СЧЁТЧИК РАБОТ — ЦВЕТ СО СКРИНШОТА (#565071) */
         .lightbox-counter {
             position: absolute;
             top: 20px;
@@ -481,7 +441,7 @@
             z-index: 2010;
             font-family: 'Rubik Mono One', monospace, sans-serif;
             font-size: 11px;
-            color: #565071 !important; /* ЦВЕТ СО СКРИНШОТА */
+            color: #565071 !important;
             background-color: transparent !important;
             background-image: url('badge_counter.png');
             background-size: 100% 100%;
@@ -494,7 +454,7 @@
             filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
         }
 
-        /* 3. СТРЕЛКИ ВПРАВО / ВЛЕВО — ЦВЕТ СО СКРИНШОТА (#565071) */
+        /* СТРЕЛКИ ВПРАВО / ВЛЕВО — ЦВЕТ СО СКРИНШОТА (#565071) */
         .lightbox-arrow {
             position: absolute;
             top: 50%;
@@ -507,7 +467,7 @@
             border: none !important;
             box-shadow: none !important;
             backdrop-filter: none !important;
-            color: #565071 !important; /* ЦВЕТ СО СКРИНШОТА */
+            color: #565071 !important;
             width: 50px;
             height: 65px;
             font-size: 24px;
@@ -522,16 +482,10 @@
         .lightbox-arrow:hover {
             transform: translateY(-50%) scale(1.08);
         }
-        .lb-prev { 
-            left: 20px; 
-            background-image: url('btn_prev.png'); 
-        }
-        .lb-next { 
-            right: 20px; 
-            background-image: url('btn_next.png'); 
-        }
+        .lb-prev { left: 20px; background-image: url('btn_prev.png'); }
+        .lb-next { right: 20px; background-image: url('btn_next.png'); }
 
-        /* 4. ПАНЕЛЬ ЗУМА СНИЗУ: КНОПКИ И ПРОЦЕНТЫ — ЦВЕТ СО СКРИНШОТА (#565071) */
+        /* ПАНЕЛЬ ЗУМА СНИЗУ (#565071) */
         .lightbox-toolbar {
             position: absolute;
             bottom: 22px;
@@ -554,7 +508,7 @@
         .lb-tool-btn {
             background: transparent !important;
             border: none !important;
-            color: #565071 !important; /* ЦВЕТ СО СКРИНШОТА */
+            color: #565071 !important;
             width: 32px;
             height: 32px;
             font-size: 16px;
@@ -565,21 +519,19 @@
             justify-content: center;
             transition: transform 0.15s ease;
         }
-        .lb-tool-btn:hover { 
-            transform: scale(1.15); 
-        }
+        .lb-tool-btn:hover { transform: scale(1.15); }
 
         .lb-reset-btn { font-size: 16px; }
 
         .lb-zoom-val {
             font-family: 'Rubik Mono One', monospace, sans-serif;
             font-size: 10px;
-            color: #565071 !important; /* ЦВЕТ СО СКРИНШОТА */
+            color: #565071 !important;
             min-width: 50px;
             text-align: center;
         }
 
-        /* 5. ПЛАШКА ИНФОРМАЦИИ: ЧЁРНЫЙ ТЕКСТ + ТЁМНО-КРАСНАЯ ЦЕНА (#990000) */
+        /* ПЛАШКА ИНФОРМАЦИИ: ЧЁРНЫЙ ТЕКСТ + ТЁМНО-КРАСНАЯ ЦЕНА (#990000) */
         .lightbox-info-badge {
             position: absolute;
             bottom: 22px;
@@ -595,7 +547,7 @@
             border-radius: 0;
             padding: 12px 16px;
             filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
-            display: none; /* Скрыта везде, включается ТОЛЬКО в холстах */
+            display: none;
             flex-direction: column;
             gap: 4px;
             pointer-events: none;
@@ -610,23 +562,49 @@
             font-size: 10px;
         }
 
-        .lb-info-label {
-            color: #000000 !important; /* ЧЁРНЫЙ ТЕКСТ */
-            font-weight: 900;
-        }
+        .lb-info-label { color: #000000 !important; font-weight: 900; }
+        .lb-info-val { color: #000000 !important; font-weight: 800; }
+        .lb-price-val { color: #990000 !important; font-weight: 900; }
 
-        .lb-info-val {
-            color: #000000 !important; /* ЧЁРНЫЙ ТЕКСТ */
-            font-weight: 800;
-        }
-
-        .lb-price-val {
-            color: #990000 !important; /* СТРОГО ТЁМНО-КРАСНАЯ ЦЕНА */
-            font-weight: 900;
-        }
-
-        @media (max-width: 600px) {
-            /* НА ТЕЛЕФОНЕ ПОЛНОСТЬЮ СКРЫВАЕМ СТРЕЛКИ, ЧТОБЫ НЕ ПЕРЕКРЫВАЛИ АРТ */
+        /* ========================================================
+           АДАПТИВНОСТЬ ДЛЯ ТЕЛЕФОНА (ЛИСТ НЕ РАСТЯГИВАЕТСЯ!)
+           ======================================================== */
+        @media (max-width: 650px) {
+            html, body {
+                height: 100vh;
+                max-height: 100vh;
+                overflow: hidden; /* Лист не скроллит всю страницу! */
+            }
+            body {
+                padding: 10px 10px 15px;
+            }
+            .top-bar {
+                margin-bottom: 8px;
+            }
+            .sheet-title-row { 
+                grid-template-columns: 85px 1fr 85px; 
+                padding-bottom: 8px;
+                margin-bottom: 10px;
+            }
+            /* ЛИСТ НА ТЕЛЕФОНЕ: ВСЕГДА ЗАФИКСИРОВАН, КАРТИНКИ СКРОЛЛЯТСЯ ВНУТРИ */
+            .sketchbook-sheet {
+                background: transparent url('paper-mobile.png') center top / 100% 100% no-repeat;
+                flex: 1;
+                max-height: calc(100vh - 65px);
+                padding: 38px 16px 42px;
+                border: none;
+                width: 100%;
+                overflow: hidden;
+            }
+            .folders-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            .works-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
+            }
+            /* Скрываем стрелки по бокам экрана на телефоне */
             .lightbox-arrow {
                 display: none !important;
             }
@@ -636,36 +614,7 @@
             .lightbox-info-badge {
                 bottom: 75px;
                 right: 15px;
-                padding: 6px 10px;
-            }
-        }
-
-        @media (max-width: 650px) {
-            html, body {
-                height: auto;
-                overflow-y: auto; /* На телефоне разрешаем естественный скролл */
-            }
-            body {
-                padding: 10px 10px 25px;
-                height: auto;
-                min-height: 100vh;
-            }
-            .sheet-title-row { grid-template-columns: 90px 1fr 90px; }
-            .sketchbook-sheet {
-                background: transparent url('paper-mobile.png') center top / 100% 100% no-repeat;
-                height: 88vh;
-                max-height: none;
-                padding: 45px 16px 50px;
-                border: none;
-                width: 100%;
-            }
-            .folders-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-            .works-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 8px;
+                padding: 8px 12px;
             }
         }
     </style>
@@ -840,6 +789,7 @@
                 }
             ]
         };
+
         // Чтение папок GitHub API
         async function fetchImagesFromFolder(folderPath) {
             if (!folderPath) return [];
@@ -1008,7 +958,7 @@
                         });
                     }
 
-                    // Случайный выбор одной из 6 нарисованных плашек (pocket_1 ... pocket_6)
+                    // Гарантированно разные варианты (1, 2, 3, 4, 5, 6) без повторений
                     const pocketNum = (index % 6) + 1;
 
                     const pocket = document.createElement("div");
@@ -1077,7 +1027,7 @@
         });
 
         // ========================================================
-        // ЛОГИКА ПРОСМОТРЩИКА: ЗУМ, ПЕРЕТАСКИВАНИЕ И ЛИСТАНИЕ
+        // ЛОГИКА ПРОСМОТРЩИКА: ЗУМ, ПЕРЕТАСКИВАНИЕ И МУЛЬТИТАЧ
         // ========================================================
         let currentGalleryWorks = [];
         let currentWorkIdx = 0;
@@ -1166,11 +1116,15 @@
             currentGalleryWorks = works;
             showImageAt(index);
             lightboxModal.classList.add("active");
+            // ЗАМОРАЖИВАЕМ СКРОЛЛ САЙТА СЗАДИ
+            document.body.style.overflow = "hidden";
         }
 
         function closeLightbox() {
             lightboxModal.classList.remove("active");
             resetZoom();
+            // РАЗМОРАЖИВАЕМ СКРОЛЛ САЙТА
+            document.body.style.overflow = "";
         }
 
         lightboxPrev.addEventListener("click", (e) => { e.stopPropagation(); showImageAt(currentWorkIdx - 1); });
@@ -1186,8 +1140,9 @@
             setZoom(zoomLevel + delta);
         }, { passive: false });
 
+        // Перетаскивание увеличенной картинки мышкой
         lightboxViewport.addEventListener("pointerdown", (e) => {
-            if (zoomLevel <= 1) return;
+            if (zoomLevel <= 1 || e.pointerType === "touch") return;
             isDragging = true;
             startDragX = e.clientX - panX;
             startDragY = e.clientY - panY;
@@ -1211,6 +1166,7 @@
         lightboxViewport.addEventListener("pointerup", endDrag);
         lightboxViewport.addEventListener("pointercancel", endDrag);
 
+        // Клавиатура
         document.addEventListener("keydown", (e) => {
             if (!lightboxModal.classList.contains("active")) return;
             if (e.key === "Escape") closeLightbox();
@@ -1223,51 +1179,90 @@
 
         lightboxClose.addEventListener("click", closeLightbox);
 
-        // УПРАВЛЕНИЕ НА ТЕЛЕФОНЕ: ТАП ПО ЛЕВОЙ/ПРАВОЙ СТОРОНЕ ЭКРАНА
+        // ========================================================
+        // УМНЫЙ МУЛЬТИТАЧ НА ТЕЛЕФОНЕ (PINCH-TO-ZOOM + ЗАЩИТА ОТ СЛУЧАЙНЫХ ТАПОВ)
+        // ========================================================
+        let touchStartDist = 0;
+        let isPinching = false;
+        let pinchCooldown = false;
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        function getTouchDist(e) {
+            return Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+        }
+
+        lightboxViewport.addEventListener("touchstart", (e) => {
+            if (e.touches.length === 2) {
+                // ДВА ПАЛЬЦА: ВКЛЮЧАЕМ РЕЖИМ ПРИБЛИЖЕНИЯ
+                isPinching = true;
+                touchStartDist = getTouchDist(e);
+            } else if (e.touches.length === 1) {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }
+        }, { passive: false });
+
+        lightboxViewport.addEventListener("touchmove", (e) => {
+            // Приближение/отдаление двумя пальцами на телефоне
+            if (isPinching && e.touches.length === 2) {
+                e.preventDefault();
+                const currentDist = getTouchDist(e);
+                const scaleDiff = (currentDist - touchStartDist) * 0.008;
+                setZoom(zoomLevel + scaleDiff);
+                touchStartDist = currentDist;
+            }
+        }, { passive: false });
+
+        lightboxViewport.addEventListener("touchend", (e) => {
+            // Если приближали пальцами — блокируем листание картинок на 350мс
+            if (isPinching) {
+                if (e.touches.length === 0) {
+                    isPinching = false;
+                    pinchCooldown = true;
+                    setTimeout(() => { pinchCooldown = false; }, 350);
+                }
+                return;
+            }
+
+            if (pinchCooldown) return;
+
+            // Обычный свайп одним пальцем (только при 100% масштабе)
+            if (zoomLevel === 1 && e.changedTouches.length === 1) {
+                const diffX = e.changedTouches[0].clientX - touchStartX;
+                const diffY = e.changedTouches[0].clientY - touchStartY;
+                
+                if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+                    if (diffX > 0) {
+                        showImageAt(currentWorkIdx - 1); // Смахнули вправо -> Назад
+                    } else {
+                        showImageAt(currentWorkIdx + 1); // Смахнули влево -> Вперёд
+                    }
+                }
+            }
+        }, { passive: true });
+
+        // Тап по левой / правой половине экрана
         lightboxViewport.addEventListener("click", (e) => {
-            if (isDragging) return; // Если перетаскивали зум — не листаем
+            if (isDragging || isPinching || pinchCooldown) return;
             
             if (zoomLevel === 1) {
-                // Если экран мобильный (до 650px)
                 if (window.innerWidth <= 650) {
                     const clickX = e.clientX;
                     const halfWidth = window.innerWidth / 2;
                     if (clickX < halfWidth) {
-                        showImageAt(currentWorkIdx - 1); // Тап слева -> Назад
+                        showImageAt(currentWorkIdx - 1);
                     } else {
-                        showImageAt(currentWorkIdx + 1); // Тап справа -> Вперёд
+                        showImageAt(currentWorkIdx + 1);
                     }
                 } else if (e.target === lightboxViewport) {
                     closeLightbox();
                 }
             }
         });
-
-        // СВАЙПЫ ПАЛЬЦЕМ НА ТЕЛЕФОНЕ (ВЛЕВО / ВПРАВО)
-        let touchStartX = 0;
-        let touchStartY = 0;
-        lightboxViewport.addEventListener("touchstart", (e) => {
-            if (e.touches.length === 1) {
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-            }
-        }, { passive: true });
-
-        lightboxViewport.addEventListener("touchend", (e) => {
-            if (zoomLevel === 1 && e.changedTouches.length === 1) {
-                const diffX = e.changedTouches[0].clientX - touchStartX;
-                const diffY = e.changedTouches[0].clientY - touchStartY;
-                
-                // Если провели пальцем по горизонтали больше чем на 45px
-                if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
-                    if (diffX > 0) {
-                        showImageAt(currentWorkIdx - 1); // Свайп вправо -> Предыдущая
-                    } else {
-                        showImageAt(currentWorkIdx + 1); // Свайп влево -> Следующая
-                    }
-                }
-            }
-        }, { passive: true });
 
         history.replaceState({ depth: 1 }, "");
         updateLangUI();
