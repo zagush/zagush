@@ -234,24 +234,30 @@
         .folder-card:hover .preview-thumb:nth-child(2) { transform: rotate(0deg)   translateY(-16px); }
         .folder-card:hover .preview-thumb:nth-child(3) { transform: rotate(16deg)  translateY(-12px); }
 
+        /* Кармашек папки под твои 6 нарисованных вариантов */
         .folder-pocket {
             position: relative;
             z-index: 2;
             width: 100%;
-            background: #ffffff;
-            border-radius: 6px;
-            padding: 20px 16px 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            border-top: 4px solid #1a1a1a;
+            background-color: #ffffff; /* Запасной цвет, пока не нарисуешь все 6 */
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            /* Тень мягко ложится под нарисованные края плашки */
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.16));
+            padding: 22px 18px 18px;
             display: flex;
             flex-direction: column;
             gap: 6px;
-            transition: box-shadow 0.2s ease, background 0.2s ease;
+            transition: transform 0.15s ease, filter 0.15s ease;
         }
 
         .folder-card:hover .folder-pocket {
-            background: #fafafa;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+            transform: translateY(-3px);
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.25));
         }
 
         .folder-title {
@@ -858,7 +864,53 @@
                 const grid = document.createElement("div");
                 grid.className = "folders-grid";
 
-                current.items.forEach(item => {
+                current.items.forEach((item, index) => {
+                    const card = document.createElement("div");
+                    card.className = "folder-card";
+
+                    const previewsWrap = document.createElement("div");
+                    previewsWrap.className = "folder-previews";
+
+                    const targetFolder = findTargetFolder(item);
+                    if (targetFolder) {
+                        fetchImagesFromFolder(targetFolder).then(realImages => {
+                            if (realImages && realImages.length > 0) {
+                                previewsWrap.innerHTML = "";
+                                realImages.slice(0, 3).forEach(work => {
+                                    const img = document.createElement("img");
+                                    img.className = "preview-thumb";
+                                    img.loading = "lazy";
+                                    img.src = work.img;
+                                    previewsWrap.appendChild(img);
+                                });
+                            }
+                        });
+                    }
+
+                    // Случайный выбор одной из 6 нарисованных плашек (pocket_1 ... pocket_6)
+                    // Используем хэш от названия, чтобы у каждой папки плашка была своей и не моргала при переходах:
+                    const pocketNum = (Math.abs(item.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)) % 6) + 1;
+
+                    const pocket = document.createElement("div");
+                    pocket.className = "folder-pocket";
+                    pocket.style.backgroundImage = `url('pocket_${pocketNum}.png')`;
+
+                    pocket.innerHTML = `
+                        <div class="folder-title">${item.title[currentLang]}</div>
+                        <div class="folder-count-badge">
+                            ${item.items ? (item.items.length + (currentLang === 'ru' ? ' разделов' : ' sections')) : (currentLang === 'ru' ? 'галерея' : 'gallery')}
+                        </div>
+                    `;
+
+                    card.appendChild(previewsWrap);
+                    card.appendChild(pocket);
+
+                    card.addEventListener("click", () => {
+                        pushNav(item);
+                    });
+
+                    grid.appendChild(card);
+                });
                     const card = document.createElement("div");
                     card.className = "folder-card";
 
@@ -886,7 +938,6 @@
                     pocket.className = "folder-pocket";
                     pocket.innerHTML = `
                         <div class="folder-title">${item.title[currentLang]}</div>
-                        ${item.desc ? `<div class="folder-desc">${item.desc[currentLang]}</div>` : ''}
                         <div class="folder-count-badge">
                             ${item.items ? (item.items.length + (currentLang === 'ru' ? ' разделов' : ' sections')) : (currentLang === 'ru' ? 'галерея' : 'gallery')}
                         </div>
