@@ -8,6 +8,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
     <style>
+        /* РЕЖИМ ЧЁТКОГО ПИКСЕЛЬ-АРТА БЕЗ РАЗМЫТИЯ */
+.pixel-crisp,
+.pixel-mode img,
+.lightbox-modal.pixel-mode .lightbox-img {
+    image-rendering: pixelated !important;
+    image-rendering: crisp-edges !important;
+        }
         * {
             margin: 0;
             padding: 0;
