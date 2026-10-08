@@ -23,15 +23,21 @@
             -webkit-text-stroke: 0 !important;
         }
 
+        /* УБИРАЕМ ВТОРОЙ СКРОЛЛБАР СТРАНИЦЫ */
+        html, body {
+            height: 100vh;
+            overflow: hidden; /* Запрещает внешний скролл на ПК */
+        }
+
         body {
-            min-height: 100vh;
             background: #2b2118 url('stol.jpg') center center / cover fixed no-repeat;
             font-family: Arial, Helvetica, sans-serif;
             color: #1a1a1a;
-            padding: 20px 15px 60px;
+            padding: 15px 15px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: flex-start;
         }
 
         /* Верхняя панель навигации */
@@ -87,46 +93,78 @@
         .crumb-active { color: #000; }
         .crumb-sep { color: #aaa; }
 
-        /* Лист скетчбука: всегда держит свой реальный размер без растягивания */
+        /* Лист скетчбука: идеально уложен в экран */
         .sketchbook-sheet {
             width: min(980px, 100%);
-            height: min(88vh, 880px); /* Держит пропорции экрана */
+            flex: 1; /* Занимает всё свободное место без вылезания вниз */
+            max-height: calc(100vh - 85px); /* Ровно по высоте экрана */
             background: transparent url('paper-pc.png') center top / 100% 100% no-repeat;
             border: none;
             border-radius: 0;
             box-shadow: none;
             filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.5));
-            padding: clamp(35px, 5vw, 65px) clamp(25px, 4vw, 55px);
+            padding: clamp(30px, 4vw, 55px) clamp(25px, 4vw, 50px);
             position: relative;
             display: flex;
-            flex-direction: column; /* Шапка сверху, контент внутри */
-            overflow: hidden;
+            flex-direction: column;
+            overflow: hidden; /* Обрезает контент, чтобы не вылезал */
         }
 
-        /* Заголовок строго посередине, назад слева */
+        /* Шапка листа: ВСЕГДА ВЫШЕ КАРТИНОК И НЕ СЖИМАЕТСЯ */
         .sheet-title-row {
             display: grid;
             grid-template-columns: 120px 1fr 120px;
             align-items: center;
             border-bottom: 2px dashed #d5cbba;
-            padding-bottom: 14px;
-            margin-bottom: 30px;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 500; /* ВЫШЕ КАРТИНОК */
+            flex-shrink: 0; /* Никогда не сплющивается */
+            user-select: none;
         }
 
         .sheet-title {
             grid-column: 2;
             text-align: center;
             font-family: 'Rubik Mono One', monospace, sans-serif;
-            font-size: clamp(16px, 2.8vw, 24px);
+            font-size: clamp(16px, 2.5vw, 22px);
             letter-spacing: 0;
             color: #171717;
+            user-select: none;
         }
 
-        /* Внутренний плавный скролл для картинок с красивой тонкой полоской */
+        /* КНОПКА «НАЗАД»: НАИВЫСШИЙ СЛОЙ, НАЖИМАЕТСЯ ВСЕГДА */
+        .nav-back-step {
+            grid-column: 1;
+            justify-self: start;
+            font-family: 'Rubik Mono One', monospace, sans-serif;
+            font-size: 11px;
+            background: #eee6d8 url('btn_back.png') center / 100% 100% no-repeat;
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            display: none;
+            color: #000;
+            position: relative;
+            z-index: 1000 !important; /* НА САМОМ ВЕРХУ, ПЕРЕХВАТЫВАЕТ ВСЕ КЛИКИ */
+            pointer-events: auto !important;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+            transition: transform 0.15s ease, filter 0.15s ease;
+        }
+        .nav-back-step:hover {
+            transform: translateY(-2px);
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.22));
+        }
+
+        /* Зона картинок: СТРОГО НИЖЕ ШАПКИ, НЕ НАЛЕЗАЕТ НА КНОПКИ */
         #contentView {
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
+            position: relative;
+            z-index: 1;
             padding-right: 6px;
             padding-bottom: 20px;
         }
@@ -586,10 +624,20 @@
         }
 
         @media (max-width: 650px) {
+            html, body {
+                height: auto;
+                overflow-y: auto; /* На телефоне разрешаем естественный скролл */
+            }
+            body {
+                padding: 10px 10px 25px;
+                height: auto;
+                min-height: 100vh;
+            }
             .sheet-title-row { grid-template-columns: 90px 1fr 90px; }
             .sketchbook-sheet {
                 background: transparent url('paper-mobile.png') center top / 100% 100% no-repeat;
-                height: 88vh; /* Не растягивается на мобиле */
+                height: 88vh;
+                max-height: none;
                 padding: 45px 16px 50px;
                 border: none;
                 width: 100%;
