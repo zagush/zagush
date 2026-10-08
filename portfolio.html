@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -34,6 +34,55 @@
             align-items: center;
         }
 
+        /* Ненавязчивая стеклянная плашка инфо в правом нижнем углу */
+        .lightbox-info-badge {
+            position: absolute;
+            bottom: 22px;
+            right: 25px;
+            z-index: 2010;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+            padding: 8px 14px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            pointer-events: none;
+        }
+
+        .lb-info-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-family: 'Rubik Mono One', monospace, sans-serif;
+            font-size: 10px;
+        }
+
+        .lb-info-label {
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        .lb-info-val {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .lb-price-val {
+            color: #00ffcc; /* Сочный неоновый цвет ценника */
+        }
+
+        @media (max-width: 600px) {
+            .lightbox-info-badge {
+                bottom: 70px; /* На телефоне приподнимаем над зум-панелью */
+                right: 15px;
+                padding: 6px 10px;
+                font-size: 9px;
+            }
+        }
+        
         /* Верхняя панель навигации */
         .top-bar {
             width: min(960px, 100%);
@@ -520,7 +569,21 @@
             <button class="lb-tool-btn" id="zoomInBtn" title="Приблизить (+)">+</button>
             <button class="lb-tool-btn lb-reset-btn" id="zoomResetBtn" title="Сбросить (1:1)">⟲</button>
         </div>
+
+        <!-- ВОТ СЮДА ВСТАВЛЯЕМ ПЛАШКУ: -->
+        <div class="lightbox-info-badge" id="lightboxInfoBadge">
+            <div class="lb-info-row">
+                <span class="lb-info-label">РАЗМЕР:</span>
+                <span class="lb-info-val" id="lbWorkSize">—</span>
+            </div>
+            <div class="lb-info-row">
+                <span class="lb-info-label">ЦЕНА:</span>
+                <span class="lb-info-val lb-price-val" id="lbWorkPrice">—</span>
+            </div>
+        </div>
     </div>
+
+    <script>
 
     <script>
         const GITHUB_REPO = "zagush/zagush";
@@ -664,14 +727,27 @@
                 const images = files
                     .filter(f => f.type === "file" && imageExtensions.test(f.name))
                     .map(f => {
-                        const cleanTitle = f.name
-                            .replace(imageExtensions, "")
-                            .replace(/[-_]/g, " ")
-                            .toUpperCase();
+                        const rawName = f.name.replace(imageExtensions, "");
+
+                        // Считываем размер (например 40x50 или 30х30cm)
+                        let size = "—";
+                        const sizeMatch = rawName.match(/(\d{2,3})[xхXХ*](\d{2,3})/i);
+                        if (sizeMatch) {
+                            size = `${sizeMatch[1]}×${sizeMatch[2]} см`;
+                        }
+
+                        // Считываем цену (например _5000rub, _7500r, _12000руб)
+                        let price = "—";
+                        const priceMatch = rawName.match(/(?:_|-)(\d{3,7})(?:rub|r|руб|р)/i);
+                        if (priceMatch) {
+                            const num = parseInt(priceMatch[1], 10);
+                            price = num.toLocaleString("ru-RU") + " ₽";
+                        }
 
                         return {
-                            title: cleanTitle,
-                            img: f.path
+                            img: f.path,
+                            size: size,
+                            price: price
                         };
                     });
 
@@ -917,11 +993,17 @@
         function showImageAt(idx) {
             if (currentGalleryWorks.length === 0) return;
             currentWorkIdx = (idx + currentGalleryWorks.length) % currentGalleryWorks.length;
-            const work = currentGalleryWorks[currentWorkIdx];
+            const work = currentGalleryWorks[currentWorkIdx]; // Сначала создаётся work!
 
             resetZoom();
             lightboxImg.src = work.img;
             lightboxCounter.textContent = `${currentWorkIdx + 1} / ${currentGalleryWorks.length}`;
+
+            // ВОТ СЮДА: Выводим размер и цену (строго ПОСЛЕ того, как появился work)
+            const lbWorkSize = document.getElementById("lbWorkSize");
+            const lbWorkPrice = document.getElementById("lbWorkPrice");
+            if (lbWorkSize) lbWorkSize.textContent = work.size || "—";
+            if (lbWorkPrice) lbWorkPrice.textContent = work.price || "—";
 
             // Пиксель-арт авто-определение
             const isPixel = navStack.some(node => node.id && node.id.includes("pixel"));
