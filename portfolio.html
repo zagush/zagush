@@ -307,56 +307,154 @@
             color: #777;
         }
 
-        /* Модалка просмотра */
+        /* ПРОСМОТРЩИК С ЗУМОМ И СТРЕЛКАМИ */
         .lightbox-modal {
             position: fixed;
             inset: 0;
-            z-index: 1000;
-            background: rgba(10, 8, 14, 0.88);
-            backdrop-filter: blur(8px);
+            z-index: 2000;
+            background: rgba(8, 7, 12, 0.94);
+            backdrop-filter: blur(12px);
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            overflow: hidden;
+            user-select: none;
         }
 
         .lightbox-modal.active { display: flex; }
 
-        .lightbox-content {
-            position: relative;
-            max-width: min(900px, 94vw);
-            max-height: 88vh;
+        .lightbox-viewport {
+            width: 100vw;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            cursor: default;
         }
+
+        .lightbox-viewport.is-zoomed { cursor: grab; }
+        .lightbox-viewport.is-dragging { cursor: grabbing; }
 
         .lightbox-img {
-            max-width: 100%;
-            max-height: 80vh;
+            max-width: 90vw;
+            max-height: 82vh;
             object-fit: contain;
             border-radius: 4px;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.8);
-        }
-
-        .lightbox-title {
-            margin-top: 14px;
-            font-family: 'Rubik Mono One', monospace, sans-serif;
-            color: #fff;
-            font-size: 13px;
-            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.85);
+            transition: transform 0.1s ease-out;
+            transform-origin: center center;
+            pointer-events: auto;
         }
 
         .lightbox-close {
             position: absolute;
-            top: -38px;
-            right: 0;
-            background: none;
+            top: 20px;
+            right: 25px;
+            z-index: 2010;
+            background: rgba(255, 255, 255, 0.12);
             border: none;
             color: #fff;
-            font-size: 32px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 26px;
             cursor: pointer;
-            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s ease, transform 0.15s ease;
+        }
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.1);
+        }
+
+        .lightbox-counter {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            z-index: 2010;
+            font-family: 'Rubik Mono One', monospace, sans-serif;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.7);
+            background: rgba(0, 0, 0, 0.4);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .lightbox-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2010;
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border: none;
+            width: 52px;
+            height: 60px;
+            border-radius: 6px;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s ease, transform 0.15s ease;
+        }
+        .lightbox-arrow:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-50%) scale(1.08);
+        }
+        .lb-prev { left: 20px; }
+        .lb-next { right: 20px; }
+
+        .lightbox-toolbar {
+            position: absolute;
+            bottom: 22px;
+            z-index: 2010;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(22, 20, 28, 0.75);
+            backdrop-filter: blur(8px);
+            padding: 6px 12px;
+            border-radius: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .lb-tool-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 16px;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s ease;
+        }
+        .lb-tool-btn:hover { background: rgba(255, 255, 255, 0.35); }
+        .lb-reset-btn { font-size: 18px; }
+
+        .lb-zoom-val {
+            font-family: 'Rubik Mono One', monospace, sans-serif;
+            font-size: 11px;
+            color: #fff;
+            min-width: 52px;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .lightbox-arrow { width: 40px; height: 48px; font-size: 18px; }
+            .lb-prev { left: 8px; }
+            .lb-next { right: 8px; }
+            .lightbox-toolbar { bottom: 15px; }
         }
 
         @media (max-width: 650px) {
@@ -398,11 +496,23 @@
         <div id="contentView"></div>
     </main>
 
+    <!-- ПРОДВИНУТЫЙ ПРОСМОТРЩИК АРТА -->
     <div class="lightbox-modal" id="lightboxModal">
-        <div class="lightbox-content">
-            <button class="lightbox-close" id="lightboxClose">&times;</button>
-            <img src="" alt="" class="lightbox-img" id="lightboxImg">
-            <div class="lightbox-title" id="lightboxTitle"></div>
+        <button class="lightbox-close" id="lightboxClose" title="Закрыть (Esc)">&times;</button>
+        <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
+
+        <button class="lightbox-arrow lb-prev" id="lightboxPrev" title="Предыдущая (←)">&#10094;</button>
+        <button class="lightbox-arrow lb-next" id="lightboxNext" title="Следующая (→)">&#10095;</button>
+
+        <div class="lightbox-viewport" id="lightboxViewport">
+            <img src="" alt="" class="lightbox-img" id="lightboxImg" draggable="false">
+        </div>
+
+        <div class="lightbox-toolbar">
+            <button class="lb-tool-btn" id="zoomOutBtn" title="Отдалить (−)">−</button>
+            <span class="lb-zoom-val" id="zoomVal">100%</span>
+            <button class="lb-tool-btn" id="zoomInBtn" title="Приблизить (+)">+</button>
+            <button class="lb-tool-btn lb-reset-btn" id="zoomResetBtn" title="Сбросить (1:1)">⟲</button>
         </div>
     </div>
 
@@ -694,7 +804,8 @@
                         ${currentLang === 'ru' ? 'Работы пока загружаются на GitHub...' : 'Artworks coming soon...'}
                     </div>`;
                 } else {
-                    works.forEach(work => {
+                    } else {
+                    works.forEach((work, idx) => {
                         const item = document.createElement("div");
                         item.className = "work-item";
                         item.innerHTML = `
@@ -702,7 +813,7 @@
     <div class="work-caption">${work.title}</div>
                         `;
                         item.addEventListener("click", () => {
-                            openLightbox(work.img, work.title);
+                            openLightbox(works, idx);
                         });
                         grid.appendChild(item);
                     });
@@ -716,34 +827,143 @@
             }
         });
 
-        function openLightbox(src, title) {
-    lightboxImg.src = src;
-    lightboxTitle.textContent = title;
-    
-    // Проверяем: если мы в папке pixel-art — включаем бритвенную чёткость пикселей
-    const isPixel = navStack.some(node => node.id && node.id.includes("pixel"));
-    if (isPixel) {
-        lightboxModal.classList.add("pixel-mode");
-    } else {
-        lightboxModal.classList.remove("pixel-mode");
-    }
+        // ========================================================
+        // ЛОГИКА ПРОСМОТРЩИКА: ЗУМ, ПЕРЕТАСКИВАНИЕ И ЛИСТАНИЕ
+        // ========================================================
+        let currentGalleryWorks = [];
+        let currentWorkIdx = 0;
+        let zoomLevel = 1;
+        let panX = 0, panY = 0;
+        let isDragging = false;
+        let startDragX = 0, startDragY = 0;
 
-    // Если картинка загрузилась и она крошечная (1:1) — тоже включаем pixelated
-    lightboxImg.onload = () => {
-        if (lightboxImg.naturalWidth <= 320) {
-            lightboxModal.classList.add("pixel-mode");
+        const lightboxViewport = document.getElementById("lightboxViewport");
+        const lightboxCounter = document.getElementById("lightboxCounter");
+        const lightboxPrev = document.getElementById("lightboxPrev");
+        const lightboxNext = document.getElementById("lightboxNext");
+        const zoomVal = document.getElementById("zoomVal");
+        const zoomInBtn = document.getElementById("zoomInBtn");
+        const zoomOutBtn = document.getElementById("zoomOutBtn");
+        const zoomResetBtn = document.getElementById("zoomResetBtn");
+
+        function updateTransform() {
+            lightboxImg.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomLevel})`;
+            zoomVal.textContent = Math.round(zoomLevel * 100) + '%';
+            
+            if (zoomLevel > 1) {
+                lightboxViewport.classList.add("is-zoomed");
+            } else {
+                lightboxViewport.classList.remove("is-zoomed");
+            }
         }
-    };
 
-    lightboxModal.classList.add("active");
-}
+        function resetZoom() {
+            zoomLevel = 1;
+            panX = 0;
+            panY = 0;
+            updateTransform();
+        }
 
-        lightboxClose.addEventListener("click", () => lightboxModal.classList.remove("active"));
-        lightboxModal.addEventListener("click", (e) => {
-            if (e.target === lightboxModal) lightboxModal.classList.remove("active");
+        function setZoom(newLevel) {
+            zoomLevel = Math.min(Math.max(newLevel, 1), 6);
+            if (zoomLevel === 1) {
+                panX = 0;
+                panY = 0;
+            }
+            updateTransform();
+        }
+
+        function showImageAt(idx) {
+            if (currentGalleryWorks.length === 0) return;
+            currentWorkIdx = (idx + currentGalleryWorks.length) % currentGalleryWorks.length;
+            const work = currentGalleryWorks[currentWorkIdx];
+
+            resetZoom();
+            lightboxImg.src = work.img;
+            lightboxCounter.textContent = `${currentWorkIdx + 1} / ${currentGalleryWorks.length}`;
+
+            // Пиксель-арт без размытия
+            const isPixel = navStack.some(node => node.id && node.id.includes("pixel"));
+            if (isPixel) {
+                lightboxModal.classList.add("pixel-mode");
+            } else {
+                lightboxModal.classList.remove("pixel-mode");
+            }
+
+            lightboxImg.onload = () => {
+                if (lightboxImg.naturalWidth <= 320) {
+                    lightboxModal.classList.add("pixel-mode");
+                }
+            };
+        }
+
+        function openLightbox(works, index) {
+            currentGalleryWorks = works;
+            showImageAt(index);
+            lightboxModal.classList.add("active");
+        }
+
+        function closeLightbox() {
+            lightboxModal.classList.remove("active");
+            resetZoom();
+        }
+
+        // Кнопки листания
+        lightboxPrev.addEventListener("click", (e) => { e.stopPropagation(); showImageAt(currentWorkIdx - 1); });
+        lightboxNext.addEventListener("click", (e) => { e.stopPropagation(); showImageAt(currentWorkIdx + 1); });
+
+        // Кнопки зума
+        zoomInBtn.addEventListener("click", (e) => { e.stopPropagation(); setZoom(zoomLevel + 0.4); });
+        zoomOutBtn.addEventListener("click", (e) => { e.stopPropagation(); setZoom(zoomLevel - 0.4); });
+        zoomResetBtn.addEventListener("click", (e) => { e.stopPropagation(); resetZoom(); });
+
+        // Колёсико мыши
+        lightboxViewport.addEventListener("wheel", (e) => {
+            e.preventDefault();
+            const delta = e.deltaY < 0 ? 0.25 : -0.25;
+            setZoom(zoomLevel + delta);
+        }, { passive: false });
+
+        // Перетаскивание увеличенной картинки
+        lightboxViewport.addEventListener("pointerdown", (e) => {
+            if (zoomLevel <= 1) return;
+            isDragging = true;
+            startDragX = e.clientX - panX;
+            startDragY = e.clientY - panY;
+            lightboxViewport.classList.add("is-dragging");
+            lightboxViewport.setPointerCapture(e.pointerId);
         });
+
+        lightboxViewport.addEventListener("pointermove", (e) => {
+            if (!isDragging) return;
+            panX = e.clientX - startDragX;
+            panY = e.clientY - startDragY;
+            updateTransform();
+        });
+
+        function endDrag(e) {
+            if (!isDragging) return;
+            isDragging = false;
+            lightboxViewport.classList.remove("is-dragging");
+            try { lightboxViewport.releasePointerCapture(e.pointerId); } catch(err) {}
+        }
+        lightboxViewport.addEventListener("pointerup", endDrag);
+        lightboxViewport.addEventListener("pointercancel", endDrag);
+
+        // Клавиатура: стрелки, зум, Esc
         document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape") lightboxModal.classList.remove("active");
+            if (!lightboxModal.classList.contains("active")) return;
+            if (e.key === "Escape") closeLightbox();
+            if (e.key === "ArrowLeft") showImageAt(currentWorkIdx - 1);
+            if (e.key === "ArrowRight") showImageAt(currentWorkIdx + 1);
+            if (e.key === "+" || e.key === "=") setZoom(zoomLevel + 0.3);
+            if (e.key === "-") setZoom(zoomLevel - 0.3);
+            if (e.key === "0") resetZoom();
+        });
+
+        lightboxClose.addEventListener("click", closeLightbox);
+        lightboxViewport.addEventListener("click", (e) => {
+            if (e.target === lightboxViewport && zoomLevel === 1) closeLightbox();
         });
 
         history.replaceState({ depth: 1 }, "");
