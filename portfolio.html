@@ -8,11 +8,25 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
     <style>
-        /* РЕЖИМ ЧЁТКОГО ПИКСЕЛЬ-АРТА */
+        /* ========================================================
+           ЖЕЛЕЗНЫЙ РЕЖИМ ПИКСЕЛЬ-АРТА: БЕЗ МЫЛА И СГЛАЖИВАНИЯ В UI
+           ======================================================== */
+        .sketchbook-sheet,
+        .folder-pocket,
+        .nav-back-step,
+        .preview-thumb,
+        .lightbox-close,
+        .lightbox-arrow,
+        .lightbox-toolbar,
+        .lightbox-counter,
+        .lightbox-info-badge,
+        .lb-tool-btn,
+        .work-item img,
+        .lightbox-img,
         .pixel-crisp,
-        .pixel-mode img,
-        .lightbox-modal.pixel-mode .lightbox-img {
+        .pixel-mode img {
             image-rendering: pixelated !important;
+            image-rendering: -moz-crisp-edges !important;
             image-rendering: crisp-edges !important;
         }
 
@@ -612,14 +626,17 @@
         }
 
         @media (max-width: 600px) {
-            .lightbox-arrow { width: 40px; height: 50px; font-size: 18px; }
-            .lb-prev { left: 8px; }
-            .lb-next { right: 8px; }
-            .lightbox-toolbar { bottom: 15px; }
+            /* НА ТЕЛЕФОНЕ ПОЛНОСТЬЮ СКРЫВАЕМ СТРЕЛКИ, ЧТОБЫ НЕ ПЕРЕКРЫВАЛИ АРТ */
+            .lightbox-arrow {
+                display: none !important;
+            }
+            .lightbox-toolbar {
+                bottom: 15px;
+            }
             .lightbox-info-badge {
                 bottom: 75px;
                 right: 15px;
-                padding: 8px 12px;
+                padding: 6px 10px;
             }
         }
 
@@ -1205,9 +1222,52 @@
         });
 
         lightboxClose.addEventListener("click", closeLightbox);
+
+        // УПРАВЛЕНИЕ НА ТЕЛЕФОНЕ: ТАП ПО ЛЕВОЙ/ПРАВОЙ СТОРОНЕ ЭКРАНА
         lightboxViewport.addEventListener("click", (e) => {
-            if (e.target === lightboxViewport && zoomLevel === 1) closeLightbox();
+            if (isDragging) return; // Если перетаскивали зум — не листаем
+            
+            if (zoomLevel === 1) {
+                // Если экран мобильный (до 650px)
+                if (window.innerWidth <= 650) {
+                    const clickX = e.clientX;
+                    const halfWidth = window.innerWidth / 2;
+                    if (clickX < halfWidth) {
+                        showImageAt(currentWorkIdx - 1); // Тап слева -> Назад
+                    } else {
+                        showImageAt(currentWorkIdx + 1); // Тап справа -> Вперёд
+                    }
+                } else if (e.target === lightboxViewport) {
+                    closeLightbox();
+                }
+            }
         });
+
+        // СВАЙПЫ ПАЛЬЦЕМ НА ТЕЛЕФОНЕ (ВЛЕВО / ВПРАВО)
+        let touchStartX = 0;
+        let touchStartY = 0;
+        lightboxViewport.addEventListener("touchstart", (e) => {
+            if (e.touches.length === 1) {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }
+        }, { passive: true });
+
+        lightboxViewport.addEventListener("touchend", (e) => {
+            if (zoomLevel === 1 && e.changedTouches.length === 1) {
+                const diffX = e.changedTouches[0].clientX - touchStartX;
+                const diffY = e.changedTouches[0].clientY - touchStartY;
+                
+                // Если провели пальцем по горизонтали больше чем на 45px
+                if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+                    if (diffX > 0) {
+                        showImageAt(currentWorkIdx - 1); // Свайп вправо -> Предыдущая
+                    } else {
+                        showImageAt(currentWorkIdx + 1); // Свайп влево -> Следующая
+                    }
+                }
+            }
+        }, { passive: true });
 
         history.replaceState({ depth: 1 }, "");
         updateLangUI();
