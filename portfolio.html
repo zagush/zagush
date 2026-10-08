@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -20,7 +20,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-text-stroke: 0 !important; /* УБРАНА ОБВОДКА У ВСЕХ ТЕКСТОВ */
+            -webkit-text-stroke: 0 !important;
         }
 
         body {
@@ -34,55 +34,6 @@
             align-items: center;
         }
 
-        /* Ненавязчивая стеклянная плашка инфо в правом нижнем углу */
-        .lightbox-info-badge {
-            position: absolute;
-            bottom: 22px;
-            right: 25px;
-            z-index: 2010;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 8px;
-            padding: 8px 14px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            pointer-events: none;
-        }
-
-        .lb-info-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            font-family: 'Rubik Mono One', monospace, sans-serif;
-            font-size: 10px;
-        }
-
-        .lb-info-label {
-            color: rgba(255, 255, 255, 0.65);
-        }
-
-        .lb-info-val {
-            color: #ffffff;
-            font-weight: 700;
-        }
-
-        .lb-price-val {
-            color: #00ffcc; /* Сочный неоновый цвет ценника */
-        }
-
-        @media (max-width: 600px) {
-            .lightbox-info-badge {
-                bottom: 70px; /* На телефоне приподнимаем над зум-панелью */
-                right: 15px;
-                padding: 6px 10px;
-                font-size: 9px;
-            }
-        }
-        
         /* Верхняя панель навигации */
         .top-bar {
             width: min(960px, 100%);
@@ -144,7 +95,6 @@
             border: none;
             border-radius: 0;
             box-shadow: none;
-            /* Тень точно повторяет все нарисованные рваные края на доски стола */
             filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.5));
             padding: clamp(35px, 5vw, 65px) clamp(25px, 4vw, 55px);
             position: relative;
@@ -153,7 +103,7 @@
         /* Заголовок строго посередине, назад слева */
         .sheet-title-row {
             display: grid;
-            grid-template-columns: 110px 1fr 110px;
+            grid-template-columns: 120px 1fr 120px;
             align-items: center;
             border-bottom: 2px dashed #d5cbba;
             padding-bottom: 14px;
@@ -169,20 +119,26 @@
             color: #171717;
         }
 
+        /* КНОПКА «НАЗАД» (Подготовлена под твой рисунок btn_back.png) */
         .nav-back-step {
             grid-column: 1;
             justify-self: start;
             font-family: 'Rubik Mono One', monospace, sans-serif;
             font-size: 11px;
-            background: #eee6d8;
-            padding: 8px 12px;
+            background: #eee6d8 url('btn_back.png') center / 100% 100% no-repeat;
+            padding: 10px 14px;
             border-radius: 6px;
             cursor: pointer;
             border: none;
             display: none;
-            transition: background 0.15s ease;
+            color: #000;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+            transition: transform 0.15s ease, filter 0.15s ease;
         }
-        .nav-back-step:hover { background: #e0d4bf; }
+        .nav-back-step:hover {
+            transform: translateY(-2px);
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.22));
+        }
 
         /* Сетка папок */
         .folders-grid {
@@ -234,19 +190,18 @@
         .folder-card:hover .preview-thumb:nth-child(2) { transform: rotate(0deg)   translateY(-16px); }
         .folder-card:hover .preview-thumb:nth-child(3) { transform: rotate(16deg)  translateY(-12px); }
 
-        /* Кармашек папки под твои 6 нарисованных вариантов */
+        /* Кармашек папки под твои 6 нарисованных вариантов (pocket_1 ... pocket_6) */
         .folder-pocket {
             position: relative;
             z-index: 2;
             width: 100%;
-            background-color: #ffffff; /* Запасной цвет, пока не нарисуешь все 6 */
+            background-color: #ffffff;
             background-size: 100% 100%;
             background-repeat: no-repeat;
             background-position: center;
             border: none;
             border-radius: 0;
             box-shadow: none;
-            /* Тень мягко ложится под нарисованные края плашки */
             filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.16));
             padding: 22px 18px 18px;
             display: flex;
@@ -268,13 +223,6 @@
             letter-spacing: 0;
         }
 
-        .folder-desc {
-            font-size: 11px;
-            font-weight: 700;
-            color: #666;
-            line-height: 1.4;
-        }
-
         .folder-count-badge {
             align-self: flex-start;
             margin-top: 8px;
@@ -287,20 +235,22 @@
         }
 
         /* ========================================================
-           СЕТКА РАБОТ: 6 В РЯД, БЕЗ ПОДПИСЕЙ
+           СЕТКА РАБОТ: 6 В РЯД + БЕЛАЯ РАМОЧКА ВОКРУГ КАРТИНОК
            ======================================================== */
         .works-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
+            gap: 12px;
             margin-top: 20px;
         }
 
         .work-item {
-            background: #fff;
+            background: #ffffff;
             padding: 4px;
-            border-radius: 4px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            /* БЕЛАЯ РАМОЧКА ОБРАМЛЯЕТ ХОЛСТ: */
+            border: 3px solid #ffffff;
+            border-radius: 3px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.22);
             cursor: pointer;
             content-visibility: auto;
             contain-intrinsic-size: 110px;
@@ -308,15 +258,15 @@
         }
 
         .work-item:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.32);
         }
 
         .work-item img {
             width: 100%;
             aspect-ratio: 1 / 1;
             object-fit: cover;
-            border-radius: 2px;
+            border-radius: 1px;
             display: block;
             background: #ece6da;
             transform: translateZ(0);
@@ -346,7 +296,7 @@
         }
 
         /* ========================================================
-           ПРОСМОТРЩИК (LIGHTBOX PRO: СТЕКЛО, КВАДРАТЫ, АВТО-МАСШТАБ)
+           ПРОСМОТРЩИК (LIGHTBOX PRO С БЕЛОЙ РАМКОЙ И ПЛАШКАМИ)
            ======================================================== */
         .lightbox-modal {
             position: fixed;
@@ -377,40 +327,41 @@
         .lightbox-viewport.is-zoomed { cursor: grab; }
         .lightbox-viewport.is-dragging { cursor: grabbing; }
 
-        /* Обычные картины и фото */
+        /* Обычные картины: БЕЛАЯ РАМОЧКА ВОКРУГ КАРТИНЫ */
         .lightbox-img {
             max-width: 90vw;
             max-height: 82vh;
             object-fit: contain;
-            border-radius: 4px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.85);
+            border: 4px solid #ffffff; /* БЕЛАЯ РАМКА В ПРОСМОТРЩИКЕ */
+            border-radius: 3px;
+            box-shadow: 0 14px 45px rgba(0, 0, 0, 0.9);
             transition: transform 0.1s ease-out;
             transform-origin: center center;
             pointer-events: auto;
         }
 
-        /* Автоматическое комфортное увеличение пиксель-арта */
         .lightbox-modal.pixel-mode .lightbox-img {
             image-rendering: pixelated !important;
             image-rendering: crisp-edges !important;
             width: min(80vw, 75vh);
             height: min(80vw, 75vh);
             object-fit: contain;
+            border: 4px solid #ffffff;
         }
 
-        /* КНОПКА ЗАКРЫТЬ (Стеклянный прямоугольник) */
+        /* КНОПКА ЗАКРЫТЬ (Подготовлена под твой рисунок btn_close.png) */
         .lightbox-close {
             position: absolute;
             top: 20px;
             right: 25px;
             z-index: 2010;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.15) url('btn_close.png') center / 100% 100% no-repeat;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.25);
             color: #ffffff;
-            width: 44px;
-            height: 44px;
-            border-radius: 8px; /* Четырёхугольник с мягкими углами */
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
             font-size: 24px;
             cursor: pointer;
             display: flex;
@@ -420,11 +371,10 @@
             transition: background 0.15s ease, transform 0.15s ease;
         }
         .lightbox-close:hover {
-            background: rgba(255, 255, 255, 0.28);
-            transform: scale(1.05);
+            transform: scale(1.08);
         }
 
-        /* СЧЁТЧИК РАБОТ (Стеклянная плашка) */
+        /* СЧЁТЧИК РАБОТ (Подготовлен под badge_counter.png) */
         .lightbox-counter {
             position: absolute;
             top: 20px;
@@ -432,27 +382,24 @@
             z-index: 2010;
             font-family: 'Rubik Mono One', monospace, sans-serif;
             font-size: 11px;
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #000000;
+            background: #ffffff url('badge_counter.png') center / 100% 100% no-repeat;
             padding: 10px 14px;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
-        /* СТРЕЛКИ ВПРАВО / ВЛЕВО (Стеклянные прямоугольники) */
+        /* СТРЕЛКИ ВПРАВО / ВЛЕВО (Подготовлены под btn_prev.png и btn_next.png) */
         .lightbox-arrow {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
             z-index: 2010;
-            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.25);
             color: #ffffff;
-            width: 48px;
-            height: 64px;
+            width: 50px;
+            height: 65px;
             border-radius: 8px;
             font-size: 20px;
             font-family: 'Rubik Mono One', monospace, sans-serif;
@@ -461,16 +408,21 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: background 0.15s ease, transform 0.15s ease;
+            transition: transform 0.15s ease;
         }
         .lightbox-arrow:hover {
-            background: rgba(255, 255, 255, 0.28);
-            transform: translateY(-50%) scale(1.06);
+            transform: translateY(-50%) scale(1.08);
         }
-        .lb-prev { left: 20px; }
-        .lb-next { right: 20px; }
+        .lb-prev { 
+            left: 20px; 
+            background: rgba(255, 255, 255, 0.15) url('btn_prev.png') center / 100% 100% no-repeat; 
+        }
+        .lb-next { 
+            right: 20px; 
+            background: rgba(255, 255, 255, 0.15) url('btn_next.png') center / 100% 100% no-repeat; 
+        }
 
-        /* ПАНЕЛЬ ЗУМА СНИЗУ (Стеклянный контейнер) */
+        /* ПАНЕЛЬ ЗУМА СНИЗУ (Подготовлена под bar_zoom.png) */
         .lightbox-toolbar {
             position: absolute;
             bottom: 22px;
@@ -478,9 +430,9 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.15) url('bar_zoom.png') center / 100% 100% no-repeat;
             backdrop-filter: blur(14px);
-            padding: 6px 10px;
+            padding: 8px 12px;
             border-radius: 8px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.25);
@@ -513,16 +465,60 @@
             text-align: center;
         }
 
+        /* ПЛАШКА ЦЕНЫ И РАЗМЕРА: ТОЛЬКО ДЛЯ ХОЛСТОВ + ТЁМНО-КРАСНЫЙ ЦВЕТ ЦЕНЫ */
+        .lightbox-info-badge {
+            position: absolute;
+            bottom: 22px;
+            right: 25px;
+            z-index: 2010;
+            background: #ffffff url('badge_info.png') center / 100% 100% no-repeat;
+            border-radius: 8px;
+            padding: 10px 14px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            display: none; /* Скрыта везде, включается ТОЛЬКО в холстах */
+            flex-direction: column;
+            gap: 4px;
+            pointer-events: none;
+        }
+
+        .lb-info-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-family: 'Rubik Mono One', monospace, sans-serif;
+            font-size: 10px;
+        }
+
+        .lb-info-label {
+            color: #000000; /* ЧЁРНЫЙ ТЕКСТ */
+            font-weight: 900;
+        }
+
+        .lb-info-val {
+            color: #000000; /* ЧЁРНЫЙ ТЕКСТ */
+            font-weight: 800;
+        }
+
+        .lb-price-val {
+            color: #990000 !important; /* ТЁМНО-КРАСНЫЙ ДЛЯ ЦЕНЫ */
+            font-weight: 900;
+        }
+
         @media (max-width: 600px) {
-            .lightbox-arrow { width: 38px; height: 50px; font-size: 16px; }
+            .lightbox-arrow { width: 40px; height: 50px; font-size: 16px; }
             .lb-prev { left: 8px; }
             .lb-next { right: 8px; }
             .lightbox-toolbar { bottom: 15px; }
+            .lightbox-info-badge {
+                bottom: 75px;
+                right: 15px;
+                padding: 6px 10px;
+            }
         }
 
         @media (max-width: 650px) {
-            .sheet-title-row { grid-template-columns: 80px 1fr 80px; }
-            /* На телефоне переключаем на вертикальный нарисованный лист */
+            .sheet-title-row { grid-template-columns: 90px 1fr 90px; }
             .sketchbook-sheet {
                 background: transparent url('paper-mobile.png') center top / 100% 100% no-repeat;
                 padding: 45px 20px 60px;
@@ -563,7 +559,7 @@
         <div id="contentView"></div>
     </main>
 
-    <!-- ПРОДВИНУТЫЙ ПРОСМОТРЩИК АРТА (СТЕКЛО) -->
+    <!-- ПРОДВИНУТЫЙ ПРОСМОТРЩИК АРТА -->
     <div class="lightbox-modal" id="lightboxModal">
         <button class="lightbox-close" id="lightboxClose" title="Закрыть (Esc)">&times;</button>
         <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
@@ -582,7 +578,7 @@
             <button class="lb-tool-btn lb-reset-btn" id="zoomResetBtn" title="Сбросить (1:1)">⟲</button>
         </div>
 
-        <!-- ВОТ СЮДА ВСТАВЛЯЕМ ПЛАШКУ: -->
+        <!-- Плашка цены и размера (появляется только в Холстах) -->
         <div class="lightbox-info-badge" id="lightboxInfoBadge">
             <div class="lb-info-row">
                 <span class="lb-info-label">РАЗМЕР:</span>
@@ -739,14 +735,12 @@
                     .map(f => {
                         const rawName = f.name.replace(imageExtensions, "");
 
-                        // Считываем размер (например 40x50 или 30х30cm)
                         let size = "—";
                         const sizeMatch = rawName.match(/(\d{2,3})[xхXХ*](\d{2,3})/i);
                         if (sizeMatch) {
                             size = `${sizeMatch[1]}×${sizeMatch[2]} см`;
                         }
 
-                        // Считываем цену (например _5000rub, _7500r, _12000руб)
                         let price = "—";
                         const priceMatch = rawName.match(/(?:_|-)(\d{3,7})(?:rub|r|руб|р)/i);
                         if (priceMatch) {
@@ -755,7 +749,7 @@
                         }
 
                         return {
-                            img: f.path,
+                            img: f.download_url || f.path,
                             size: size,
                             price: price
                         };
@@ -774,7 +768,6 @@
             }
         }
 
-        // Поиск папки для превью обложки (без заглушек)
         function findTargetFolder(item) {
             if (item.folder) return item.folder;
             if (item.items && item.items.length > 0) {
@@ -888,54 +881,12 @@
                     }
 
                     // Случайный выбор одной из 6 нарисованных плашек (pocket_1 ... pocket_6)
-                    // Используем хэш от названия, чтобы у каждой папки плашка была своей и не моргала при переходах:
                     const pocketNum = (Math.abs(item.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)) % 6) + 1;
 
                     const pocket = document.createElement("div");
                     pocket.className = "folder-pocket";
                     pocket.style.backgroundImage = `url('pocket_${pocketNum}.png')`;
 
-                    pocket.innerHTML = `
-                        <div class="folder-title">${item.title[currentLang]}</div>
-                        <div class="folder-count-badge">
-                            ${item.items ? (item.items.length + (currentLang === 'ru' ? ' разделов' : ' sections')) : (currentLang === 'ru' ? 'галерея' : 'gallery')}
-                        </div>
-                    `;
-
-                    card.appendChild(previewsWrap);
-                    card.appendChild(pocket);
-
-                    card.addEventListener("click", () => {
-                        pushNav(item);
-                    });
-
-                    grid.appendChild(card);
-                });
-                    const card = document.createElement("div");
-                    card.className = "folder-card";
-
-                    const previewsWrap = document.createElement("div");
-                    previewsWrap.className = "folder-previews";
-
-                    // Берем реальные картинки для веера (если есть)
-                    const targetFolder = findTargetFolder(item);
-                    if (targetFolder) {
-                        fetchImagesFromFolder(targetFolder).then(realImages => {
-                            if (realImages && realImages.length > 0) {
-                                previewsWrap.innerHTML = "";
-                                realImages.slice(0, 3).forEach(work => {
-                                    const img = document.createElement("img");
-                                    img.className = "preview-thumb";
-                                    img.loading = "lazy";
-                                    img.src = work.img;
-                                    previewsWrap.appendChild(img);
-                                });
-                            }
-                        });
-                    }
-
-                    const pocket = document.createElement("div");
-                    pocket.className = "folder-pocket";
                     pocket.innerHTML = `
                         <div class="folder-title">${item.title[currentLang]}</div>
                         <div class="folder-count-badge">
@@ -979,7 +930,6 @@
                     works.forEach((work, idx) => {
                         const item = document.createElement("div");
                         item.className = "work-item";
-                        // ТОЛЬКО КАРТИНКА БЕЗ ПОДПИСЕЙ:
                         item.innerHTML = `
                             <img src="${work.img}" alt="" loading="lazy" decoding="async">
                         `;
@@ -1048,17 +998,26 @@
         function showImageAt(idx) {
             if (currentGalleryWorks.length === 0) return;
             currentWorkIdx = (idx + currentGalleryWorks.length) % currentGalleryWorks.length;
-            const work = currentGalleryWorks[currentWorkIdx]; // Сначала создаётся work!
+            const work = currentGalleryWorks[currentWorkIdx];
 
             resetZoom();
             lightboxImg.src = work.img;
             lightboxCounter.textContent = `${currentWorkIdx + 1} / ${currentGalleryWorks.length}`;
 
-            // ВОТ СЮДА: Выводим размер и цену (строго ПОСЛЕ того, как появился work)
-            const lbWorkSize = document.getElementById("lbWorkSize");
-            const lbWorkPrice = document.getElementById("lbWorkPrice");
-            if (lbWorkSize) lbWorkSize.textContent = work.size || "—";
-            if (lbWorkPrice) lbWorkPrice.textContent = work.price || "—";
+            // ПЛАШКА ЦЕНЫ И РАЗМЕРА: ВКЛЮЧАЕТСЯ ТОЛЬКО ДЛЯ ХОЛСТОВ
+            const isCanvas = navStack.some(node => node.id && node.id.includes("canvas"));
+            const infoBadge = document.getElementById("lightboxInfoBadge");
+            if (infoBadge) {
+                if (isCanvas) {
+                    infoBadge.style.display = "flex";
+                    const lbWorkSize = document.getElementById("lbWorkSize");
+                    const lbWorkPrice = document.getElementById("lbWorkPrice");
+                    if (lbWorkSize) lbWorkSize.textContent = work.size || "—";
+                    if (lbWorkPrice) lbWorkPrice.textContent = work.price || "—";
+                } else {
+                    infoBadge.style.display = "none";
+                }
+            }
 
             // Пиксель-арт авто-определение
             const isPixel = navStack.some(node => node.id && node.id.includes("pixel"));
