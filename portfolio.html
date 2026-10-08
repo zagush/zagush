@@ -339,7 +339,7 @@
         }
 
         /* ========================================================
-           ПРОСМОТРЩИК (LIGHTBOX PRO С БЕЛОЙ РАМКОЙ И ПЛАШКАМИ)
+           ПРОСМОТРЩИК (LIGHTBOX PRO: ЧИСТЫЕ PNG, БЕЛАЯ РАМКА)
            ======================================================== */
         .lightbox-modal {
             position: fixed;
@@ -370,13 +370,13 @@
         .lightbox-viewport.is-zoomed { cursor: grab; }
         .lightbox-viewport.is-dragging { cursor: grabbing; }
 
-        /* Обычные картины: БЕЛАЯ РАМОЧКА ВОКРУГ КАРТИНЫ */
+        /* Белая рамка вокруг картины */
         .lightbox-img {
             max-width: 90vw;
             max-height: 82vh;
             object-fit: contain;
-            border: 4px solid #ffffff; /* БЕЛАЯ РАМКА В ПРОСМОТРЩИКЕ */
-            border-radius: 3px;
+            border: 4px solid #ffffff; /* БЕЛАЯ РАМКА */
+            border-radius: 2px;
             box-shadow: 0 14px 45px rgba(0, 0, 0, 0.9);
             transition: transform 0.1s ease-out;
             transform-origin: center center;
@@ -392,32 +392,36 @@
             border: 4px solid #ffffff;
         }
 
-        /* КНОПКА ЗАКРЫТЬ (Подготовлена под твой рисунок btn_close.png) */
+        /* 1. КРЕСТИК ЗАКРЫТИЯ — ТЁМНО-КРАСНЫЙ (#990000) */
         .lightbox-close {
             position: absolute;
             top: 20px;
             right: 25px;
             z-index: 2010;
-            background: rgba(255, 255, 255, 0.15) url('btn_close.png') center / 100% 100% no-repeat;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            color: #ffffff;
+            background-color: transparent !important;
+            background-image: url('btn_close.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: none !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            color: #990000 !important; /* ТЁМНО-КРАСНЫЙ КРЕСТИК */
             width: 48px;
             height: 48px;
-            border-radius: 8px;
-            font-size: 24px;
+            font-size: 26px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: background 0.15s ease, transform 0.15s ease;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
+            transition: transform 0.15s ease;
         }
         .lightbox-close:hover {
             transform: scale(1.08);
         }
 
-        /* СЧЁТЧИК РАБОТ (Подготовлен под badge_counter.png) */
+        /* 2. СЧЁТЧИК РАБОТ — ЦВЕТ СО СКРИНШОТА (#565071) */
         .lightbox-counter {
             position: absolute;
             top: 20px;
@@ -425,32 +429,42 @@
             z-index: 2010;
             font-family: 'Rubik Mono One', monospace, sans-serif;
             font-size: 11px;
-            color: #000000;
-            background: #ffffff url('badge_counter.png') center / 100% 100% no-repeat;
-            padding: 10px 14px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            color: #565071 !important; /* ЦВЕТ СО СКРИНШОТА */
+            background-color: transparent !important;
+            background-image: url('badge_counter.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: none !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            padding: 10px 16px;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
         }
 
-        /* СТРЕЛКИ ВПРАВО / ВЛЕВО (Подготовлены под btn_prev.png и btn_next.png) */
+        /* 3. СТРЕЛКИ ВПРАВО / ВЛЕВО — ЦВЕТ СО СКРИНШОТА (#565071) */
         .lightbox-arrow {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
             z-index: 2010;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            color: #ffffff;
+            background-color: transparent !important;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: none !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            color: #565071 !important; /* ЦВЕТ СО СКРИНШОТА */
             width: 50px;
             height: 65px;
-            border-radius: 8px;
-            font-size: 20px;
+            font-size: 24px;
             font-family: 'Rubik Mono One', monospace, sans-serif;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
             transition: transform 0.15s ease;
         }
         .lightbox-arrow:hover {
@@ -458,14 +472,14 @@
         }
         .lb-prev { 
             left: 20px; 
-            background: rgba(255, 255, 255, 0.15) url('btn_prev.png') center / 100% 100% no-repeat; 
+            background-image: url('btn_prev.png'); 
         }
         .lb-next { 
             right: 20px; 
-            background: rgba(255, 255, 255, 0.15) url('btn_next.png') center / 100% 100% no-repeat; 
+            background-image: url('btn_next.png'); 
         }
 
-        /* ПАНЕЛЬ ЗУМА СНИЗУ (Подготовлена под bar_zoom.png) */
+        /* 4. ПАНЕЛЬ ЗУМА СНИЗУ: КНОПКИ И ПРОЦЕНТЫ — ЦВЕТ СО СКРИНШОТА (#565071) */
         .lightbox-toolbar {
             position: absolute;
             bottom: 22px;
@@ -473,51 +487,62 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.15) url('bar_zoom.png') center / 100% 100% no-repeat;
-            backdrop-filter: blur(14px);
-            padding: 8px 12px;
-            border-radius: 8px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background-color: transparent !important;
+            background-image: url('bar_zoom.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: none !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            padding: 8px 14px;
+            filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
         }
 
         .lb-tool-btn {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            width: 34px;
-            height: 34px;
-            border-radius: 6px;
-            font-size: 14px;
+            background: transparent !important;
+            border: none !important;
+            color: #565071 !important; /* ЦВЕТ СО СКРИНШОТА */
+            width: 32px;
+            height: 32px;
+            font-size: 16px;
             font-family: 'Rubik Mono One', monospace, sans-serif;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.15s ease;
+            transition: transform 0.15s ease;
         }
-        .lb-tool-btn:hover { background: rgba(255, 255, 255, 0.32); }
+        .lb-tool-btn:hover { 
+            transform: scale(1.15); 
+        }
 
         .lb-reset-btn { font-size: 16px; }
 
         .lb-zoom-val {
             font-family: 'Rubik Mono One', monospace, sans-serif;
-            font-size: 11px;
-            color: #ffffff;
-            min-width: 54px;
+            font-size: 10px;
+            color: #565071 !important; /* ЦВЕТ СО СКРИНШОТА */
+            min-width: 50px;
             text-align: center;
         }
 
-        /* ПЛАШКА ЦЕНЫ И РАЗМЕРА: ТОЛЬКО ДЛЯ ХОЛСТОВ + ТЁМНО-КРАСНЫЙ ЦВЕТ ЦЕНЫ */
+        /* 5. ПЛАШКА ИНФОРМАЦИИ: ЧЁРНЫЙ ТЕКСТ + ТЁМНО-КРАСНАЯ ЦЕНА (#990000) */
         .lightbox-info-badge {
             position: absolute;
             bottom: 22px;
             right: 25px;
             z-index: 2010;
-            background: #ffffff url('badge_info.png') center / 100% 100% no-repeat;
-            border-radius: 8px;
-            padding: 10px 14px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            background-color: transparent !important;
+            background-image: url('badge_info.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 0;
+            padding: 12px 16px;
+            filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
             display: none; /* Скрыта везде, включается ТОЛЬКО в холстах */
             flex-direction: column;
             gap: 4px;
@@ -534,29 +559,29 @@
         }
 
         .lb-info-label {
-            color: #000000; /* ЧЁРНЫЙ ТЕКСТ */
+            color: #000000 !important; /* ЧЁРНЫЙ ТЕКСТ */
             font-weight: 900;
         }
 
         .lb-info-val {
-            color: #000000; /* ЧЁРНЫЙ ТЕКСТ */
+            color: #000000 !important; /* ЧЁРНЫЙ ТЕКСТ */
             font-weight: 800;
         }
 
         .lb-price-val {
-            color: #990000 !important; /* ТЁМНО-КРАСНЫЙ ДЛЯ ЦЕНЫ */
+            color: #990000 !important; /* СТРОГО ТЁМНО-КРАСНАЯ ЦЕНА */
             font-weight: 900;
         }
 
         @media (max-width: 600px) {
-            .lightbox-arrow { width: 40px; height: 50px; font-size: 16px; }
+            .lightbox-arrow { width: 40px; height: 50px; font-size: 18px; }
             .lb-prev { left: 8px; }
             .lb-next { right: 8px; }
             .lightbox-toolbar { bottom: 15px; }
             .lightbox-info-badge {
                 bottom: 75px;
                 right: 15px;
-                padding: 6px 10px;
+                padding: 8px 12px;
             }
         }
 
@@ -564,7 +589,7 @@
             .sheet-title-row { grid-template-columns: 90px 1fr 90px; }
             .sketchbook-sheet {
                 background: transparent url('paper-mobile.png') center top / 100% 100% no-repeat;
-                height: 88vh; /* СТРОГО height: чтобы на телефоне лист тоже не растягивался */
+                height: 88vh; /* Не растягивается на мобиле */
                 padding: 45px 16px 50px;
                 border: none;
                 width: 100%;
@@ -638,7 +663,7 @@
         const GITHUB_REPO = "zagush/zagush";
 
         // ========================================================
-        // СТРУКТУРА ПАПОК ПОД ТВОЙ РЕПОЗИТОРИЙ
+        // СТРУКТУРА ПАПОК ПОД ТВОЙ РЕПОЗИТОРИЙ (ЧИСТАЯ, БЕЗ МУСОРА)
         // ========================================================
         const portfolioData = {
             id: "root",
@@ -707,7 +732,6 @@
                 {
                     id: "canvases",
                     title: { ru: "ХОЛСТЫ", en: "CANVASES" },
-                    desc: { ru: "Акрил, масло, аэрозольная краска", en: "Acrylic, oil, spray paint" },
                     type: "category",
                     items: [
                         { id: "canvas-2026", title: { ru: "2026", en: "2026" }, folder: "portfolio/canvases/2026", type: "gallery" },
@@ -721,7 +745,6 @@
                 {
                     id: "merch",
                     title: { ru: "МЕРЧ", en: "MERCH" },
-                    desc: { ru: "Значки, брелоки, фигурки, стикеры, кастом", en: "Pins, keychains, figurines, stickers, custom" },
                     type: "category",
                     items: [
                         { id: "merch-pins", title: { ru: "ЗНАЧКИ", en: "PINS" }, folder: "portfolio/merch/pins", type: "gallery" },
@@ -736,7 +759,6 @@
                 {
                     id: "traditional",
                     title: { ru: "ТРАДИШКА", en: "TRADITIONAL" },
-                    desc: { ru: "Разное", en: "Miscellaneous" },
                     folder: "portfolio/traditional",
                     type: "gallery"
                 },
@@ -745,16 +767,14 @@
                 {
                     id: "other",
                     title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" },
-                    desc: { ru: "Остальное", en: "Other" },
                     type: "category",
                     items: [
-                        { id: "other-tags", title: { ru: "ТЕГИ", en: "TAGS" }, desc: { ru: "Граффити, теги, маркеры", en: "Graffiti, tags, markers" }, folder: "portfolio/other/tags", type: "gallery" },
+                        { id: "other-tags", title: { ru: "ТЕГИ", en: "TAGS" }, folder: "portfolio/other/tags", type: "gallery" },
                         { id: "other-misc", title: { ru: "РАЗНОЕ", en: "MISC" }, folder: "portfolio/other/misc", type: "gallery" }
                     ]
                 }
             ]
         };
-
         // Чтение папок GitHub API
         async function fetchImagesFromFolder(folderPath) {
             if (!folderPath) return [];
