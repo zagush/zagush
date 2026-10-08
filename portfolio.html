@@ -526,8 +526,8 @@
             "face3.png", "face4.png", "face.png"
         ];
 
-        // ========================================================
-        // КАРТА ПАПОК (Пути точно соответствуют твоим папкам)
+       // ========================================================
+        // ТОЧНАЯ СТРУКТУРА ПОД ТВОИ РЕАЛЬНЫЕ ПАПКИ
         // ========================================================
         const portfolioData = {
             id: "root",
@@ -539,15 +539,60 @@
                     title: { ru: "ПИКСЕЛЬ-АРТ", en: "PIXEL ART" },
                     type: "category",
                     items: [
-                        { id: "pixel-chars", title: { ru: "ПЕРСОНАЖИ", en: "CHARACTERS" }, folder: "portfolio/pixel-art/characters", type: "gallery" },
-                        { id: "pixel-full", title: { ru: "ПОЛНОЦЕННЫЕ / ФОНЫ", en: "FULL ART & BG" }, folder: "portfolio/pixel-art/full-art", type: "gallery" },
-                        { id: "pixel-ui", title: { ru: "UI / UX", en: "UI / UX" }, folder: "portfolio/pixel-art/ui-ux", type: "gallery" },
-                        { id: "pixel-stickers", title: { ru: "СТИКЕРЫ", en: "STICKERS" }, folder: "portfolio/pixel-art/stickers", type: "gallery" },
-                        { id: "pixel-other", title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" }, folder: "portfolio/pixel-art/other", type: "gallery" }
+                        {
+                            id: "pixel-chars",
+                            title: { ru: "ПЕРСОНАЖИ", en: "CHARACTERS" },
+                            type: "category",
+                            items: [
+                                {
+                                    id: "pixel-peoples",
+                                    title: { ru: "ЛЮДИ", en: "PEOPLES" },
+                                    type: "category",
+                                    items: [
+                                        { id: "pixel-game1", title: { ru: "GAME 1", en: "GAME 1" }, folder: "portfolio/pixel-art/characters/peoples/game1", type: "gallery" },
+                                        { id: "pixel-game2", title: { ru: "GAME 2", en: "GAME 2" }, folder: "portfolio/pixel-art/characters/peoples/game2", type: "gallery" },
+                                        { id: "pixel-game3", title: { ru: "GAME 3", en: "GAME 3" }, folder: "portfolio/pixel-art/characters/peoples/game3", type: "gallery" },
+                                        { id: "pixel-peoples-other", title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" }, folder: "portfolio/pixel-art/characters/peoples/other", type: "gallery" }
+                                    ]
+                                },
+                                { id: "pixel-chars-other", title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" }, folder: "portfolio/pixel-art/characters/other", type: "gallery" }
+                            ]
+                        },
+                        {
+                            id: "pixel-full",
+                            title: { ru: "ПОЛНОЦЕННЫЕ / ФОНЫ", en: "FULL ART & BG" },
+                            folder: "portfolio/pixel-art/full-art",
+                            type: "gallery"
+                        },
+                        {
+                            id: "pixel-ui",
+                            title: { ru: "UI / UX", en: "UI / UX" },
+                            type: "category",
+                            items: [
+                                { id: "pixel-ui-dekor", title: { ru: "ДЕКОР", en: "DEKOR" }, folder: "portfolio/pixel-art/ui-ux/dekor", type: "gallery" },
+                                { id: "pixel-ui-main", title: { ru: "ОСНОВНОЕ", en: "MAIN" }, folder: "portfolio/pixel-art/ui-ux", type: "gallery" }
+                            ]
+                        },
+                        {
+                            id: "pixel-stickers",
+                            title: { ru: "СТИКЕРЫ", en: "STICKERS" },
+                            type: "category",
+                            items: [
+                                { id: "st-tg1", title: { ru: "TG 1 PEEAS", en: "TG 1 PEEAS" }, folder: "portfolio/pixel-art/stickers/tg1 peeas", type: "gallery" },
+                                { id: "st-tg2", title: { ru: "TG 2 PINK CAT", en: "TG 2 PINK CAT" }, folder: "portfolio/pixel-art/stickers/tg2 pink cat", type: "gallery" },
+                                { id: "st-tg4", title: { ru: "TG 4 CAT", en: "TG 4 CAT" }, folder: "portfolio/pixel-art/stickers/tg4 cat", type: "gallery" }
+                            ]
+                        },
+                        {
+                            id: "pixel-other",
+                            title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" },
+                            folder: "portfolio/pixel-art/other",
+                            type: "gallery"
+                        }
                     ]
                 },
 
-                // 2. ХОЛСТЫ
+                // 2. ХОЛСТЫ (2026 -> 2023)
                 {
                     id: "canvases",
                     title: { ru: "ХОЛСТЫ", en: "CANVASES" },
@@ -561,7 +606,7 @@
                     ]
                 },
 
-               // 3. МЕРЧ
+                // 3. МЕРЧ
                 {
                     id: "merch",
                     title: { ru: "МЕРЧ", en: "MERCH" },
@@ -572,10 +617,10 @@
                         { id: "merch-keychains", title: { ru: "БРЕЛОКИ", en: "KEYCHAINS" }, folder: "portfolio/merch/keychains", type: "gallery" },
                         { id: "merch-figures", title: { ru: "ФИГУРКИ", en: "FIGURINES" }, folder: "portfolio/merch/figures", type: "gallery" },
                         { id: "merch-stickers", title: { ru: "СТИКЕРЫ", en: "STICKERS" }, folder: "portfolio/merch/stickers", type: "gallery" },
-                        { id: "merch-custom", title: { ru: "КАСТОМ", en: "CUSTOM" }, folder: "portfolio/merch/custom", type: "gallery" } // <-- НОВАЯ ПОДПАПКА
+                        { id: "merch-custom", title: { ru: "КАСТОМ", en: "CUSTOM" }, folder: "portfolio/merch/custom", type: "gallery" }
                     ]
                 },
-                
+
                 // 4. ТРАДИШКА
                 {
                     id: "traditional",
