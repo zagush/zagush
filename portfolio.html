@@ -849,13 +849,12 @@
                         ${currentLang === 'ru' ? 'Работы пока загружаются на GitHub...' : 'Artworks coming soon...'}
                     </div>`;
                 } else {
-                    } else {
                     works.forEach((work, idx) => {
                         const item = document.createElement("div");
                         item.className = "work-item";
                         item.innerHTML = `
-    <img src="${work.img}" alt="${work.title}" loading="lazy" decoding="async">
-    <div class="work-caption">${work.title}</div>
+                            <img src="${work.img}" alt="${work.title}" loading="lazy" decoding="async">
+                            <div class="work-caption">${work.title}</div>
                         `;
                         item.addEventListener("click", () => {
                             openLightbox(works, idx);
