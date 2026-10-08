@@ -140,12 +140,12 @@
             filter: drop-shadow(0 6px 12px rgba(0,0,0,0.22));
         }
 
-        /* Сетка папок */
+        /* Сетка папок: более компактная и аккуратная */
         .folders-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 40px 25px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 35px 20px;
+            margin-top: 15px;
         }
 
         .folder-card {
@@ -154,48 +154,52 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 45px;
+            padding-top: 50px;
             transition: transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
         }
 
-        /* Лёгкий веер миниатюр (3 карточки) */
+        /* Размашистый веер из 4 картинок во всю ширину папки */
         .folder-previews {
             position: absolute;
             top: 0;
-            width: 200px;
-            height: 80px;
+            width: 220px;
+            height: 85px;
             pointer-events: none;
             z-index: 1;
             display: flex;
             justify-content: center;
         }
 
+        /* Картинки стали крупнее (72px) с минимальной белой каймой */
         .preview-thumb {
             position: absolute;
-            width: 65px;
-            height: 65px;
+            width: 72px;
+            height: 72px;
             object-fit: cover;
-            border-radius: 4px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+            border-radius: 3px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.28);
             background: #e5ded2;
             border: 2px solid #fff;
-            transition: transform 0.2s ease;
+            transition: transform 0.22s ease;
         }
 
-        .preview-thumb:nth-child(1) { left: 35px; top: 6px; transform: rotate(-12deg); }
-        .preview-thumb:nth-child(2) { left: 68px; top: 0px; transform: rotate(0deg); }
-        .preview-thumb:nth-child(3) { left: 100px; top: 6px; transform: rotate(12deg); }
+        /* Размашистое распределение 4 картинок */
+        .preview-thumb:nth-child(1) { left: 8px;   top: 10px; transform: rotate(-18deg); }
+        .preview-thumb:nth-child(2) { left: 54px;  top: 2px;  transform: rotate(-6deg); }
+        .preview-thumb:nth-child(3) { left: 102px; top: 2px;  transform: rotate(6deg); }
+        .preview-thumb:nth-child(4) { left: 148px; top: 10px; transform: rotate(18deg); }
 
-        .folder-card:hover .preview-thumb:nth-child(1) { transform: rotate(-16deg) translateY(-12px); }
-        .folder-card:hover .preview-thumb:nth-child(2) { transform: rotate(0deg)   translateY(-16px); }
-        .folder-card:hover .preview-thumb:nth-child(3) { transform: rotate(16deg)  translateY(-12px); }
+        .folder-card:hover .preview-thumb:nth-child(1) { transform: rotate(-22deg) translateY(-14px); }
+        .folder-card:hover .preview-thumb:nth-child(2) { transform: rotate(-8deg)  translateY(-18px); }
+        .folder-card:hover .preview-thumb:nth-child(3) { transform: rotate(8deg)   translateY(-18px); }
+        .folder-card:hover .preview-thumb:nth-child(4) { transform: rotate(22deg)  translateY(-14px); }
 
-        /* Кармашек папки под твои 6 нарисованных вариантов (pocket_1 ... pocket_6) */
+        /* Компактный нарисованный кармашек */
         .folder-pocket {
             position: relative;
             z-index: 2;
             width: 100%;
-            background-color: #ffffff;
+            background-color: transparent !important;
             background-size: 100% 100%;
             background-repeat: no-repeat;
             background-position: center;
@@ -203,10 +207,10 @@
             border-radius: 0;
             box-shadow: none;
             filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.16));
-            padding: 22px 18px 18px;
+            padding: 18px 14px 14px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
             transition: transform 0.15s ease, filter 0.15s ease;
         }
 
@@ -217,7 +221,7 @@
 
         .folder-title {
             font-family: 'Rubik Mono One', monospace, sans-serif;
-            font-size: 13px;
+            font-size: 11px;
             color: #000;
             line-height: 1.3;
             letter-spacing: 0;
@@ -225,13 +229,26 @@
 
         .folder-count-badge {
             align-self: flex-start;
-            margin-top: 8px;
-            background: #eee8dc;
-            padding: 4px 8px;
-            font-size: 10px;
+            margin-top: 4px;
+            background: rgba(0, 0, 0, 0.08);
+            padding: 3px 6px;
+            font-size: 9px;
             font-weight: 800;
-            border-radius: 4px;
-            color: #444;
+            border-radius: 3px;
+            color: #333;
+        }
+
+        /* Аккуратная белая рамочка холстов в галерее без лишних полей */
+        .work-item {
+            background: #ffffff;
+            padding: 2px;
+            border: 2px solid #ffffff;
+            border-radius: 2px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            content-visibility: auto;
+            contain-intrinsic-size: 110px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
 
         /* ========================================================
@@ -869,7 +886,7 @@
                         fetchImagesFromFolder(targetFolder).then(realImages => {
                             if (realImages && realImages.length > 0) {
                                 previewsWrap.innerHTML = "";
-                                realImages.slice(0, 3).forEach(work => {
+                                realImages.slice(0, 4).forEach(work => {
                                     const img = document.createElement("img");
                                     img.className = "preview-thumb";
                                     img.loading = "lazy";
@@ -881,7 +898,7 @@
                     }
 
                     // Случайный выбор одной из 6 нарисованных плашек (pocket_1 ... pocket_6)
-                    const pocketNum = (Math.abs(item.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)) % 6) + 1;
+                    const pocketNum = (index % 6) + 1;
 
                     const pocket = document.createElement("div");
                     pocket.className = "folder-pocket";
