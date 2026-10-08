@@ -136,16 +136,18 @@
         .crumb-active { color: #000; }
         .crumb-sep { color: #aaa; }
 
-        /* Лист скетчбука */
+        /* Лист скетчбука (Твой авторский рисунок ПК) */
         .sketchbook-sheet {
-            width: min(960px, 100%);
-            min-height: 82vh;
-            background: #fbf8f1 url('paper.png') center center / cover no-repeat;
-            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.2);
-            border-radius: 6px;
-            padding: clamp(20px, 4vw, 40px);
+            width: min(980px, 100%);
+            min-height: 85vh;
+            background: transparent url('paper-pc.png') center top / 100% 100% no-repeat;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            /* Тень точно повторяет все нарисованные рваные края на доски стола */
+            filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.5));
+            padding: clamp(35px, 5vw, 65px) clamp(25px, 4vw, 55px);
             position: relative;
-            border-left: 12px solid #eae2d3;
         }
 
         /* Заголовок строго посередине, назад слева */
@@ -514,17 +516,21 @@
 
         @media (max-width: 650px) {
             .sheet-title-row { grid-template-columns: 80px 1fr 80px; }
+            /* На телефоне переключаем на вертикальный нарисованный лист */
             .sketchbook-sheet {
-                padding: 16px 10px;
-                border-left-width: 6px;
+                background: transparent url('paper-mobile.png') center top / 100% 100% no-repeat;
+                padding: 45px 20px 60px;
+                border: none;
+                width: 100%;
+                min-height: 88vh;
             }
             .folders-grid {
                 grid-template-columns: 1fr;
                 gap: 40px;
             }
             .works-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
             }
         }
     </style>
