@@ -622,3 +622,155 @@ body {
         width: min(210px, 60vw) !important;
     }
 }
+/* ========================================================
+   АДАПТИВНОСТЬ ДЛЯ БОЛЬШИХ МОНИТОРОВ (2K, 4K, ЭКРАНЫ 27"+)
+   ======================================================== */
+
+/* 1. Экраны 2K / 1440p / Большие мониторы от 1600px */
+@media (min-width: 1600px) {
+    /* Раздвигаем сетку стола шире */
+    .desk {
+        width: min(1200px, 78vw);
+        column-gap: 120px;
+        row-gap: 60px;
+        margin: 40px auto 80px;
+    }
+
+    /* Увеличиваем предметы пропорционально столу */
+    .phone-object {
+        width: 195px !important;
+    }
+
+    .sketchbook-object {
+        width: 350px !important;
+    }
+
+    .contact-object {
+        width: 320px !important;
+    }
+
+    .draw-object {
+        width: 330px !important;
+    }
+
+    /* Увеличиваем логотип и текст описания */
+    .logo {
+        font-size: 110px !important;
+    }
+
+    .about {
+        width: min(900px, 80vw);
+    }
+
+    .intro-text {
+        font-size: 22px !important;
+        line-height: 1.6;
+    }
+
+    /* Увеличиваем стикерные надписи и тени */
+    .item-label,
+    .phone-label,
+    .sticker-title {
+        font-size: 20px !important;
+        padding: 7px 18px !important;
+        border-width: 3px !important;
+        box-shadow: 5px 5px 0 #000000 !important;
+        margin-top: -18px !important;
+    }
+
+    /* Увеличиваем сквишей */
+    .skvish1 {
+        top: 170px;
+        left: 5vw;
+        width: 95px !important;
+    }
+
+    .skvish2 {
+        top: 180px;
+        right: 5vw;
+        width: 95px !important;
+    }
+
+    .skvish-bubble {
+        font-size: 14px;
+        padding: 4px 10px;
+    }
+
+    /* Кнопка смены языка */
+    .language-switch {
+        width: 60px;
+        height: 44px;
+        font-size: 16px;
+    }
+}
+
+/* 2. Экраны 4K Ultra-HD (от 2200px) */
+@media (min-width: 2200px) {
+    .desk {
+        width: min(1650px, 75vw);
+        column-gap: 180px;
+        row-gap: 90px;
+        margin: 60px auto 100px;
+    }
+
+    .phone-object {
+        width: 260px !important;
+    }
+
+    .sketchbook-object {
+        width: 480px !important;
+    }
+
+    .contact-object {
+        width: 440px !important;
+    }
+
+    .draw-object {
+        width: 450px !important;
+    }
+
+    .logo {
+        font-size: 150px !important;
+    }
+
+    .about {
+        width: min(1200px, 75vw);
+    }
+
+    .intro-text {
+        font-size: 28px !important;
+    }
+
+    .item-label,
+    .phone-label,
+    .sticker-title {
+        font-size: 26px !important;
+        padding: 10px 24px !important;
+        border-width: 4px !important;
+        box-shadow: 7px 7px 0 #000000 !important;
+        margin-top: -24px !important;
+    }
+
+    .skvish1 {
+        top: 220px;
+        left: 7vw;
+        width: 130px !important;
+    }
+
+    .skvish2 {
+        top: 230px;
+        right: 7vw;
+        width: 130px !important;
+    }
+
+    .skvish-bubble {
+        font-size: 18px;
+        padding: 6px 14px;
+    }
+
+    .language-switch {
+        width: 76px;
+        height: 54px;
+        font-size: 20px;
+    }
+}
