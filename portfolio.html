@@ -628,7 +628,7 @@
         const GITHUB_REPO = "zagush/zagush";
 
         // ========================================================
-        // СТРУКТУРА ПАПОК (ОБНОВЛЕННАЯ С GAME SCREENSHOTS)
+        // АКТУАЛЬНАЯ СТРУКТУРА ПАПОК НА ДИСКЕ
         // ========================================================
         const portfolioData = {
             id: "root",
@@ -645,25 +645,23 @@
                             title: { ru: "ПЕРСОНАЖИ", en: "CHARACTERS" },
                             type: "category",
                             items: [
-                                {
-                                    id: "pixel-peoples",
-                                    title: { ru: "ЛЮДИ", en: "PEOPLES" },
-                                    type: "category",
-                                    items: [
-                                        { id: "pixel-game1", title: { ru: "GAME 1", en: "GAME 1" }, folder: "portfolio/pixel-art/characters/peoples/game1", type: "gallery" },
-                                        { id: "pixel-game2", title: { ru: "GAME 2", en: "GAME 2" }, folder: "portfolio/pixel-art/characters/peoples/game2", type: "gallery" },
-                                        { id: "pixel-game3", title: { ru: "GAME 3", en: "GAME 3" }, folder: "portfolio/pixel-art/characters/peoples/game3", type: "gallery" },
-                                        { id: "pixel-peoples-other", title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" }, folder: "portfolio/pixel-art/characters/peoples/other", type: "gallery" }
-                                    ]
-                                },
+                                { id: "pixel-game1", title: { ru: "GAME 1 (КИБЕРПАНК)", en: "GAME 1" }, folder: "portfolio/pixel-art/characters/game1", type: "gallery" },
+                                { id: "pixel-game2", title: { ru: "GAME 2", en: "GAME 2" }, folder: "portfolio/pixel-art/characters/game2", type: "gallery" },
+                                { id: "pixel-game3", title: { ru: "GAME 3 (МОНСТРЫ)", en: "GAME 3" }, folder: "portfolio/pixel-art/characters/game3", type: "gallery" },
+                                { id: "pixel-game4", title: { ru: "GAME 4", en: "GAME 4" }, folder: "portfolio/pixel-art/characters/game4", type: "gallery" },
                                 { id: "pixel-chars-other", title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" }, folder: "portfolio/pixel-art/characters/other", type: "gallery" }
                             ]
                         },
-                        // НОВАЯ ПАПКА: СКРИНШОТЫ ИЗ ИГР
                         {
                             id: "pixel-games",
                             title: { ru: "СКРИНШОТЫ ИЗ ИГР", en: "GAME SCREENSHOTS" },
-                            folder: "portfolio/pixel-art/game-screenshots",
+                            folder: "portfolio/pixel-art/game screenshots",
+                            type: "gallery"
+                        },
+                        {
+                            id: "pixel-assets",
+                            title: { ru: "АССЕТЫ ДЛЯ ИГР", en: "GAME ASSETS" },
+                            folder: "portfolio/pixel-art/game assets",
                             type: "gallery"
                         },
                         {
@@ -683,11 +681,10 @@
                             title: { ru: "UI / UX", en: "UI / UX" },
                             type: "category",
                             items: [
-                                { id: "pixel-ui-dekor", title: { ru: "ДЕКОР", en: "DEKOR" }, folder: "portfolio/pixel-art/ui-ux/dekor", type: "gallery" },
-                                { id: "pixel-ui-main", title: { ru: "ОСНОВНОЕ", en: "MAIN" }, folder: "portfolio/pixel-art/ui-ux", type: "gallery" }
+                                { id: "pixel-ui-main", title: { ru: "ОСНОВНОЕ", en: "MAIN" }, folder: "portfolio/pixel-art/ui-ux", type: "gallery" },
+                                { id: "pixel-ui-dekor", title: { ru: "ДЕКОР", en: "DEKOR" }, folder: "portfolio/pixel-art/ui-ux/dekor", type: "gallery" }
                             ]
                         },
-                        // СТИКЕРЫ (БЕЗ TG 4 CAT)
                         {
                             id: "pixel-stickers",
                             title: { ru: "СТИКЕРЫ", en: "STICKERS" },
@@ -712,10 +709,7 @@
                     title: { ru: "ХОЛСТЫ", en: "CANVASES" },
                     type: "category",
                     items: [
-                        { id: "canvas-2026", title: { ru: "2026", en: "2026" }, folder: "portfolio/canvases/2026", type: "gallery" },
-                        { id: "canvas-2025", title: { ru: "2025", en: "2025" }, folder: "portfolio/canvases/2025", type: "gallery" },
-                        { id: "canvas-2024", title: { ru: "2024", en: "2024" }, folder: "portfolio/canvases/2024", type: "gallery" },
-                        { id: "canvas-2023", title: { ru: "2023", en: "2023" }, folder: "portfolio/canvases/2023", type: "gallery" }
+                        { id: "canvas-2026", title: { ru: "2026", en: "2026" }, folder: "portfolio/canvases/2026", type: "gallery" }
                     ]
                 },
 
@@ -727,7 +721,6 @@
                     items: [
                         { id: "merch-pins", title: { ru: "ЗНАЧКИ", en: "PINS" }, folder: "portfolio/merch/pins", type: "gallery" },
                         { id: "merch-keychains", title: { ru: "БРЕЛОКИ", en: "KEYCHAINS" }, folder: "portfolio/merch/keychains", type: "gallery" },
-                        { id: "merch-figures", title: { ru: "ФИГУРКИ", en: "FIGURINES" }, folder: "portfolio/merch/figures", type: "gallery" },
                         { id: "merch-stickers", title: { ru: "СТИКЕРЫ", en: "STICKERS" }, folder: "portfolio/merch/stickers", type: "gallery" },
                         { id: "merch-custom", title: { ru: "КАСТОМ", en: "CUSTOM" }, folder: "portfolio/merch/custom", type: "gallery" }
                     ]
@@ -747,25 +740,27 @@
                     title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" },
                     type: "category",
                     items: [
-                        { id: "other-tags", title: { ru: "ТЕГИ", en: "TAGS" }, folder: "portfolio/other/tags", type: "gallery" },
-                        { id: "other-misc", title: { ru: "РАЗНОЕ", en: "MISC" }, folder: "portfolio/other/misc", type: "gallery" }
+                        { id: "other-tags", title: { ru: "ТЕГИ", en: "TAGS" }, folder: "portfolio/other/tags", type: "gallery" }
                     ]
                 }
             ]
         };
 
-        // Загрузка изображений из GitHub API
+        // Загрузка изображений из GitHub API с защитой от сбоев пробелов и кешем
         async function fetchImagesFromFolder(folderPath) {
             if (!folderPath) return [];
 
-            const cacheKey = "zagush_cache_" + folderPath;
+            const cleanPath = folderPath.replace(/\\/g, '/');
+            const cacheKey = "zagush_cache_" + cleanPath;
             try {
                 const cached = sessionStorage.getItem(cacheKey);
                 if (cached) return JSON.parse(cached);
             } catch(e) {}
 
             try {
-                const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${encodeURI(folderPath)}`);
+                // Кодируем путь для работы с пробелами и спецсимволами на GitHub
+                const encodedPath = cleanPath.split('/').map(segment => encodeURIComponent(segment)).join('/');
+                const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${encodedPath}`);
                 if (!res.ok) return [];
 
                 const files = await res.json();
@@ -805,7 +800,7 @@
 
                 return images;
             } catch (err) {
-                console.warn("GitHub API folder fetch:", err);
+                console.warn("GitHub API fetch error:", err);
                 return [];
             }
         }
@@ -986,7 +981,7 @@
             }
         });
 
-        // Просмотрщик
+        // Просмотрщик (Lightbox Pro)
         let currentGalleryWorks = [];
         let currentWorkIdx = 0;
         let zoomLevel = 1;
