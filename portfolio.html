@@ -579,9 +579,7 @@
 
     <div class="top-bar">
         <a href="index.html" class="back-desk-btn" id="toDeskBtn">← НА СТОЛ</a>
-        <div class="breadcrumbs" id="breadcrumbs">
-            <span class="crumb-active" id="rootCrumb">ПОРТФОЛИО</span>
-        </div>
+        <div class="breadcrumbs" id="breadcrumbs"></div>
         <button class="lang-btn" id="langBtn" type="button">EN</button>
     </div>
 
@@ -614,11 +612,11 @@
 
         <div class="lightbox-info-badge" id="lightboxInfoBadge">
             <div class="lb-info-row">
-                <span class="lb-info-label">РАЗМЕР:</span>
+                <span class="lb-info-label" id="lblSize">РАЗМЕР:</span>
                 <span class="lb-info-val" id="lbWorkSize">—</span>
             </div>
             <div class="lb-info-row">
-                <span class="lb-info-label">ЦЕНА:</span>
+                <span class="lb-info-label" id="lblPrice">ЦЕНА:</span>
                 <span class="lb-info-val lb-price-val" id="lbWorkPrice">—</span>
             </div>
         </div>
@@ -628,11 +626,12 @@
         const GITHUB_REPO = "zagush/zagush";
 
         // ========================================================
-        // АКТУАЛЬНАЯ СТРУКТУРА ПАПОК НА ДИСКЕ
+        // ПОЛНАЯ И СТРОГАЯ ИЕРАРХИЯ ВСЕХ ВАШИХ ПАПОК
         // ========================================================
         const portfolioData = {
             id: "root",
             title: { ru: "ПОРТФОЛИО", en: "PORTFOLIO" },
+            type: "category",
             items: [
                 // 1. ПИКСЕЛЬ-АРТ
                 {
@@ -641,20 +640,20 @@
                     type: "category",
                     items: [
                         {
-                            id: "pixel-chars",
+                            id: "pixel-characters",
                             title: { ru: "ПЕРСОНАЖИ", en: "CHARACTERS" },
                             type: "category",
                             items: [
-                                { id: "pixel-game1", title: { ru: "GAME 1 (КИБЕРПАНК)", en: "GAME 1" }, folder: "portfolio/pixel-art/characters/game1", type: "gallery" },
-                                { id: "pixel-game2", title: { ru: "GAME 2", en: "GAME 2" }, folder: "portfolio/pixel-art/characters/game2", type: "gallery" },
-                                { id: "pixel-game3", title: { ru: "GAME 3 (МОНСТРЫ)", en: "GAME 3" }, folder: "portfolio/pixel-art/characters/game3", type: "gallery" },
-                                { id: "pixel-game4", title: { ru: "GAME 4", en: "GAME 4" }, folder: "portfolio/pixel-art/characters/game4", type: "gallery" },
-                                { id: "pixel-chars-other", title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" }, folder: "portfolio/pixel-art/characters/other", type: "gallery" }
+                                { id: "p-game1", title: { ru: "ИГРА 1", en: "GAME 1" }, folder: "portfolio/pixel-art/characters/game1", type: "gallery" },
+                                { id: "p-game2", title: { ru: "ИГРА 2", en: "GAME 2" }, folder: "portfolio/pixel-art/characters/game2", type: "gallery" },
+                                { id: "p-game3", title: { ru: "ИГРА 3", en: "GAME 3" }, folder: "portfolio/pixel-art/characters/game3", type: "gallery" },
+                                { id: "p-game4", title: { ru: "ИГРА 4", en: "GAME 4" }, folder: "portfolio/pixel-art/characters/game4", type: "gallery" },
+                                { id: "p-chars-other", title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" }, folder: "portfolio/pixel-art/characters/other", type: "gallery" }
                             ]
                         },
                         {
                             id: "pixel-games",
-                            title: { ru: "СКРИНШОТЫ ИЗ ИГР", en: "GAME SCREENSHOTS" },
+                            title: { ru: "СКРИНШОТЫ ИГР", en: "GAME SCREENSHOTS" },
                             folder: "portfolio/pixel-art/game screenshots",
                             type: "gallery"
                         },
@@ -672,17 +671,17 @@
                         },
                         {
                             id: "pixel-full",
-                            title: { ru: "ПОЛНОЦЕННЫЕ / ФОНЫ", en: "FULL ART & BG" },
+                            title: { ru: "ПОЛНОЦЕННЫЕ АРТЫ", en: "FULL ART & BG" },
                             folder: "portfolio/pixel-art/full-art",
                             type: "gallery"
                         },
                         {
                             id: "pixel-ui",
-                            title: { ru: "UI / UX", en: "UI / UX" },
+                            title: { ru: "UI / UX ИНТЕРФЕЙСЫ", en: "UI / UX" },
                             type: "category",
                             items: [
-                                { id: "pixel-ui-main", title: { ru: "ОСНОВНОЕ", en: "MAIN" }, folder: "portfolio/pixel-art/ui-ux", type: "gallery" },
-                                { id: "pixel-ui-dekor", title: { ru: "ДЕКОР", en: "DEKOR" }, folder: "portfolio/pixel-art/ui-ux/dekor", type: "gallery" }
+                                { id: "p-ui-main", title: { ru: "ОСНОВНОЕ", en: "MAIN" }, folder: "portfolio/pixel-art/ui-ux", type: "gallery" },
+                                { id: "p-ui-dekor", title: { ru: "ДЕКОР", en: "DECOR" }, folder: "portfolio/pixel-art/ui-ux/dekor", type: "gallery" }
                             ]
                         },
                         {
@@ -709,7 +708,10 @@
                     title: { ru: "ХОЛСТЫ", en: "CANVASES" },
                     type: "category",
                     items: [
-                        { id: "canvas-2026", title: { ru: "2026", en: "2026" }, folder: "portfolio/canvases/2026", type: "gallery" }
+                        { id: "canv-2026", title: { ru: "2026 ГОД", en: "2026 YEAR" }, folder: "portfolio/canvases/2026", type: "gallery" },
+                        { id: "canv-2025", title: { ru: "2025 ГОД", en: "2025 YEAR" }, folder: "portfolio/canvases/2025", type: "gallery" },
+                        { id: "canv-2024", title: { ru: "2024 ГОД", en: "2024 YEAR" }, folder: "portfolio/canvases/2024", type: "gallery" },
+                        { id: "canv-2023", title: { ru: "2023 ГОД", en: "2023 YEAR" }, folder: "portfolio/canvases/2023", type: "gallery" }
                     ]
                 },
 
@@ -719,10 +721,11 @@
                     title: { ru: "МЕРЧ", en: "MERCH" },
                     type: "category",
                     items: [
-                        { id: "merch-pins", title: { ru: "ЗНАЧКИ", en: "PINS" }, folder: "portfolio/merch/pins", type: "gallery" },
-                        { id: "merch-keychains", title: { ru: "БРЕЛОКИ", en: "KEYCHAINS" }, folder: "portfolio/merch/keychains", type: "gallery" },
-                        { id: "merch-stickers", title: { ru: "СТИКЕРЫ", en: "STICKERS" }, folder: "portfolio/merch/stickers", type: "gallery" },
-                        { id: "merch-custom", title: { ru: "КАСТОМ", en: "CUSTOM" }, folder: "portfolio/merch/custom", type: "gallery" }
+                        { id: "m-pins", title: { ru: "ЗНАЧКИ", en: "PINS" }, folder: "portfolio/merch/pins", type: "gallery" },
+                        { id: "m-keychains", title: { ru: "БРЕЛОКИ", en: "KEYCHAINS" }, folder: "portfolio/merch/keychains", type: "gallery" },
+                        { id: "m-figures", title: { ru: "ФИГУРКИ", en: "FIGURES" }, folder: "portfolio/merch/figures", type: "gallery" },
+                        { id: "m-stickers", title: { ru: "СТИКЕРЫ", en: "STICKERS" }, folder: "portfolio/merch/stickers", type: "gallery" },
+                        { id: "m-custom", title: { ru: "КАСТОМ", en: "CUSTOM" }, folder: "portfolio/merch/custom", type: "gallery" }
                     ]
                 },
 
@@ -740,13 +743,13 @@
                     title: { ru: "ОСТАЛЬНОЕ", en: "OTHER" },
                     type: "category",
                     items: [
-                        { id: "other-tags", title: { ru: "ТЕГИ", en: "TAGS" }, folder: "portfolio/other/tags", type: "gallery" }
+                        { id: "o-tags", title: { ru: "ТЕГИ", en: "TAGS" }, folder: "portfolio/other/tags", type: "gallery" }
                     ]
                 }
             ]
         };
 
-        // Загрузка изображений из GitHub API с защитой от сбоев пробелов и кешем
+        // Загрузка изображений из GitHub API с защитой от пробелов и кешем
         async function fetchImagesFromFolder(folderPath) {
             if (!folderPath) return [];
 
@@ -758,7 +761,6 @@
             } catch(e) {}
 
             try {
-                // Кодируем путь для работы с пробелами и спецсимволами на GitHub
                 const encodedPath = cleanPath.split('/').map(segment => encodeURIComponent(segment)).join('/');
                 const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${encodedPath}`);
                 if (!res.ok) return [];
@@ -842,11 +844,18 @@
             }
         });
 
+        // МГНОВЕННОЕ И ЧИСТОЕ ПЕРЕКЛЮЧЕНИЕ ЯЗЫКОВ
         function updateLangUI() {
             document.documentElement.lang = currentLang;
             langBtn.textContent = currentLang === "ru" ? "EN" : "RU";
             toDeskBtn.textContent = currentLang === "ru" ? "← НА СТОЛ" : "← TO DESK";
             navBackBtn.textContent = currentLang === "ru" ? "← НАЗАД" : "← BACK";
+
+            const lblSize = document.getElementById("lblSize");
+            const lblPrice = document.getElementById("lblPrice");
+            if (lblSize) lblSize.textContent = currentLang === "ru" ? "РАЗМЕР:" : "SIZE:";
+            if (lblPrice) lblPrice.textContent = currentLang === "ru" ? "ЦЕНА:" : "PRICE:";
+
             renderCurrentView();
         }
 
@@ -917,16 +926,21 @@
                     }
 
                     const pocketNum = (index % 6) + 1;
-
                     const pocket = document.createElement("div");
                     pocket.className = "folder-pocket";
                     pocket.style.backgroundImage = `url('pocket_${pocketNum}.png')`;
 
+                    let countText = "";
+                    if (item.items) {
+                        const count = item.items.length;
+                        countText = currentLang === 'ru' ? `${count} раздела` : `${count} sections`;
+                    } else {
+                        countText = currentLang === 'ru' ? 'галерея' : 'gallery';
+                    }
+
                     pocket.innerHTML = `
                         <div class="folder-title">${item.title[currentLang]}</div>
-                        <div class="folder-count-badge">
-                            ${item.items ? (item.items.length + (currentLang === 'ru' ? ' разделов' : ' sections')) : (currentLang === 'ru' ? 'галерея' : 'gallery')}
-                        </div>
+                        <div class="folder-count-badge">${countText}</div>
                     `;
 
                     card.appendChild(previewsWrap);
@@ -1035,7 +1049,7 @@
             lightboxImg.src = work.img;
             lightboxCounter.textContent = `${currentWorkIdx + 1} / ${currentGalleryWorks.length}`;
 
-            const isCanvas = navStack.some(node => node.id && node.id.includes("canvas"));
+            const isCanvas = navStack.some(node => node.id && (node.id.includes("canvas") || node.id.includes("canv-")));
             const infoBadge = document.getElementById("lightboxInfoBadge");
             if (infoBadge) {
                 if (isCanvas) {
