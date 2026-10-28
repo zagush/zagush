@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>ZAGUSH — SOCIALS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-text-stroke: 0 !important;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        body {
+            background-color: #2b2118;
+            background-image: url('./stol.jpg');
+            background-position: center center;
+            background-size: cover;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #1a1a1a;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Верхняя панель (1-в-1 как в contact.html) */
+        .top-bar {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .back-desk-btn, .lang-btn {
+            background: #ffffff;
+            color: #000;
+            font-family: 'Rubik Mono One', monospace, sans-serif;
+            font-size: 11px;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 3px 5px 12px rgba(0, 0, 0, 0.35);
+            transition: transform 0.15s ease, background 0.15s ease;
+            user-select: none;
+            pointer-events: auto;
+        }
+
+        .back-desk-btn:hover, .lang-btn:hover {
+            transform: translateY(-2px);
+            background: #f0f0f0;
+        }
+
+        /* Контейнер телефона */
+        .phone-wrapper {
+            position: relative;
+            width: min(340px, 88vw);
+            height: min(680px, 86vh);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
+
+        /* Корпус телефона + мягкая реалистичная тень стола */
+        .phone-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            image-rendering: pixelated;
+            pointer-events: none;
+            z-index: 1;
+
+            /* Мягкая глубокая тень предмета на деревянном столе */
+            filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.55))
+                    drop-shadow(0 4px 10px rgba(45, 30, 15, 0.35));
+        }
+
+        /* Экран телефона поверх арта */
+        .phone-screen {
+            position: absolute;
+            inset: 18px 16px 18px 16px;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-radius: 10px;
+            padding-top: 25px; /* свободное пространство сверху под камеру */
+        }
+
+        /* Скроллируемая область соцсетей */
+        .social-scroll {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 10px 8px 25px 8px;
+            scrollbar-width: thin;
+            scrollbar-color: #000000 rgba(255, 255, 255, 0.3);
+        }
+
+        .social-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .social-scroll::-webkit-scrollbar-thumb {
+            background: #000;
+            border-radius: 2px;
+        }
+
+        /* Сетка: строго по 2 квадратных плашки в ряд */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px 12px;
+            justify-items: center;
+            align-items: start;
+        }
+
+        /* Ссылка-карточка */
+        .app-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            width: 100%;
+            cursor: pointer;
+            transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.3, 1);
+        }
+
+        .app-item:hover {
+            transform: translateY(-4px) scale(1.03);
+        }
+
+        .app-item:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        /* КВАДРАТНАЯ ПЛАШКА-ЗАГЛУШКА (под твой будущий рисунок) */
+        .app-square {
+            width: clamp(74px, 20vw, 84px);
+            height: clamp(74px, 20vw, 84px);
+            background: #ffffff;
+            border: 2px solid #1a1a1a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #000;
+            image-rendering: pixelated;
+
+            /* Мягкая небольшая тень */
+            box-shadow: 
+                0 3px 6px rgba(45, 30, 15, 0.2),
+                0 6px 14px rgba(45, 30, 15, 0.18);
+            transition: box-shadow 0.18s ease, background 0.18s ease;
+        }
+
+        .app-item:hover .app-square {
+            background: #fafafa;
+            box-shadow: 
+                0 5px 10px rgba(45, 30, 15, 0.28),
+                0 10px 20px rgba(45, 30, 15, 0.25);
+        }
+
+        /* НАЗВАНИЕ СОЦСЕТИ СНИЗУ ПОД ИКОНКОЙ */
+        .app-label {
+            margin-top: 7px;
+            background: #ffffff;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-family: 'Rubik Mono One', monospace, sans-serif;
+            font-size: 9px;
+            color: #111111;
+            text-align: center;
+            white-space: nowrap;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-shadow: 0 2px 5px rgba(45, 30, 15, 0.15);
+            transition: background 0.15s ease;
+        }
+
+        .app-item:hover .app-label {
+            background: #f0f0f0;
+        }
+
+        /* Нижняя полоска Home */
+        .phone-home-indicator {
+            width: 70px;
+            height: 4px;
+            background: #000;
+            border-radius: 2px;
+            margin: 6px auto 2px auto;
+            opacity: 0.8;
+            flex-shrink: 0;
+        }
+
+        @media (max-height: 680px) {
+            .phone-wrapper {
+                height: 92vh;
+                width: 300px;
+            }
+            .app-square {
+                width: 66px;
+                height: 66px;
+                font-size: 20px;
+            }
+            .app-label {
+                font-size: 8px;
+                padding: 3px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ (КАК В CONTACT.HTML) -->
+    <div class="top-bar">
+        <a href="index.html" class="back-desk-btn" id="toDeskBtn">← НА СТОЛ</a>
+        <button class="lang-btn" id="langBtn" type="button">EN</button>
+    </div>
+
+    <!-- ТЕЛЕФОН -->
+    <main class="phone-wrapper">
+        <!-- Сам корпус телефона -->
+        <img src="./phonesoc2.png" alt="Phone" class="phone-bg" draggable="false">
+
+        <!-- Внутренний экран -->
+        <div class="phone-screen">
+            <div class="social-scroll">
+                <div class="social-grid">
+
+                    <!-- 1. TELEGRAM -->
+                    <a href="https://t.me/zagush_a" target="_blank" rel="noopener noreferrer" class="app-item">
+                        <div class="app-square">✈</div>
+                        <div class="app-label">TELEGRAM</div>
+                    </a>
+
+                    <!-- 2. INSTAGRAM -->
+                    <a href="https://www.instagram.com/zagush_a?mdxt=cjM2YXRuNjZ3bTBn" target="_blank" rel="noopener noreferrer" class="app-item">
+                        <div class="app-square">📸</div>
+                        <div class="app-label">INSTAGRAM</div>
+                    </a>
+
+                    <!-- 3. PINTEREST -->
+                    <a href="https://ru.pinterest.com/zagush/" target="_blank" rel="noopener noreferrer" class="app-item">
+                        <div class="app-square">P</div>
+                        <div class="app-label">PINTEREST</div>
+                    </a>
+
+                    <!-- 4. YOUTUBE -->
+                    <a href="https://www.youtube.com/@zagush" target="_blank" rel="noopener noreferrer" class="app-item">
+                        <div class="app-square">▶</div>
+                        <div class="app-label">YOUTUBE</div>
+                    </a>
+
+                    <!-- 5. ILLUSTRATORS -->
+                    <a href="https://illustrators.ru/users/zagush" target="_blank" rel="noopener noreferrer" class="app-item">
+                        <div class="app-square">✎</div>
+                        <div class="app-label">ILLUSTRATORS</div>
+                    </a>
+
+                    <!-- 6. X (TWITTER) -->
+                    <a href="https://x.com/zagush_" target="_blank" rel="noopener noreferrer" class="app-item">
+                        <div class="app-square">𝕏</div>
+                        <div class="app-label">X</div>
+                    </a>
+
+                    <!-- 7. VKONTAKTE -->
+                    <a href="https://vk.ru/zagush_a" target="_blank" rel="noopener noreferrer" class="app-item">
+                        <div class="app-square">В</div>
+                        <div class="app-label">VKONTAKTE</div>
+                    </a>
+
+                    <!-- 8. BEHANCE -->
+                    <a href="https://www.behance.net/zagush" target="_blank" rel="noopener noreferrer" class="app-item">
+                        <div class="app-square">Bē</div>
+                        <div class="app-label">BEHANCE</div>
+                    </a>
+
+                    <!-- 9. TELEGRAM — ЖИЗНЬ (В САМОМ КОНЦЕ) -->
+                    <a href="https://t.me/zagus_h_bbeb" target="_blank" rel="noopener noreferrer" class="app-item">
+                        <div class="app-square">✈</div>
+                        <div class="app-label" id="tgLifeLabel">TG — ЖИЗНЬ</div>
+                    </a>
+
+                </div>
+            </div>
+
+            <div class="phone-home-indicator"></div>
+        </div>
+    </main>
+
+    <!-- СИНХРОННЫЙ ПЕРЕВОДЧИК ЯЗЫКА (ИЗ CONTACT.HTML) -->
+    <script>
+        let currentLang = localStorage.getItem("user_lang") || "ru";
+        const langBtn = document.getElementById("langBtn");
+        const toDeskBtn = document.getElementById("toDeskBtn");
+        const tgLifeLabel = document.getElementById("tgLifeLabel");
+
+        function updateLangUI() {
+            document.documentElement.lang = currentLang;
+            langBtn.textContent = currentLang === "ru" ? "EN" : "RU";
+            toDeskBtn.textContent = currentLang === "ru" ? "← НА СТОЛ" : "← TO DESK";
+            if (tgLifeLabel) {
+                tgLifeLabel.textContent = currentLang === "ru" ? "TG — ЖИЗНЬ" : "TG — LIFE";
+            }
+        }
+
+        langBtn.addEventListener("click", () => {
+            currentLang = currentLang === "ru" ? "en" : "ru";
+            try { 
+                localStorage.setItem("user_lang", currentLang); 
+            } catch (e) {}
+            updateLangUI();
+        });
+
+        updateLangUI();
+    </script>
+</body>
+</html>
